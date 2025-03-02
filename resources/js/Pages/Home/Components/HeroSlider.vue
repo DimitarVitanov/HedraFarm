@@ -7,6 +7,8 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 //Pagination
 import { Autoplay, Navigation } from "swiper/modules"
+const sliders = ref([])
+const loading = ref(false)
 const slides = ref([
   {
     title: "Medicine & Health Care",
@@ -40,13 +42,35 @@ const doAnimations = (el) => {
   });
 };
 
-onMounted(()=>{
+onMounted(async ()=>{
+    sliders.value = await fetchSliders();
     nextTick(() => {
     document.querySelectorAll("[data-animation]").forEach((el) => {
       doAnimations(el);
     });
   });
 })
+
+async function fetchSliders() {
+    try {
+        loading.value = true
+        const response = await fetch('/sliders/fetch')
+        if (!response.ok) {
+            throw new Error(response.statusText)
+        }
+        const data = await response.json()
+        if(data.success){
+            loading.value = false
+            return data.data
+        }
+        loading.value = false
+        return []
+    } catch (error) {
+        console.error(error)
+        loading.value  = false
+        return []
+    }
+}
 </script>
 
 
@@ -63,7 +87,7 @@ onMounted(()=>{
                 :pagination="{ clickable: true }"
                 class="hero-slider"
               >
-                <SwiperSlide v-for="(slide, index) in slides" :key="index">
+                <SwiperSlide v-for="(slide, index) in sliders" :key="index">
                   <div class="hero-single">
                     <div class="container">
                       <div class="row align-items-center">
@@ -73,7 +97,7 @@ onMounted(()=>{
                               {{ slide.subtitle }}
                             </h6>
                             <h1 class="hero-title" data-animation="fadeInRight">
-                              {{ slide.title }} <span>For Your</span> Family
+                              {{ slide.title }}  <!-- <span>For Your</span> Family -->
                             </h1>
                             <p data-animation="fadeInLeft">
                               {{ slide.description }}
@@ -95,7 +119,7 @@ onMounted(()=>{
                                 <span>Price</span>
                                 <span>{{ slide.price }}</span>
                               </div>
-                              <img :src="slide.imgSrc" alt="Hero Image" />
+                              <img :src="slide.image" alt="Hero Image" />
                             </div>
                           </div>
                         </div>

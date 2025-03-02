@@ -92,8 +92,8 @@ Table of contents
 :root {
   --body-font: 'Roboto', sans-serif;
   --heading-font: 'Inter', sans-serif;
- /* --theme-color: #00B6B1;*/
-  --theme-color:#A8B436;
+  --theme-color: #00B6B1;
+  /*--theme-color:#A8B436; */
   --theme-color2: #1F3E6A;
   --theme-color-light: rgba(0, 182, 177, .08);
   --theme-bg-light: #F5F7FA;
