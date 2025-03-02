@@ -1,8 +1,21 @@
 <script setup>
+import { ref, onMounted, nextTick } from 'vue';
+import { usePage, Head } from '@inertiajs/vue3';
+import HeroSlider from './Components/HeroSlider.vue';
+import Category from './Components/Category.vue';
 
+const page = usePage();
+const logged_user = ref(page.props.user);
+
+const showCategories = ref(false);
+
+const toggleCategories = () => {
+  showCategories.value = !showCategories.value;
+};
 </script>
 
 <template>
+    <Head title="Home"/>
     <div>
 
         <!-- preloader -->
@@ -37,6 +50,7 @@
                                 <div class="header-top-right">
                                     <ul class="header-top-list">
                                         <li><a href="#"><i class="far fa-timer"></i> Daily Deal</a></li>
+                                        <!--
                                         <li>
                                             <div class="dropdown">
                                                 <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown"
@@ -65,6 +79,7 @@
                                                 </div>
                                             </div>
                                         </li>
+                                    -->
                                         <li class="social">
                                             <div class="header-top-social">
                                                 <span>Follow Us: </span>
@@ -227,10 +242,10 @@
                             <img src="/assets/img/logo/logo.png" class="logo-scrolled" alt="logo">
                         </a>
                         <div class="category-all">
-                            <button class="category-btn" type="button">
+                            <button @click="toggleCategories()" class="category-btn" type="button">
                                 <i class="fas fa-list-ul"></i><span>All Categories</span>
                             </button>
-                            <ul class="main-category">
+                            <ul v-if="showCategories" class="main-category d-block">
                                 <li>
                                     <a href="#">
                                         <img src="/assets/img/icon/medicine.svg" alt="">
@@ -252,6 +267,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+
                                             <div class="col-lg-3">
                                                 <div class="category-single">
                                                     <h6 class="category-title-text">Medicine</h6>
@@ -588,292 +604,13 @@
 
         <main class="main">
 
-            <!-- hero slider -->
-            <div class="hero-section hs-1 mt-30">
-                <div class="container">
-                    <div class="hero-slider owl-carousel owl-theme">
-                        <div class="hero-single">
-                            <div class="container">
-                                <div class="row align-items-center">
-                                    <div class="col-lg-6">
-                                        <div class="hero-content">
-                                            <h6 class="hero-sub-title" data-animation="fadeInUp" data-delay=".25s">Easy Health Care</h6>
-                                            <h1 class="hero-title" data-animation="fadeInRight" data-delay=".50s">
-                                                Medicine & Health Care <span>For Your</span> Family
-                                            </h1>
-                                            <p data-animation="fadeInLeft" data-delay=".75s">
-                                                There are many variations of passages orem psum available but the majority
-                                                have suffered alteration in some form by injected humour.
-                                            </p>
-                                            <div class="hero-btn" data-animation="fadeInUp" data-delay="1s">
-                                                <a href="shop-grid.html" class="theme-btn">Shop Now<i
-                                                        class="fas fa-arrow-right"></i></a>
-                                                <a href="about.html" class="theme-btn theme-btn2">Learn More<i
-                                                        class="fas fa-arrow-right"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="hero-right" data-animation="fadeInRight" data-delay=".25s">
-                                            <div class="hero-img">
-                                                <div class="hero-img-price">
-                                                    <span>Price</span>
-                                                    <span>$250</span>
-                                                </div>
-                                                <img src="/assets/img/hero/01.png" alt="">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="hero-single">
-                            <div class="container">
-                                <div class="row align-items-center">
-                                    <div class="col-lg-6">
-                                        <div class="hero-content">
-                                            <h6 class="hero-sub-title" data-animation="fadeInUp" data-delay=".25s">Easy Health Care</h6>
-                                            <h1 class="hero-title" data-animation="fadeInRight" data-delay=".50s">
-                                                Medicine & Health Care <span>For Your</span> Family
-                                            </h1>
-                                            <p data-animation="fadeInLeft" data-delay=".75s">
-                                                There are many variations of passages orem psum available but the majority
-                                                have suffered alteration in some form by injected humour.
-                                            </p>
-                                            <div class="hero-btn" data-animation="fadeInUp" data-delay="1s">
-                                                <a href="shop-grid.html" class="theme-btn">Shop Now<i
-                                                        class="fas fa-arrow-right"></i></a>
-                                                <a href="about.html" class="theme-btn theme-btn2">Learn More<i
-                                                        class="fas fa-arrow-right"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="hero-right" data-animation="fadeInRight" data-delay=".25s">
-                                            <div class="hero-img">
-                                                <div class="hero-img-price">
-                                                    <span>Price</span>
-                                                    <span>$250</span>
-                                                </div>
-                                                <img src="/assets/img/hero/02.png" alt="">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="hero-single">
-                            <div class="container">
-                                <div class="row align-items-center">
-                                    <div class="col-lg-6">
-                                        <div class="hero-content">
-                                            <h6 class="hero-sub-title" data-animation="fadeInUp" data-delay=".25s">Easy Health Care</h6>
-                                            <h1 class="hero-title" data-animation="fadeInRight" data-delay=".50s">
-                                                Medicine & Health Care <span>For Your</span> Family
-                                            </h1>
-                                            <p data-animation="fadeInLeft" data-delay=".75s">
-                                                There are many variations of passages orem psum available but the majority
-                                                have suffered alteration in some form by injected humour.
-                                            </p>
-                                            <div class="hero-btn" data-animation="fadeInUp" data-delay="1s">
-                                                <a href="shop-grid.html" class="theme-btn">Shop Now<i
-                                                        class="fas fa-arrow-right"></i></a>
-                                                <a href="about.html" class="theme-btn theme-btn2">Learn More<i
-                                                        class="fas fa-arrow-right"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="hero-right" data-animation="fadeInRight" data-delay=".25s">
-                                            <div class="hero-img">
-                                                <div class="hero-img-price">
-                                                    <span>Price</span>
-                                                    <span>$250</span>
-                                                </div>
-                                                <img src="/assets/img/hero/03.png" alt="">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- hero slider end -->
+            <!-- hero section -->
+            <HeroSlider/>
+            <!-- hero section-->
 
 
             <!-- category area -->
-            <div class="category-area pt-80 pb-100">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-12 wow fadeInDown" data-wow-delay=".25s">
-                            <div class="site-heading-inline">
-                                <h2 class="site-title">Top Category</h2>
-                                <a href="#">View More <i class="fas fa-angle-double-right"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="category-slider owl-carousel owl-theme wow fadeInUp" data-wow-delay=".25s">
-                        <div class="category-item">
-                            <a href="#">
-                                <div class="category-info">
-                                    <div class="icon">
-                                        <img src="/assets/img/icon/medicine.svg" alt="">
-                                    </div>
-                                    <div class="content">
-                                        <h4>Medicine</h4>
-                                        <p>30 Items</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="category-item">
-                            <a href="#">
-                                <div class="category-info">
-                                    <div class="icon">
-                                        <img src="/assets/img/icon/health-care.svg" alt="">
-                                    </div>
-                                    <div class="content">
-                                        <h4>Healthcare</h4>
-                                        <p>25 Items</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="category-item">
-                            <a href="#">
-                                <div class="category-info">
-                                    <div class="icon">
-                                        <img src="/assets/img/icon/beauty-care.svg" alt="">
-                                    </div>
-                                    <div class="content">
-                                        <h4>Beauty Care</h4>
-                                        <p>15 Items</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="category-item">
-                            <a href="#">
-                                <div class="category-info">
-                                    <div class="icon">
-                                        <img src="/assets/img/icon/sexual.svg" alt="">
-                                    </div>
-                                    <div class="content">
-                                        <h4>Sexual Wellness</h4>
-                                        <p>05 Items</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="category-item">
-                            <a href="#">
-                                <div class="category-info">
-                                    <div class="icon">
-                                        <img src="/assets/img/icon/fitness.svg" alt="">
-                                    </div>
-                                    <div class="content">
-                                        <h4>Fitness</h4>
-                                        <p>30 Items</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="category-item">
-                            <a href="#">
-                                <div class="category-info">
-                                    <div class="icon">
-                                        <img src="/assets/img/icon/lab-test.svg" alt="">
-                                    </div>
-                                    <div class="content">
-                                        <h4>Lab Test</h4>
-                                        <p>12 Items</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="category-item">
-                            <a href="#">
-                                <div class="category-info">
-                                    <div class="icon">
-                                        <img src="/assets/img/icon/baby-mom-care.svg" alt="">
-                                    </div>
-                                    <div class="content">
-                                        <h4>Baby & Mom Care</h4>
-                                        <p>08 Items</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="category-item">
-                            <a href="#">
-                                <div class="category-info">
-                                    <div class="icon">
-                                        <img src="/assets/img/icon/supplements.svg" alt="">
-                                    </div>
-                                    <div class="content">
-                                        <h4>Supplement</h4>
-                                        <p>14 Items</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="category-item">
-                            <a href="#">
-                                <div class="category-info">
-                                    <div class="icon">
-                                        <img src="/assets/img/icon/food-nutrition.svg" alt="">
-                                    </div>
-                                    <div class="content">
-                                        <h4>Food & Nutrition</h4>
-                                        <p>19 Items</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="category-item">
-                            <a href="#">
-                                <div class="category-info">
-                                    <div class="icon">
-                                        <img src="/assets/img/icon/medical-equipements.svg" alt="">
-                                    </div>
-                                    <div class="content">
-                                        <h4>Equipments</h4>
-                                        <p>24 Items</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="category-item">
-                            <a href="#">
-                                <div class="category-info">
-                                    <div class="icon">
-                                        <img src="/assets/img/icon/medical-supplies.svg" alt="">
-                                    </div>
-                                    <div class="content">
-                                        <h4>Medical Supplies</h4>
-                                        <p>09 Items</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="category-item">
-                            <a href="#">
-                                <div class="category-info">
-                                    <div class="icon">
-                                        <img src="/assets/img/icon/pet-care.svg" alt="">
-                                    </div>
-                                    <div class="content">
-                                        <h4>Pet Care</h4>
-                                        <p>16 Items</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <Category/>
             <!-- category area end-->
 
 
@@ -3145,5 +2882,15 @@
 
     </div>
 
-
 </template>
+
+<style scoped>
+.main-category {
+    display: none; /* Initially hidden */
+  }
+
+.main-category[style*="display: block"] {
+    display: block;
+  }
+
+</style>

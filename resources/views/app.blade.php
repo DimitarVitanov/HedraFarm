@@ -8,9 +8,8 @@
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,900&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="assets/css/all-fontawesome.min.css">
         <link href="https://fonts.bunny.net/css?family=inter:400,500,600,900&display=swap" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="assets/css/bootstrap.min.css">
         <link rel="stylesheet" href="assets/css/all-fontawesome.min.css">
@@ -22,7 +21,6 @@
         <link rel="stylesheet" href="assets/css/style.css">
         <!-- Scripts -->
         <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" ></script>
         @routes
         @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"])
         @inertiaHead

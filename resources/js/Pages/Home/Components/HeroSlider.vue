@@ -1,0 +1,114 @@
+<script setup>
+import { ref, onMounted, nextTick } from 'vue';
+import { usePage, Head } from '@inertiajs/vue3';
+import { Swiper, SwiperSlide } from "swiper/vue";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+//Pagination
+import { Autoplay, Navigation } from "swiper/modules"
+const slides = ref([
+  {
+    title: "Medicine & Health Care",
+    subtitle: "Easy Health Care",
+    description:
+      "There are many variations of passages lorem ipsum available but the majority have suffered alteration in some form by injected humour.",
+    imgSrc: "/assets/img/hero/01.png",
+    price: "$250",
+  },
+  {
+    title: "Medicine & Health Care",
+    subtitle: "Easy Health Care",
+    description:
+      "There are many variations of passages lorem ipsum available but the majority have suffered alteration in some form by injected humour.",
+    imgSrc: "/assets/img/hero/02.png",
+    price: "$250",
+  },
+  {
+    title: "Medicine & Health Care",
+    subtitle: "Easy Health Care",
+    description:
+      "There are many variations of passages lorem ipsum available but the majority have suffered alteration in some form by injected humour.",
+    imgSrc: "/assets/img/hero/03.png",
+    price: "$250",
+  },
+]);
+const doAnimations = (el) => {
+  el.classList.add("animate__animated", "animate__fadeInUp");
+  el.addEventListener("animationend", () => {
+    el.classList.remove("animate__animated", "animate__fadeInUp");
+  });
+};
+
+onMounted(()=>{
+    nextTick(() => {
+    document.querySelectorAll("[data-animation]").forEach((el) => {
+      doAnimations(el);
+    });
+  });
+})
+</script>
+
+
+<template>
+         <!-- hero section -->
+         <section class="hero-section  hs-1">
+            <div class="container">
+              <Swiper
+                :slides-per-view="1"
+                :loop="true"
+                :modules="[Navigation, Autoplay]"
+                :autoplay="{ delay: 5000, disableOnInteraction: true }"
+                :navigation="true"
+                :pagination="{ clickable: true }"
+                class="hero-slider"
+              >
+                <SwiperSlide v-for="(slide, index) in slides" :key="index">
+                  <div class="hero-single">
+                    <div class="container">
+                      <div class="row align-items-center">
+                        <div class="col-lg-6">
+                          <div class="hero-content">
+                            <h6 class="hero-sub-title" data-animation="fadeInUp">
+                              {{ slide.subtitle }}
+                            </h6>
+                            <h1 class="hero-title" data-animation="fadeInRight">
+                              {{ slide.title }} <span>For Your</span> Family
+                            </h1>
+                            <p data-animation="fadeInLeft">
+                              {{ slide.description }}
+                            </p>
+                            <div class="hero-btn" data-animation="fadeInUp">
+                              <a href="shop-grid.html" class="theme-btn">
+                                Shop Now <i class="fas fa-arrow-right"></i>
+                              </a>
+                              <a href="about.html" class="theme-btn theme-btn2">
+                                Learn More <i class="fas fa-arrow-right"></i>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-lg-6">
+                          <div class="hero-right" data-animation="fadeInRight">
+                            <div class="hero-img">
+                              <div class="hero-img-price">
+                                <span>Price</span>
+                                <span>{{ slide.price }}</span>
+                              </div>
+                              <img :src="slide.imgSrc" alt="Hero Image" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </SwiperSlide>
+              </Swiper>
+            </div>
+        </section>
+        <!-- hero section-->
+</template>
+
+<style scoped>
+
+</style>

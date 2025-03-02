@@ -1,15 +1,9 @@
 import '../css/app.css';
 import '../../public/assets/css/bootstrap.min.css';
 import '../css/theme.min.css'
-import '../../public/assets/css/animate.min.css';
-import '../../public/assets/css/magnific-popup.min.css'
-import '../../public/assets/css/owl.carousel.min.css'
-import '../../public/assets/css/jquery-ui.min.css'
-import '../../public/assets/css/nice-select.min.css'
-import '../../public/assets/css/style.css'
 import '../css/styles.css'
 
-import '@fortawesome/fontawesome-free/css/all.min.css'
+
 import Lara from '@primeuix/themes/lara'
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';

@@ -37,6 +37,7 @@
         "primeflex": "^4.0.0",
         "primeicons": "^7.0.0",
         "primevue": "^4.3.1",
-        "sweetalert2": "^11.17.2"
+        "sweetalert2": "^11.17.2",
+        "swiper": "^11.2.4"
     }
 }
