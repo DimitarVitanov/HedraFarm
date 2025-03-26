@@ -12,6 +12,12 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CompanyInfoController;
 #slider
 use App\Http\Controllers\SliderController;
+#products
+use App\Http\Controllers\ProductController;
+#prdocut categories
+use App\Http\Controllers\ProductCategoryController;
+#blog controller
+use App\Http\Controllers\BlogController;
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -52,7 +58,6 @@ Route::middleware('auth')->prefix('admin')->group(function () {
             return Inertia::render('Admin/Company/Index');
         })->name('admin.company');
 
-        Route::get('fetch', [CompanyInfoController::class, 'getCompanyInfo'])->name('admin.company.fetch');
         Route::post('store', [CompanyInfoController::class, 'store'])->name('admin.company.store');
     });
 
@@ -65,10 +70,61 @@ Route::middleware('auth')->prefix('admin')->group(function () {
         Route::post('update', [SliderController::class, 'update'])->name('admin.slider.update');
         Route::post('delete', [SliderController::class, 'delete'])->name('admin.slider.delete');
     });
+
+    Route::group(['prefix' => 'products'], function(){
+        Route::get('/', function(){
+            return Inertia::render('Admin/Products/Index');
+        })->name('admin.products');
+        Route::get('fetch', [ProductController::class, 'getProducts'])->name('admin.products.fetch');
+        Route::post('store', [ProductController::class, 'store'])->name('admin.products.store');
+        Route::post('update', [ProductController::class, 'update'])->name('admin.products.update');
+        Route::post('delete', [ProductController::class, 'delete'])->name('admin.products.delete');
+    });
+
+    Route::group(['prefix' => 'product-categories'], function(){
+       /*
+        Route::get('/', function(){
+            return Inertia::render('Admin/Categories/Index');
+        })->name('admin.categories');
+        */
+    });
+    Route::group(['prefix' => 'blogs'], function(){
+        Route::get('/', function(){
+            return Inertia::render('Admin/Blog/Index');
+        })->name('admin.blog');
+        Route::post('store', [BlogController::class, 'store'])->name('blog.store');
+        Route::post('update', [BlogController::class, 'update'])->name('blog.update');
+        Route::post('delete', [BlogController::class, 'delete'])->name('blog.delete');
+    });
+});
+Route::get('/product-categories/fetch', [ProductCategoryController::class, 'getCategories'])->name('admin.categories.fetch');
+
+
+#company
+Route::group(['prefix' => 'company'], function(){
+    Route::get('fetch', [CompanyInfoController::class, 'getCompanyInfo'])->name('company.fetch');
 });
 
+#sliders
 Route::get('sliders/fetch', [SliderController::class, 'getSliders'])->name('admin.slider.fetch');
 
+#about
+Route::get('about', function(){
+    return Inertia::render('About/Index');
+})->name('about');
+
+#contact
+Route::get('contact', function(){
+    return Inertia::render('Contact/Index');
+})->name('contact');
+
+#blog
+Route::group(['prefix' => 'blogs'], function(){
+    Route::get('/', function(){
+        return Inertia::render('Blog/Index');
+    })->name('blog');
+    Route::get('fetch', [BlogController::class, 'fetchBlog'])->name('blog.fetch');
+});
 
 
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])

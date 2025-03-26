@@ -11,6 +11,7 @@ class CompanyInfo extends Model
         'email',
         'phone',
         'address',
+        'about',
         'worktime',
         'quote',
         'instagram_acc_link',

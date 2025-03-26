@@ -10,9 +10,12 @@ class CompanyInfoController extends Controller
     public function getCompanyInfo()
     {
         $company = CompanyInfo::first();
-        $company->show_instagram = $company->show_instagram ? 'true' : 'false';
-        $company->show_facebook = $company->show_facebook ? 'true' : 'false';
-        $company->show_linkedin = $company->show_linkedin ? 'true' : 'false';
+        if(!$company){
+            return response()->json(['success' => true, 'data' => [], 'message' => 'Company info returned successfully']);
+        }
+        $company->show_instagram = $company->show_instagram && $company->show_instagram != null ? 'true' : 'false';
+        $company->show_facebook = $company->show_facebook && $company->show_facebook != null ? 'true' : 'false';
+        $company->show_linkedin = $company->show_linkedin  && $company->show_linkedin != null  ? 'true' : 'false';
         return response()->json(['success' => true, 'data' => $company, 'message' => 'Company info returned successfully']);
     }
 
@@ -27,6 +30,7 @@ class CompanyInfoController extends Controller
             if(isset($request->address)) $company_info->address = $request->address;
             if(isset($request->phone)) $company_info->phone = $request->phone;
             if(isset($request->email)) $company_info->email = $request->email;
+            if(isset($request->about)) $company_info->about = $request->about;
             if(isset($request->worktime)) $company_info->worktime = $request->worktime;
             if(isset($request->quote)) $company_info->quote = $request->quote;
             if(isset($request->instagram_acc_link)) $company_info->instagram_acc_link = $request->instagram_acc_link;
@@ -43,6 +47,7 @@ class CompanyInfoController extends Controller
             if(isset($request->address)) $company_info->address = $request->address;
             if(isset($request->phone)) $company_info->phone = $request->phone;
             if(isset($request->email)) $company_info->email = $request->email;
+            if(isset($request->description)) $company_info->about = $request->description;
             if(isset($request->worktime)) $company_info->worktime = $request->worktime;
             if(isset($request->quote)) $company_info->quote = $request->quote;
             if(isset($request->instagram_acc_link)) $company_info->instagram_acc_link = $request->instagram_acc_link;

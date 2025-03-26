@@ -69,8 +69,7 @@ onMounted(() => {
       <div class="row">
         <div class="col-12">
           <div class="site-heading-inline">
-            <h2 class="site-title">Trending Items</h2>
-            <a href="#">View More <i class="fas fa-angle-double-right"></i></a>
+            <h2 class="site-title">Тренд производи</h2>
           </div>
         </div>
       </div>
@@ -125,7 +124,7 @@ onMounted(() => {
                     <span>{{ product.discountPrice || product.price }}</span>
                   </div>
                   <button type="button" class="product-cart-btn" title="Add To Cart">
-                    <i class="far fa-shopping-bag"></i>
+                    <i class="fa fa-shopping-bag"></i>
                   </button>
                 </div>
               </div>

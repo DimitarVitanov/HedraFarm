@@ -104,10 +104,10 @@ async function fetchSliders() {
                             </p>
                             <div class="hero-btn" data-animation="fadeInUp">
                               <a href="shop-grid.html" class="theme-btn">
-                                Shop Now <i class="fas fa-arrow-right"></i>
+                               Онлине Продавница <i class="fas fa-arrow-right"></i>
                               </a>
                               <a href="about.html" class="theme-btn theme-btn2">
-                                Learn More <i class="fas fa-arrow-right"></i>
+                                Дознај Повеќе <i class="fas fa-arrow-right"></i>
                               </a>
                             </div>
                           </div>
@@ -116,8 +116,8 @@ async function fetchSliders() {
                           <div class="hero-right" data-animation="fadeInRight">
                             <div class="hero-img">
                               <div class="hero-img-price">
-                                <span>Price</span>
-                                <span>{{ slide.price }}</span>
+                                <span>Цена</span>
+                                <span>{{ slide.price }} ден</span>
                               </div>
                               <img :src="slide.image" alt="Hero Image" />
                             </div>

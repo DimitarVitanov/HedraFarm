@@ -291,7 +291,7 @@ const deleteUser = async(id) => {
 </template>
 
 
-<style setup>
+<style scoped>
 .users{
     background-color: white;
     min-height: 92vh;

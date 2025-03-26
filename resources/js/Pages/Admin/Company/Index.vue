@@ -3,6 +3,8 @@ import { ref, onMounted } from 'vue';
 import { usePage, Head } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Button } from 'primevue';
+import Editor from '@/Components/Editor.vue'
+
 const page = usePage();
 const logged_user = ref(page.props.user);
 const company = ref({})
@@ -41,7 +43,7 @@ const checkPermission = async () => {
 async function fetchCompanyInfo() {
     try {
         loading.value = true
-        const response = await fetch('/admin/company/fetch')
+        const response = await fetch('/company/fetch')
         if (!response.ok) {
             throw new Error(response.statusText)
         }
@@ -100,6 +102,9 @@ const saveCompanyInfo = async () =>{
         if(company.value.show_linkedin != null){
             formData.append('show_linkedin', company.value.show_linkedin)
         }
+        if(company.value.about != null){
+            formData.append('about', company.value.about)
+        }
 
         const _token = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
         formData.append('_token', _token)
@@ -147,6 +152,12 @@ const saveCompanyInfo = async () =>{
 
             <div class="company-form col-8 mx-auto">
                 <div class="row">
+                    <div class="col-12 mb-4">
+                        <div class="form-group">
+                            <label for="about">About</label>
+                            <Editor :modelValue="company.about" @update:modelValue="company.about = $event" />
+                        </div>
+                    </div>
                     <div class="col-12 col-md-6 col-lg-4">
                         <div class="form-group">
                             <label for="name">Name</label>

@@ -31,6 +31,9 @@ class ProductCategorySeeder extends Seeder
             'name' => 'baby_food',
             ],
             [
+            'name' => 'baby_equipment',
+            ],
+            [
             'name' => 'cosmetics',
             ],
             [

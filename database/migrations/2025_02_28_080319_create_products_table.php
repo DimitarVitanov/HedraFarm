@@ -16,7 +16,13 @@ return new class extends Migration
             $table->decimal('price', 10, 2);
             $table->string('quantity');
             $table->foreignId('product_category_id')->constrained();
+            $table->string('main_image')->nullable();
             $table->boolean('is_active')->default(true);
+            $table->boolean('show_trending')->default(false);
+            $table->boolean('show_on_sale')->default(false);
+            $table->boolean('show_best_seller')->default(false);
+            $table->boolean('show_top_rated')->default(false);
+
             $table->timestamps();
             $table->softDeletes();
         });

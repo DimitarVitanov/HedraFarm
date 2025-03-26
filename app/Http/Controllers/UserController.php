@@ -70,7 +70,6 @@ class UserController extends Controller
             return response()->json(['success' => false, 'message' => 'User not found']);
         }
         $user->delete();
-
         return response()->json(['success' => true, 'message' => 'User deleted successfully']);
     }
 }

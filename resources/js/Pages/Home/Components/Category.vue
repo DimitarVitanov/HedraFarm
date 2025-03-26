@@ -8,19 +8,19 @@ import "swiper/css/pagination";
 import { Autoplay, Navigation } from "swiper/modules"
 
 const categories = ref([
-  { name: "Medicine", items: 30, imgSrc: "/assets/img/icon/medicine.svg" },
-  { name: "Healthcare", items: 25, imgSrc: "/assets/img/icon/health-care.svg" },
-  { name: "Beauty Care", items: 15, imgSrc: "/assets/img/icon/beauty-care.svg" },
-  { name: "Sexual Wellness", items: 5, imgSrc: "/assets/img/icon/sexual.svg" },
-  { name: "Fitness", items: 30, imgSrc: "/assets/img/icon/fitness.svg" },
-  { name: "Lab Test", items: 12, imgSrc: "/assets/img/icon/lab-test.svg" },
-  { name: "Baby & Mom Care", items: 8, imgSrc: "/assets/img/icon/baby-mom-care.svg" },
-  { name: "Supplement", items: 14, imgSrc: "/assets/img/icon/supplements.svg" },
-  { name: "Food & Nutrition", items: 19, imgSrc: "/assets/img/icon/food-nutrition.svg" },
-  { name: "Equipments", items: 24, imgSrc: "/assets/img/icon/medical-equipements.svg" },
-  { name: "Medical Supplies", items: 9, imgSrc: "/assets/img/icon/medical-supplies.svg" },
-  { name: "Pet Care", items: 16, imgSrc: "/assets/img/icon/pet-care.svg" },
+  { name: "Симптоми и состојби", items: 30, imgSrc: "/assets/img/icon/medicine.svg" },
+  { name: "Витамини и додатоци во исхрана", items: 14, imgSrc: "/assets/img/icon/supplements.svg" },
+  { name: "Гелови и креми", items: 14, imgSrc: "/assets/img/icon/beauty-care.svg" },
+  { name: "Препарати за деца", items: 8, imgSrc: "/assets/img/icon/baby-mom-care.svg" },
+  { name: "Хомеопатски препарати", items: 5, imgSrc: "/assets/img/icon/medicine.svg" },
+  { name: "Храна за деца", items: 24, imgSrc: "/assets/img/icon/food-nutrition.svg" },
+  { name: "Опрема за деца", items: 12, imgSrc: "/assets/img/icon/medical-equipements.svg" },
+  { name: "Козметика", items: 11, imgSrc: "/assets/img/icon/beauty-care.svg" },
+  { name: "Орално здравје", items: 15, imgSrc: "/assets/img/icon/health-care.svg" },
+  { name: "Медицински уреди", items: 12, imgSrc: "/assets/img/icon/medical-equipements.svg" },
+
 ]);
+
 
 const doAnimations = (el) => {
   el.classList.add("animate__animated", "animate__fadeInUp");
@@ -44,8 +44,7 @@ onMounted(()=>{
                 <div class="row">
                     <div class="col-12 wow fadeInDown" data-wow-delay=".25s">
                         <div class="site-heading-inline">
-                            <h2 class="site-title">Top Category</h2>
-                            <a href="#">View More <i class="fas fa-angle-double-right"></i></a>
+                            <h2 class="site-title">Категории</h2>
                         </div>
                     </div>
                 </div>

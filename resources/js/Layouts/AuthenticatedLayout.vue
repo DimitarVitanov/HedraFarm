@@ -39,12 +39,14 @@ const showingNavigationDropdown = ref(false);
                                 >
                                     Dashboard
                                 </NavLink>
+                                <!--
                                 <NavLink
                                     :href="route('home')"
                                     :active="route().current('home')"
                                 >
                                     Home
                                 </NavLink>
+                            -->
                                 <NavLink
                                     :href="route('admin.company')"
                                     :active="route().current('admin.company')"
@@ -58,13 +60,24 @@ const showingNavigationDropdown = ref(false);
                             >
                                 Slider
                             </NavLink>
-
+                            <NavLink
+                            :href="route('admin.products')"
+                            :active="route().current('admin.products')"
+                            >
+                                Products
+                            </NavLink>
                                 <NavLink
                                     :href="route('admin.users')"
                                     :active="route().current('admin.users')"
                                 >
                                     Users
                                 </NavLink>
+                                <NavLink
+                                :href="route('admin.blog')"
+                                :active="route().current('admin.blog')"
+                                 >
+                                Blog
+                            </NavLink>
                             </div>
                         </div>
 
