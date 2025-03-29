@@ -124,6 +124,7 @@ Route::group(['prefix' => 'blogs'], function(){
         return Inertia::render('Blog/Index');
     })->name('blog');
     Route::get('fetch', [BlogController::class, 'fetchBlog'])->name('blog.fetch');
+    Route::get('{id}/read', [BlogController::class, 'viewBlog'])->name('blog.read');
 });
 
 

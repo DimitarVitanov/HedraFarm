@@ -238,7 +238,7 @@ const handleImageUpload = (event) => {
 
                                 <Column field="id" header="ID" sortable></Column>
                                 <Column field="title" header="Title" sortable></Column>
-                                <Column field="content" header="Content" sortable></Column>
+                                <Column field="short_description" header="Short Description" sortable></Column>
                                 <Column field="image" header="Image" sortable></Column>
                                 <Column field="actions" header="Actions">
                                     <template #body="{data}">

@@ -6,16 +6,17 @@ use Illuminate\Http\Request;
 use App\Models\Blog;
 use Auth;
 use Illuminate\Support\Carbon;
+use Inertia\Inertia;
 
 class BlogController extends Controller
 {
 
     public function fetchBlog(){
-        $blogs = Blog::with('user')->get()->map(function($blog){
+        $blogs = Blog::with('user')->orderBy('id','DESC')->get()->map(function($blog){
             return [
                 'id' => $blog->id,
                 'title' => $blog->title,
-                'short_description' => substr($blog->content, 0, 150),
+                'short_description' => mb_substr($blog->content, 0, 250) . '...',
                 'content' => $blog->content,
                 'image' => $blog->image,
                 'user' => $blog->user->name,
@@ -77,6 +78,45 @@ class BlogController extends Controller
         $blog->delete();
 
         return response()->json(['success' => true, 'message' => 'Blog deleted successfully']);
+    }
+
+    public function viewBlog($id)
+    {
+        $blog = Blog::whereId($id)->with('user')->first();
+        if(!$blog){
+            return response()->json(['success' => false, 'message' => 'Blog not found']);
+        }
+        $data = [
+            'id' => $blog->id,
+            'title' => $blog->title,
+            'short_description' => substr($blog->content, 0, 150),
+            'content' => $blog->content,
+            'image' => $blog->image,
+            'user' => $blog->user->name,
+            'user_id' => $blog->user->id,
+            'date' => Carbon::parse($blog->created_at)->format('Y-m-d')
+        ];
+
+        return Inertia::render('Blog/View', ['data' => $data]);
+    }
+
+    public function getBlog($id){
+        $blog = Blog::whereId($id)->with('user')->first();
+        if(!$blog){
+            return response()->json(['success' => false, 'message' => 'Blog not found']);
+        }
+        $data = [
+            'id' => $blog->id,
+            'title' => $blog->title,
+            'short_description' => substr($blog->content, 0, 150),
+            'content' => $blog->content,
+            'image' => $blog->image,
+            'user' => $blog->user->name,
+            'user_id' => $blog->user->id,
+            'date' => Carbon::parse($blog->created_at)->format('Y-m-d')
+        ];
+
+        return response()->json(['success' => true, 'data' => $data, 'message' => 'Blog fetched successfully']);
     }
 
 }

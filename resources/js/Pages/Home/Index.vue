@@ -10,17 +10,44 @@ const page = usePage();
 const logged_user = ref(page.props.user);
 
 const loading = ref(true);
-
+const blogs = ref([])
+const company = ref({})
 
 onMounted(async ()=>{
+    loading.value = true;
+    await fetchCompanyInfo();
+    await fetchBlogs();
     loading.value = false;
+
 })
 
 async function fetchCompanyInfo(){
     try{
-        const response = await fetch()
+        const response = await fetch('/company/fetch')
+        if(!response.ok){
+            throw new Error('An error occurred while fetching the data')
+        }
+        const data = await response.json();
+        if(data.success){
+            company.value = data.data
+        }
     }catch(error){
         console.log(error);
+    }
+}
+
+async function fetchBlogs(){
+    try{
+        const response = await fetch('/blogs/fetch')
+        if(!response.ok){
+            throw new Error('An error occurred')
+        }
+        const data = await response.json()
+        if(data.success){
+            blogs.value =  data.data.slice(0,3)
+        }
+    }catch(error){
+        console.log(error)
     }
 }
 </script>
@@ -37,12 +64,7 @@ async function fetchCompanyInfo(){
             </div>
         </div>
         <!-- preloader end -->
-
-        <!-- header -->
-
         <Header/>
-
-
         <!-- mobile popup search -->
         <div class="search-popup">
             <button class="close-search"><span class="far fa-times"></span></button>
@@ -1637,70 +1659,23 @@ async function fetchCompanyInfo(){
                         </div>
                     </div>
                     <div class="row g-4">
-                        <div class="col-md-6 col-lg-4">
+                        <div v-for="(blog,index) in blogs" class="col-md-6 col-lg-4">
                             <div class="blog-item wow fadeInUp" data-wow-delay=".25s">
                                 <div class="blog-item-img">
-                                    <img src="/assets/img/blog/01.jpg" alt="Thumb">
-                                    <span class="blog-date"><i class="far fa-calendar-alt"></i> Aug 12, 2024</span>
+                                    <img :src="'/assets' + blog.image" alt="Thumb">
+                                    <span class="blog-date"><i class="far fa-calendar-alt"></i> {{blog.date}}</span>
                                 </div>
                                 <div class="blog-item-info">
                                     <div class="blog-item-meta">
-                                        <ul>
-                                            <li><a href="#"><i class="far fa-user-circle"></i> By Alicia Davis</a></li>
-                                            <li><a href="#"><i class="far fa-comments"></i> 2.5k Comments</a></li>
+                                        <ul class="ps-0 py-0 pb-0">
+                                            <li><a href="#"><i class="far fa-user-circle"></i> {{blog.user}}</a></li>
                                         </ul>
                                     </div>
                                     <h4 class="blog-title">
-                                        <a href="#">There are many variations of passage available majority suffered.</a>
+                                        <a href="#">{{blog.title}}</a>
                                     </h4>
-                                    <p>There are many variations available the majority have suffered alteration randomised
-                                        words.</p>
-                                    <a class="theme-btn" href="#">Read More<i class="fas fa-arrow-right"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-4">
-                            <div class="blog-item wow fadeInDown" data-wow-delay=".25s">
-                                <div class="blog-item-img">
-                                    <img src="/assets/img/blog/02.jpg" alt="Thumb">
-                                    <span class="blog-date"><i class="far fa-calendar-alt"></i> Aug 15, 2024</span>
-                                </div>
-                                <div class="blog-item-info">
-                                    <div class="blog-item-meta">
-                                        <ul>
-                                            <li><a href="#"><i class="far fa-user-circle"></i> By Alicia Davis</a></li>
-                                            <li><a href="#"><i class="far fa-comments"></i> 3.1k Comments</a></li>
-                                        </ul>
-                                    </div>
-                                    <h4 class="blog-title">
-                                        <a href="#">Contrary to popular belief making simply random text latin.</a>
-                                    </h4>
-                                    <p>There are many variations available the majority have suffered alteration randomised
-                                        words.</p>
-                                    <a class="theme-btn" href="#">Read More<i class="fas fa-arrow-right"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-4">
-                            <div class="blog-item wow fadeInUp" data-wow-delay=".25s">
-                                <div class="blog-item-img">
-                                    <img src="/assets/img/blog/03.jpg" alt="Thumb">
-                                    <span class="blog-date"><i class="far fa-calendar-alt"></i> Aug 18, 2024</span>
-                                </div>
-                                <div class="blog-item-info">
-                                    <div class="blog-item-meta">
-                                        <ul>
-                                            <li><a href="#"><i class="far fa-user-circle"></i> By Alicia Davis</a></li>
-                                            <li><a href="#"><i class="far fa-comments"></i> 1.6k Comments</a></li>
-                                        </ul>
-                                    </div>
-                                    <h4 class="blog-title">
-                                        <a href="#"> If you are going use passage you need sure there middle
-                                            text.</a>
-                                    </h4>
-                                    <p>There are many variations available the majority have suffered alteration randomised
-                                        words.</p>
-                                    <a class="theme-btn" href="#">Read More<i class="fas fa-arrow-right"></i></a>
+                                    <div v-html="blog.short_description"></div>
+                                    <a class="theme-btn" :href="'/blogs/' + blog.id + '/read' ">Прочитај повеќе<i class="fas fa-arrow-right"></i></a>
                                 </div>
                             </div>
                         </div>

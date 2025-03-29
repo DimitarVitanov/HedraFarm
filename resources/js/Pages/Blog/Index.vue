@@ -31,6 +31,7 @@ async function fetchBlogs(){
 </script>
 
 <template>
+    <Head title="Blog" />
     <!-- preloader -->
     <div v-if="loading" class="preloader">
         <div class="loader-ripple">
@@ -102,7 +103,7 @@ async function fetchBlogs(){
                                     <a href="#">{{blog.title}}</a>
                                 </h4>
                                 <div v-html="blog.short_description"></div>
-                                <a class="theme-btn" href="#">Прочитај повеќе<i class="fas fa-arrow-right"></i></a>
+                                <a class="theme-btn" :href="'/blogs/' + blog.id + '/read'">Прочитај повеќе<i class="fas fa-arrow-right"></i></a>
                             </div>
                         </div>
                     </div>

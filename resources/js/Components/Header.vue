@@ -340,7 +340,7 @@ const toggleCategories = () => {
                                         <a class="nav-link " href="/">Почетна</a>
                                     </li>
                                     <li class="nav-item ">
-                                        <a class="nav-link " href="#" data-bs-toggle="dropdown">Онлине Продавница</a>
+                                        <a class="nav-link " href="#" data-bs-toggle="dropdown">Онлајн Продавница</a>
                                     </li>
                                     <li class="nav-item"><a class="nav-link" href="/about">За Нас</a></li>
 
