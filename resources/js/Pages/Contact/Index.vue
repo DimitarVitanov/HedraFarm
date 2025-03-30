@@ -2,6 +2,7 @@
 import { onMounted, ref } from 'vue';
 import Header from '@/Components/Header.vue';
 import Footer from '@/Components/Footer.vue';
+import NewsLetter from '@/Components/NewsLetter.vue';
 
 const company = ref([])
 const loading = ref(false)
@@ -166,38 +167,16 @@ async function fetchCompanyInfo(){
 
 
     <!-- newsletter area -->
-    <div class="newsletter-area pb-100">
-        <div class="container wow fadeInUp" data-wow-delay=".25s">
-            <div class="newsletter-wrap">
-                <div class="row">
-                    <div class="col-lg-6 mx-auto">
-                        <div class="newsletter-content">
-                            <h3>Не пропуштај ниту една одлична понуда!</h3>
-                            <p>Со внесување на вашата e-mail адреса се согласувате да ги добивате нашите маркетинг понуди.
-                            </p>
-                            <div class="subscribe-form">
-                                <form action="#">
-                                    <input type="email" class="form-control" placeholder="Вашата е-маил адреса">
-                                    <button class="theme-btn" type="submit">
-                                        Претплати се <i class="far fa-paper-plane"></i>
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+        <NewsLetter/>
     <!-- newsletter area end -->
 
 
-    <!-- map -->
+    <!-- map
     <div class="contact-map">
         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d96708.34194156103!2d-74.03927096447748!3d40.759040329405195!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x4a01c8df6fb3cb8!2sSolomon%20R.%20Guggenheim%20Museum!5e0!3m2!1sen!2sbd!4v1619410634508!5m2!1sen!2s"
             style="border:0;" allowfullscreen="" loading="lazy"></iframe>
     </div>
-    <!-- end map -->
+     end map -->
 
     <Footer/>
 

@@ -6,6 +6,7 @@ import Category from './Components/Category.vue';
 import TrendingItems from './Components/TrendingItems.vue';
 import Header from '@/Components/Header.vue';
 import Footer from '@/Components/Footer.vue';
+import NewsLetter from '@/Components/NewsLetter.vue';
 const page = usePage();
 const logged_user = ref(page.props.user);
 
@@ -1686,28 +1687,7 @@ async function fetchBlogs(){
 
 
             <!-- newsletter area -->
-            <div class="newsletter-area pb-100">
-                <div class="container wow fadeInUp" data-wow-delay=".25s">
-                    <div class="newsletter-wrap">
-                        <div class="row">
-                            <div class="col-lg-6 mx-auto">
-                                <div class="newsletter-content">
-                                    <h3>Get <span>20%</span> Off Discount Coupon</h3>
-                                    <p>By Subscribe Our Newsletter</p>
-                                    <div class="subscribe-form">
-                                        <form action="#">
-                                            <input type="email" class="form-control" placeholder="Your Email Address">
-                                            <button class="theme-btn" type="submit">
-                                                Subscribe <i class="far fa-paper-plane"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <NewsLetter/>
             <!-- newsletter area end -->
 
 

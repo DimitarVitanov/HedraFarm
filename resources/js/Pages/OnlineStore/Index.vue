@@ -165,7 +165,7 @@ watch(searchQuery, () => {
                                 <div v-for="(product,index) in paginatedProducts " class="col-6 col-md-4 col-lg-3">
                                     <div class="product-item bg-white">
                                         <div class="product-img">
-                                            <span class="type">Trending</span>
+                                            <span v-if="product.disscount" class="type">На попуст</span>
                                             <a :href="'/products/' + product.id + '/view'"><img :src="product.main_image" alt=""></a>
                                             <div class="product-action-wrap">
                                                 <div class="product-action">

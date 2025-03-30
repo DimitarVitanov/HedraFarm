@@ -18,7 +18,7 @@ class ProductCategorySeeder extends Seeder
             ],
             [
             'name' => 'vitamins_dietry_supplements',
-            'translated' => 'додатоци во исхрана'
+            'translated' => 'Додатоци во исхрана'
             ],
             [
             'name' => 'gels_creams',

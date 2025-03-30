@@ -146,6 +146,21 @@ Route::group(['prefix' => 'store'], function(){
         return Inertia::render('OnlineStore/Index');
     })->name('store');
 });
+
+#privacy
+Route::group(['prefix' => 'privacy'], function(){
+    Route::get('/', function(){
+        return Inertia::render('Privacy/Index');
+    })->name('privacy');
+});
+
+#delivery-policy
+Route::group(['prefix' => 'delivery-policy'], function(){
+    Route::get('/', function(){
+        return Inertia::render('Delivery/Index');
+    })->name('delivery-policy');
+});
+
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])
     ->name('login');
 require __DIR__.'/auth.php';
