@@ -11,6 +11,7 @@ class Product extends Model
 
     protected $fillable = [
         'name',
+        'short_description',
         'description',
         'price',
         'quantity',
@@ -28,9 +29,9 @@ class Product extends Model
         return $this->belongsTo(ProductCategory::class, 'product_category_id');
     }
 
-    public function subcategory()
+    public function subcategories()
     {
-        return $this->belongsToMany(ProductSubcategory::class, 'products_subcategories');
+        return $this->belongsToMany(ProductSubcategory::class, 'products_subcategories', 'product_id', 'subcategory_id');
     }
 
     public function galleries()

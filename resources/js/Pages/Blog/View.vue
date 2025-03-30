@@ -10,9 +10,14 @@ const props = defineProps({
         required: true,
     },
 });
+const blog = ref({})
 const loading = ref(false);
 
-onMounted(async () => {});
+onMounted(async () => {
+    loading.value = true
+    blog.value = props.data
+    loading.value = false
+});
 </script>
 
 <template>
@@ -37,12 +42,12 @@ onMounted(async () => {});
             ></div>
             <div class="container">
                 <div class="site-breadcrumb-wrap">
-                    <h4 class="breadcrumb-title">{{ props.title }}</h4>
+                    <h4 class="breadcrumb-title">{{ blog.title }}</h4>
                     <ul class="breadcrumb-menu">
                         <li>
                             <a href="/"><i class="fa fa-home"></i> Дома</a>
                         </li>
-                        <li class="active">{{ data.title }}</li>
+                        <li class="active">{{ blog.title }}</li>
                     </ul>
                 </div>
             </div>
@@ -58,7 +63,7 @@ onMounted(async () => {});
                             <div class="blog-single-content">
                                 <div class="blog-thumb-img">
                                     <img
-                                        :src="'/assets' + data.image"
+                                        :src="'/assets' + blog.image"
                                         alt="thumb"
                                     />
                                 </div>
@@ -69,32 +74,17 @@ onMounted(async () => {});
                                                 <li>
                                                     <i class="far fa-user"></i
                                                     ><a href="#">{{
-                                                        data.user
+                                                        blog.user
                                                     }}</a>
                                                 </li>
-                                            </ul>
+                                        </ul>
                                         </div>
                                     </div>
                                     <div class="blog-details">
                                         <h3 class="blog-details-title mb-5">
-                                            {{ data.title }}
+                                            {{ blog.title }}
                                         </h3>
-                                        <div v-html="data.content"></div>
-
-                                        <div class="row">
-                                            <div class="col-md-6 mb-20">
-                                                <img
-                                                    src="assets/img/blog/01.jpg"
-                                                    alt=""
-                                                />
-                                            </div>
-                                            <div class="col-md-6 mb-20">
-                                                <img
-                                                    src="assets/img/blog/02.jpg"
-                                                    alt=""
-                                                />
-                                            </div>
-                                        </div>
+                                        <div v-html="blog.content"></div>
                                     </div>
                                 </div>
                             </div>
@@ -107,4 +97,5 @@ onMounted(async () => {});
     <Footer/>
 </template>
 
-<style scoped></style>
+<style scoped>
+</style>

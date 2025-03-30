@@ -14,33 +14,43 @@ class ProductCategorySeeder extends Seeder
             [
             [
             'name' => 'symptomps_conditions',
+            'translated' => 'Симптоми и состојби'
             ],
             [
             'name' => 'vitamins_dietry_supplements',
+            'translated' => 'додатоци во исхрана'
             ],
             [
-            'name' => 'gels_creams'
+            'name' => 'gels_creams',
+            'translated' => 'Гелови и кремови'
             ],
             [
             'name' => 'children_remedies',
+            'translated' => 'Препарати за деца ',
             ],
             [
             'name' => 'homeopathic_remedies',
+            'translated' => 'Хомеопатски препарати',
             ],
             [
             'name' => 'baby_food',
+            'translated' => 'Храна за бебиња',
             ],
             [
             'name' => 'baby_equipment',
+            'translated' => 'Опрема за бебиња',
             ],
             [
             'name' => 'cosmetics',
+            'translated' => 'Козметика',
             ],
             [
             'name' => 'oral_health',
+            'translated' => 'Орално здравје',
             ],
             [
             'name' => 'medical_devices',
+            'translated' => 'Апарати',
             ],
         ]);
     }

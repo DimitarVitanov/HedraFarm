@@ -8,15 +8,17 @@ use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductGallery;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
 
 class ProductController extends Controller
 {
     public function getProducts()
     {
-        $products = Product::with('category')->get()->map(function($product){
+        $products = Product::with('category')->where('is_active', 1)->get()->map(function($product){
             return [
                 'id' => $product->id,
                 'name' => $product->name,
+                'short_description' => $product->short_description,
                 'description' => $product->description,
                 'clean_description' => Str::limit(strip_tags($product->description), 100),
                 'price' => $product->price,
@@ -24,16 +26,71 @@ class ProductController extends Controller
                 'product_category_name' =>ClientHelper::tidyName($product->category->name),
                 'quantity' => $product->quantity,
                 'category' => $product->category->name,
-                'is_active' => $product->is_active,
-                'main_image' => $product->main_image,
-                'show_trending' => $product->show_trending,
-                'show_on_sale' => $product->show_on_sale,
-                'show_best_seller' => $product->show_best_seller,
-                'show_top_rated' => $product->show_top_rated,
+                'main_image' =>  $product->main_image,
+                'is_active' => (bool)$product->is_active,
+                'show_trending' => (bool) $product->show_trending,
+                'show_on_sale' => (bool)$product->show_on_sale,
+                'show_best_seller' => (bool)$product->show_best_seller,
+                'show_top_rated' => (bool)$product->show_top_rated,
                 'galleries'=> $product->galleries ?? [],
+                'subcategories' => $this->fetchSubcategories($product->id)
             ];
         });
 
+        return response()->json(['success' => true, 'data' => $products, 'message' => 'Products fetched successfully']);
+    }
+
+    public function viewProduct($id)
+    {
+        $product = Product::with('category')->find($id);
+        if (!$product) {
+            return response()->json(['success' => false, 'message' => 'Product not found']);
+        }
+        $product->galleries = $product->galleries ?? [];
+        $product->subcategories = $this->fetchSubcategories($id);
+        return Inertia::render('Product/View', [
+            'data' => $product,
+        ]);
+    }
+
+    private function fetchSubcategories($productId)
+    {
+        $product = Product::with('subcategories')->find($productId);
+        if (!$product) {
+            return [];
+        }
+        $subcategories =  $product->subcategories->map(function($subcategory){
+                return [
+                    'id' => $subcategory->id,
+                    'translated' => $subcategory->translated,
+                    'name' => $subcategory->name,
+                ];
+            });
+
+        return $subcategories;
+    }
+
+    public function getProductsByCategory($id)
+    {
+        $products = Product::where('product_category_id', $id)->where('is_active',1)->with('category')->get()->map(function($product){
+            return [
+                'id' => $product->id,
+                'name' => $product->name,
+                'short_description' => $product->short_description,
+                'description' => $product->description,
+                'clean_description' => Str::limit(strip_tags($product->description), 100),
+                'price' => $product->price,
+                'product_category_id' => $product->product_category_id,
+                'quantity' => $product->quantity,
+                'category' => $product->category->name,
+                'main_image' =>  $product->main_image,
+                'is_active' => (bool)$product->is_active,
+                'show_trending' => (bool) $product->show_trending,
+                'show_on_sale' => (bool)$product->show_on_sale,
+                'show_best_seller' => (bool)$product->show_best_seller,
+                'show_top_rated' => (bool)$product->show_top_rated,
+            ];
+        });
         return response()->json(['success' => true, 'data' => $products, 'message' => 'Products fetched successfully']);
     }
 
@@ -48,6 +105,7 @@ class ProductController extends Controller
 
         $product = Product::create([
             'name' => $request->name,
+            'short_description' => $request->short_description,
             'description' => $request->description,
             'price' => $request->price,
             'quantity' => $request->quantity,
@@ -59,6 +117,11 @@ class ProductController extends Controller
             'is_active' => $request->is_active == 'true' ? 1 : 0,
             'product_category_id' => $request->product_category_id,
         ]);
+        if ($request->has('subcategories') && is_array($request->subcategories)) {
+            $product->subcategories()->sync($request->input('subcategories', []));
+        }else{
+            $product->subcategories()->sync([]);
+        }
 
         if($request->galleries){
             foreach ($request->file('galleries') as $gallery) {
@@ -88,6 +151,9 @@ class ProductController extends Controller
         }
         if($request->name){
             $product->name = $request->name;
+        }
+        if($request->short_description){
+            $product->short_description = $request->short_description;
         }
         if($request->description){
             $product->description = $request->description;
@@ -125,6 +191,12 @@ class ProductController extends Controller
         }
 
         $product->save();
+
+        if ($request->has('subcategories') && is_array($request->subcategories)) {
+            $product->subcategories()->sync($request->input('subcategories', []));
+        }else{
+            $product->subcategories()->sync([]);
+        }
 
         if($request->galleries){
             foreach ($request->file('galleries') as $gallery) {

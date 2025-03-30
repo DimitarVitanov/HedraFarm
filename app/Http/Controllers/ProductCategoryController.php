@@ -12,6 +12,7 @@ class ProductCategoryController extends Controller
         $categories = ProductCategory::get()->map(function($category){
             return [
                 'id' => $category->id,
+                'translated' => $category->translated,
                 'name' => $category->name,
             ];
         });

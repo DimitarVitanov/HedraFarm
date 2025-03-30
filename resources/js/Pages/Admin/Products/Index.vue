@@ -7,6 +7,7 @@ import Column from 'primevue/column';
 import Button from 'primevue/button';
 import Modal from '@/Components/Modal.vue';
 import Editor from '@/Components/Editor.vue'
+import Multiselect from 'primevue/multiselect';
 const page = usePage();
 const logged_user = ref(page.props.user);
 const product = ref({
@@ -16,6 +17,7 @@ const product = ref({
     quantity: '',
     price: '',
     product_category_id: '',
+    subcategories:[],
     main_image:'',
     gallery: [],
     is_active: true,
@@ -26,6 +28,7 @@ const product = ref({
 });
 const products = ref([]);
 const loading = ref(false);
+const subcategories = ref([]);
 
 const categories = ref(false);
 
@@ -48,6 +51,7 @@ onMounted(async()=>{
     checkPermission();
     products.value = await fetchProducts()
     categories.value = await fetchCategories()
+    subcategories.value = await fetchSubcategories()
 })
 
 const checkPermission = ()=>{
@@ -63,7 +67,7 @@ const checkPermission = ()=>{
 async function fetchProducts(){
     try{
         loading.value = true
-        const response = await fetch('/admin/products/fetch')
+        const response = await fetch('/products/fetch')
         if(!response.ok){
             throw new Error('An error occurred while fetching the data')
         }
@@ -97,11 +101,34 @@ async function fetchCategories(){
         return []
     }
 }
+
+/* Fetch Subcategories */
+async function fetchSubcategories(){
+    try{
+        const response = await fetch('/product-subcategories/fetch')
+        if(!response.ok){
+            throw new Error('An error occurred while fetching the data')
+        }
+        const data = await response.json();
+        if(data.success){
+            return data.data
+        }
+        return []
+    }catch(error){
+        console.log(error);
+        return []
+    }
+}
+
 const showProductModal = ref(false)
 
 const openProductModal = (data = null) => {
     if(data){
-        product.value = data
+
+        product.value = {
+        ...data,
+        subcategories: data.subcategories.map(sub => sub.id)
+    }
     }
     showProductModal.value = true
 }
@@ -114,6 +141,7 @@ const clearForm = () =>{
     product.value = {
         id: '',
         name: '',
+        short_description: '',
         description: '',
         quantity: '',
         price: '',
@@ -126,6 +154,7 @@ const clearForm = () =>{
         show_best_seller:false,
         show_featured:false,
         show_trending:'',
+        subcategories:[],
     }
 }
 
@@ -176,12 +205,13 @@ const saveProduct = () =>{
 const addProduct = async () => {
     try {
         console.log(product.value)
-        if(!product.value.name || !product.value.description || !product.value.quantity || !product.value.price || !product.value.product_category_id || !product.value.main_image){
+        if(!product.value.name || !product.value.description || !product.value.short_description || !product.value.quantity || !product.value.price || !product.value.product_category_id || !product.value.main_image){
             fireMessage('Please fill all required fields')
             return
         }
     const formData = new FormData();
     formData.append("name", product.value.name);
+    formData.append("short_description", product.value.short_description);
     formData.append("description", product.value.description);
     formData.append("quantity", product.value.quantity);
     formData.append("price", product.value.price);
@@ -192,6 +222,12 @@ const addProduct = async () => {
     formData.append("show_best_seller", product.value.show_best_seller);
     formData.append("show_featured", product.value.show_featured);
     formData.append("main_image", product.value.main_image);
+    if (product.value.subcategories.length > 0) {
+            const uniqueSubIds = [...new Set(product.value.subcategories.map(sub => typeof sub === 'object' ? sub.id : sub))];
+            uniqueSubIds.forEach((id) => {
+            formData.append('subcategories[]', id);
+            });
+    }
     const _token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     formData.append("_token", _token);
     // Append multiple gallery images
@@ -209,6 +245,8 @@ const addProduct = async () => {
         const data = await response.json();
         if (data.success) {
             fireMessage("Product saved successfully!", true, false);
+            products.value = await fetchProducts()
+            closeProductModal();
         } else {
             fireMessage("Error saving product.");
         }
@@ -223,6 +261,7 @@ const updateProduct = async() =>{
         const formData = new FormData()
         formData.append('id', product.value.id)
         formData.append('name', product.value.name)
+        formData.append('short_description', product.value.short_description)
         formData.append('description', product.value.description)
         formData.append('quantity', product.value.quantity)
         formData.append('price', product.value.price)
@@ -239,6 +278,12 @@ const updateProduct = async() =>{
         formData.append(`galleries[]`, image.file);
         });
          }
+        if (product.value.subcategories.length > 0) {
+            const uniqueSubIds = [...new Set(product.value.subcategories.map(sub => typeof sub === 'object' ? sub.id : sub))];
+            uniqueSubIds.forEach((id) => {
+            formData.append('subcategories[]', id);
+            });
+        }
         const _token = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
         formData.append('_token', _token)
         const response = await fetch('/admin/products/update', {
@@ -250,7 +295,8 @@ const updateProduct = async() =>{
         }
         const data = await response.json();
         if(data.success){
-            fireMessage('Product updated successfully', true, true)
+            product.value = await fetchProducts()
+            fireMessage('Product updated successfully', true, false)
         }else{
             fireMessage('An error occurred while updating the product')
         }
@@ -317,6 +363,7 @@ const deleteProduct = async(id, type,index) =>{
                         <DataTable :value="products" :loading="loading" :paginator="true" :rows="10" :rowsPerPageOptions="[5,10,20]">
                             <Column field="id" header="ID" sortable></Column>
                             <Column field="name" header="Name" sortable></Column>
+                            <Column field="short_description" header="Short Description" sortable></Column>
                             <Column field="description" header="Description" sortable>
                             <template #body="{data}">
                                 <div>{{data.clean_description}}</div>
@@ -393,30 +440,42 @@ const deleteProduct = async(id, type,index) =>{
                 <input type="text" class="form-control" id="name" v-model="product.name">
             </div>
 
+            <div class="form-group mt-2">
+                <label for="short_description">Short Description</label>
+                <input type="text" class="form-control" id="short_description" v-model="product.short_description">
+            </div>
+
             <div class="form-group mt-3">
                 <label for="description">Description</label>
                 <Editor :modelValue="product.description" @update:modelValue="product.description = $event" />
             </div>
             <div class="row mt-2">
-                <div class="col-12 col-md-4">
+                <div class="col-12 col-md-3">
                     <div class="form-group mt-2">
                         <label for="quantity">Quantity</label>
                         <input type="number" class="form-control" id="quantity" v-model="product.quantity">
                     </div>
                 </div>
-                <div class="col-12 col-md-4">
+                <div class="col-12 col-md-3">
                     <div class="form-group mt-2">
                         <label for="price">Price</label>
                         <input type="number" class="form-control" id="price" v-model="product.price">
                     </div>
                 </div>
-                <div class="col-12 col-md-4">
+                <div class="col-12 col-md-3">
                     <div class="form-group mt-2">
                         <label for="product_category_id">Category</label>
                         <select class="form-control" id="product_category_id" v-model="product.product_category_id">
                             <option value="">Select Category</option>
-                            <option v-for="category in categories" :value="category.id" :key="category.id">{{ category.name }}</option>
+                            <option v-for="category in categories" :value="category.id" :key="category.id">{{ category.translated }}</option>
                         </select>
+                    </div>
+                </div>
+                <div class="col-12 col-md-3">
+                    <div class="form-group mt-2">
+                        <label for="product_subcategory_id">Subcategory</label>
+                        <br>
+                        <Multiselect class="col-md-12" placeholder="Select Subcategories" :options="subcategories" optionLabel="translated" optionValue="id" v-model="product.subcategories" />
                     </div>
                 </div>
             </div>
@@ -433,24 +492,24 @@ const deleteProduct = async(id, type,index) =>{
             <div class="row">
                 <div class="form-group col-12 col-md-2">
                     <label for="is_active">Active</label>
-                    <input type="checkbox" :checked="product.is_active" class="form-check-input ms-2" id="is_active" v-model="product.is_active">
+                    <input type="checkbox" class="form-check-input ms-2" id="is_active" v-model="product.is_active">
                 </div>
                 <div class="form-group col-12 col-md-2">
                     <label for="show_trending">Trending</label>
 
-                    <input type="checkbox"  :checked="product.show_trending" class="form-check-input ms-2"  v-model="product.show_trending">
+                    <input type="checkbox"  class="form-check-input ms-2"  v-model="product.show_trending">
                 </div>
                 <div class="form-group col-12 col-md-2">
                     <label for="show_on_sale">On Sale</label>
-                    <input type="checkbox" :checked="product.show_on_sale"  class="form-check-input ms-2"  v-model="product.show_on_sale">
+                    <input type="checkbox"   class="form-check-input ms-2"  v-model="product.show_on_sale">
                 </div>
                 <div class="form-group col-12 col-md-2">
                     <label for="show_best_seller">Best Seller</label>
-                    <input type="checkbox" :checked="product.show_best_seller" class="form-check-input ms-2"  v-model="product.show_best_seller">
+                    <input type="checkbox" class="form-check-input ms-2"  v-model="product.show_best_seller">
                 </div>
                 <div class="form-group col-12 col-md-2">
                     <label for="show_featured">Featured</label>
-                    <input type="checkbox"  :checked="product.show_featured" class="form-check-input ms-2" v-model="product.show_featured">
+                    <input type="checkbox"  class="form-check-input ms-2" v-model="product.show_featured">
                 </div>
             </div>
 

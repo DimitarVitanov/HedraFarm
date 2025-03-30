@@ -9,7 +9,6 @@ const categories = ref([])
 onMounted(async () => {
     company.value = await fetchCompanyInfo();
     categories.value = await fetchCategories();
-    console.log(categories.value)
 });
 
 
@@ -340,7 +339,7 @@ const toggleCategories = () => {
                                         <a class="nav-link " href="/">Почетна</a>
                                     </li>
                                     <li class="nav-item ">
-                                        <a class="nav-link " href="#" data-bs-toggle="dropdown">Онлајн Продавница</a>
+                                        <a class="nav-link " href="/store">Онлајн Продавница</a>
                                     </li>
                                     <li class="nav-item"><a class="nav-link" href="/about">За Нас</a></li>
 

@@ -11,11 +11,17 @@ class ProductSubcategory extends Model
 
     protected $fillable = [
         'name',
+        'translated',
         'category_id',
     ];
 
     public function products()
     {
         return $this->belongsToMany(Product::class, 'products_subcategories');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(ProductCategory::class, 'product_category_id');
     }
 }

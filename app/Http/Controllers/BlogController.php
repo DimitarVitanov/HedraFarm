@@ -84,19 +84,18 @@ class BlogController extends Controller
     {
         $blog = Blog::whereId($id)->with('user')->first();
         if(!$blog){
-            return response()->json(['success' => false, 'message' => 'Blog not found']);
+            return response()->json(['success' => false, 'data' => null, 'message' => 'Blog not found']);
         }
-        $data = [
+        $data = (object) [
             'id' => $blog->id,
             'title' => $blog->title,
-            'short_description' => substr($blog->content, 0, 150),
+            'short_description' => mb_substr($blog->content, 0, 150),
             'content' => $blog->content,
             'image' => $blog->image,
             'user' => $blog->user->name,
             'user_id' => $blog->user->id,
             'date' => Carbon::parse($blog->created_at)->format('Y-m-d')
         ];
-
         return Inertia::render('Blog/View', ['data' => $data]);
     }
 
@@ -105,7 +104,7 @@ class BlogController extends Controller
         if(!$blog){
             return response()->json(['success' => false, 'message' => 'Blog not found']);
         }
-        $data = [
+        $data = (object) [
             'id' => $blog->id,
             'title' => $blog->title,
             'short_description' => substr($blog->content, 0, 150),

@@ -16,6 +16,8 @@ use App\Http\Controllers\SliderController;
 use App\Http\Controllers\ProductController;
 #prdocut categories
 use App\Http\Controllers\ProductCategoryController;
+#product subcategories
+use App\Http\Controllers\ProductSubcategoryController;
 #blog controller
 use App\Http\Controllers\BlogController;
 
@@ -75,7 +77,6 @@ Route::middleware('auth')->prefix('admin')->group(function () {
         Route::get('/', function(){
             return Inertia::render('Admin/Products/Index');
         })->name('admin.products');
-        Route::get('fetch', [ProductController::class, 'getProducts'])->name('admin.products.fetch');
         Route::post('store', [ProductController::class, 'store'])->name('admin.products.store');
         Route::post('update', [ProductController::class, 'update'])->name('admin.products.update');
         Route::post('delete', [ProductController::class, 'delete'])->name('admin.products.delete');
@@ -127,7 +128,24 @@ Route::group(['prefix' => 'blogs'], function(){
     Route::get('{id}/read', [BlogController::class, 'viewBlog'])->name('blog.read');
 });
 
+#products
+Route::group(['prefix' => 'products'], function(){
+    Route::get('{id}/view', [ProductController::class, 'viewProduct'])->name('product.view');
+    Route::get('fetch', [ProductController::class, 'getProducts'])->name('products.fetch');
+    Route::get('categories/{id}/fetch', [ProductController::class, 'getProductsByCategory'])->name('products.by-category');
+});
 
+#subcategories
+Route::group(['prefix' => 'product-subcategories'], function(){
+    Route::get('fetch', [ProductSubcategoryController::class, 'fetchSubcategories'])->name('fetch.subcategories');;
+});
+
+#online-store
+Route::group(['prefix' => 'store'], function(){
+    Route::get('/', function(){
+        return Inertia::render('OnlineStore/Index');
+    })->name('store');
+});
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])
     ->name('login');
 require __DIR__.'/auth.php';

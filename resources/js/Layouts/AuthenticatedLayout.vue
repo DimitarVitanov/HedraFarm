@@ -53,6 +53,18 @@ const showingNavigationDropdown = ref(false);
                                 >
                                     Company
                                 </NavLink>
+                                <NavLink
+                                :href="route('admin.users')"
+                                :active="route().current('admin.users')"
+                            >
+                                Users
+                                    </NavLink>
+                                    <NavLink
+                                    :href="route('admin.blog')"
+                                    :active="route().current('admin.blog')"
+                                    >
+                                    Blog
+                                </NavLink>
 
                                 <NavLink
                                 :href="route('admin.slider')"
@@ -66,18 +78,7 @@ const showingNavigationDropdown = ref(false);
                             >
                                 Products
                             </NavLink>
-                                <NavLink
-                                    :href="route('admin.users')"
-                                    :active="route().current('admin.users')"
-                                >
-                                    Users
-                                </NavLink>
-                                <NavLink
-                                :href="route('admin.blog')"
-                                :active="route().current('admin.blog')"
-                                 >
-                                Blog
-                            </NavLink>
+
                             </div>
                         </div>
 

@@ -11,17 +11,11 @@ class ProductCategory extends Model
 
     protected $fillable = [
         'name',
+        'translated',
     ];
 
     public function products()
     {
         return $this->hasMany(Product::class);
     }
-
-    public function subcategories()
-    {
-        return $this->belongsTo(ProductSubcategory::class);
-    }
-
-
 }
