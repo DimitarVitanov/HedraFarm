@@ -305,7 +305,7 @@ const toggleCategories = () => {
                                 <i class="fas fa-list-ul"></i><span>Категории</span>
                             </button>
                             <ul  v-if="showCategories" class="main-category d-block">
-                                <li v-for="(category,index) in categories"><a href="#"><img :src="getCategoryImage(category.name)" alt=""><span>{{getCategoryName(category.name)}}</span></a></li>
+                                <li v-for="(category,index) in categories"><a :href="'/store?category=' + category.id"><img :src="getCategoryImage(category.name)" alt=""><span>{{getCategoryName(category.name)}}</span></a></li>
                             </ul>
                         </div>
                         <div class="mobile-menu-right">

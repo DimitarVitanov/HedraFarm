@@ -1,9 +1,12 @@
 <script setup>
-import { ref, onMounted,computed,watch } from 'vue';
+import { ref, onMounted,computed,watch, nextTick } from 'vue';
 import { usePage, Head } from '@inertiajs/vue3';
 import Header from '@/Components/Header.vue';
 import Footer from '@/Components/Footer.vue';
 
+const { url, props } = usePage();
+const route = new URL(url, window.location.origin);
+const selectedCategoryParam = route.searchParams.get('category');
 const loading = ref(false)
 const products = ref([])
 const categories = ref([])
@@ -17,6 +20,11 @@ onMounted(async()=>{
     await fetchProducts()
     await fetchCategories()
     await fetchSubcategories()
+
+    if (selectedCategoryParam) {
+    selectedCategories.value = [parseInt(selectedCategoryParam)]
+    }
+
     loading.value = false
 })
 
