@@ -244,4 +244,46 @@ class ProductController extends Controller
         return response()->json(['success' => true, 'message' => $message]);
     }
 
+    public function getProductsByType($type){
+
+        $products = $this->formatTypeProducts($type);
+        if($products->isEmpty()){
+            return response()->json(['success' => false, 'message' => 'No products found']);
+        }
+        $products = $products->map(function($product){
+            return [
+                'id' => $product->id,
+                'label' => null,
+                'img' =>  $product->main_image,
+                'title' => $product->name,
+                'price' => $product->price,
+                'disscount' => $product->discount ?? null,
+            ];
+        });
+
+        return response()->json(['success' => true, 'data' => $products, 'message' => 'Products fetched successfully']);
+    }
+
+    private function formatTypeProducts($type){
+        $products = [];
+        switch($type){
+            case 'trending':
+                $products = Product::where('show_trending', 1)->where('is_active', 1)->with('category')->get();
+                break;
+            case 'on-sale':
+                $products = Product::where('show_on_sale', 1)->where('is_active', 1)->with('category')->get();
+                break;
+            case 'best-seller':
+                $products = Product::where('show_best_seller', 1)->where('is_active', 1)->with('category')->get();
+                break;
+            case 'top-rated':
+                $products = Product::where('show_top_rated', 1)->where('is_active', 1)->with('category')->get();
+                break;
+            default:
+                $products = Product::where('is_active', 1)->with('category')->get();
+                break;
+        }
+        return $products;
+    }
+
 }

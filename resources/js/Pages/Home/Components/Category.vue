@@ -8,16 +8,15 @@ import "swiper/css/pagination";
 import { Autoplay, Navigation } from "swiper/modules"
 
 const categories = ref([
-  { name: "Симптоми и состојби", items: 30, imgSrc: "/assets/img/icon/medicine.svg" },
-  { name: "Витамини и додатоци во исхрана", items: 14, imgSrc: "/assets/img/icon/supplements.svg" },
-  { name: "Гелови и креми", items: 14, imgSrc: "/assets/img/icon/beauty-care.svg" },
-  { name: "Препарати за деца", items: 8, imgSrc: "/assets/img/icon/baby-mom-care.svg" },
-  { name: "Хомеопатски препарати", items: 5, imgSrc: "/assets/img/icon/medicine.svg" },
-  { name: "Храна за деца", items: 24, imgSrc: "/assets/img/icon/food-nutrition.svg" },
-  { name: "Опрема за деца", items: 12, imgSrc: "/assets/img/icon/medical-equipements.svg" },
-  { name: "Козметика", items: 11, imgSrc: "/assets/img/icon/beauty-care.svg" },
-  { name: "Орално здравје", items: 15, imgSrc: "/assets/img/icon/health-care.svg" },
-  { name: "Медицински уреди", items: 12, imgSrc: "/assets/img/icon/medical-equipements.svg" },
+  { name: "Симптоми и состојби", items: 30, imgSrc: "/assets/img/icon/medicine.svg", link:'store?category=1' },
+  { name: "Витамини и додатоци во исхрана", items: 14, imgSrc: "/assets/img/icon/supplements.svg", link:'store?category=2' },
+  { name: "Гелови и креми", items: 14, imgSrc: "/assets/img/icon/beauty-care.svg", link:'store?category=3'},
+  { name: "Препарати за деца", items: 8, imgSrc: "/assets/img/icon/baby-mom-care.svg", link:'store?category=4' },
+  { name: "Храна за деца", items: 24, imgSrc: "/assets/img/icon/food-nutrition.svg", link:'store?category=6' },
+  { name: "Опрема за бебиња", items: 12, imgSrc: "/assets/img/icon/medical-equipements.svg", link:'store?category=8' },
+  { name: "Козметика", items: 11, imgSrc: "/assets/img/icon/beauty-care.svg", link:'store?category=8' },
+  { name: "Орално здравје", items: 15, imgSrc: "/assets/img/icon/health-care.svg", link:'store?category=9' },
+  { name: "Медицински уреди", items: 12, imgSrc: "/assets/img/icon/medical-equipements.svg", link:'store?category=10' },
 
 ]);
 
@@ -69,14 +68,13 @@ onMounted(()=>{
                       >
                         <SwiperSlide v-for="(category, index) in categories" :key="index">
                           <div class="category-item">
-                            <a href="#">
+                            <a :href="'/' + category.link">
                               <div class="category-info">
                                 <div class="icon">
                                   <img :src="category.imgSrc" :alt="category.name" />
                                 </div>
-                                <div class="content">
-                                  <h4>{{ category.name }}</h4>
-                                  <p>{{ category.items }} Items</p>
+                                <div class="pt-5">
+                                  <h5>{{ category.name }}</h5>
                                 </div>
                               </div>
                             </a>
@@ -91,6 +89,6 @@ onMounted(()=>{
 </template>
 <style scoped>
 .category-info{
-    height: 350px !important;
+    height: 250px !important;
   }
 </style>

@@ -133,6 +133,7 @@ Route::group(['prefix' => 'products'], function(){
     Route::get('{id}/view', [ProductController::class, 'viewProduct'])->name('product.view');
     Route::get('fetch', [ProductController::class, 'getProducts'])->name('products.fetch');
     Route::get('categories/{id}/fetch', [ProductController::class, 'getProductsByCategory'])->name('products.by-category');
+    Route::get('{type}/fetch', [ProductController::class, 'getProductsByType'])->name('products.by-type');
 });
 
 #subcategories
@@ -145,6 +146,20 @@ Route::group(['prefix' => 'store'], function(){
     Route::get('/', function(){
         return Inertia::render('OnlineStore/Index');
     })->name('store');
+});
+
+#cart-preview
+Route::group(['prefix' => 'cart-preview'], function(){
+    Route::get('/', function(){
+        return Inertia::render('Cart/Index');
+    })->name('cart-preview');
+});
+
+#checkout
+Route::group(['prefix' => 'checkout'], function(){
+    Route::get('/', function(){
+        return Inertia::render('Checkout/Index');
+    })->name('checkout');
 });
 
 #privacy

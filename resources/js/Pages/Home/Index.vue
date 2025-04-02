@@ -147,8 +147,8 @@ async function fetchBlogs(){
                                         <i class="fal fa-truck"></i>
                                     </div>
                                     <div class="feature-content">
-                                        <h4>Free Delivery</h4>
-                                        <p>Orders Over $120</p>
+                                        <h4>Бесплата Достава</h4>
+                                        <p>Над 2000 денари</p>
                                     </div>
                                 </div>
                             </div>
@@ -158,8 +158,8 @@ async function fetchBlogs(){
                                         <i class="fal fa-sync"></i>
                                     </div>
                                     <div class="feature-content">
-                                        <h4>Get Refund</h4>
-                                        <p>Within 30 Days Returns</p>
+                                        <h4>Враќање на производи</h4>
+                                        <p>Во рок од 15 дена</p>
                                     </div>
                                 </div>
                             </div>
@@ -169,8 +169,8 @@ async function fetchBlogs(){
                                         <i class="fal fa-wallet"></i>
                                     </div>
                                     <div class="feature-content">
-                                        <h4>Safe Payment</h4>
-                                        <p>100% Secure Payment</p>
+                                        <h4>Плаќање</h4>
+                                        <p>100% При достава</p>
                                     </div>
                                 </div>
                             </div>
@@ -180,8 +180,8 @@ async function fetchBlogs(){
                                         <i class="fal fa-headset"></i>
                                     </div>
                                     <div class="feature-content">
-                                        <h4>24/7 Support</h4>
-                                        <p>Feel Free To Call Us</p>
+                                        <h4>24/7 Подршка</h4>
+                                        <p>Слободно контакријате не</p>
                                     </div>
                                 </div>
                             </div>
@@ -200,11 +200,11 @@ async function fetchBlogs(){
                             <div class="row">
                                 <div class="col-12 wow fadeInDown" data-wow-delay=".25s">
                                     <div class="site-heading-inline">
-                                        <h2 class="site-title">Popular Items</h2>
-                                        <a href="#">All Products <i class="fas fa-angle-double-right"></i></a>
+                                        <h2 class="site-title">Популарни продукти</h2>
+                                        <a href="/store">Сите Продукти <i class="fas fa-angle-double-right"></i></a>
                                     </div>
                                     <div class="item-tab">
-                                        <ul class="nav nav-pills mt-40 mb-20" id="item-tab" role="tablist">
+                                        <ul class="nav nav-pills mt-6 mb-20" id="item-tab" role="tablist">
                                             <li class="nav-item" role="presentation">
                                                 <button class="nav-link active" id="item-tab1" data-bs-toggle="pill"
                                                     data-bs-target="#pill-item-tab1" type="button" role="tab"
@@ -1221,13 +1221,12 @@ async function fetchBlogs(){
 
 
             <!-- brand area -->
-            <div class="brand-area pt-80">
+            <div class="brand-area pt-10">
                 <div class="container">
                     <div class="row">
                         <div class="col-12">
                             <div class="site-heading-inline">
-                                <h2 class="site-title">Popular Brands</h2>
-                                <a href="#">All Brands <i class="fas fa-angle-double-right"></i></a>
+                                <h2 class="site-title">Популарни Брендови</h2>
                             </div>
                         </div>
                     </div>
@@ -1583,8 +1582,7 @@ async function fetchBlogs(){
                     <div class="row">
                         <div class="col-lg-6 mx-auto">
                             <div class="site-heading text-center">
-                                <span class="site-title-tagline">Our Gallery</span>
-                                <h2 class="site-title">Let's Check Our Photo <span>Gallery</span></h2>
+                                <h2 class="site-title">Разгледете ја нашата<span> Галерија</span></h2>
                             </div>
                         </div>
                     </div>
@@ -1769,7 +1767,7 @@ async function fetchBlogs(){
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i
-                            class="far fa-xmark"></i></button>
+                            class="fa fa-xmark"></i></button>
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
@@ -1784,9 +1782,8 @@ async function fetchBlogs(){
                                         <i class="fas fa-star"></i>
                                         <i class="fas fa-star"></i>
                                         <i class="fas fa-star"></i>
-                                        <i class="fas fa-star-half-alt"></i>
-                                        <i class="far fa-star"></i>
-                                        <span class="rating-count"> (4 Customer Reviews)</span>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
                                     </div>
                                     <div class="quickview-price">
                                         <h5><del>$860</del><span>$740</span></h5>
@@ -1798,15 +1795,7 @@ async function fetchBlogs(){
                                         <li>Code:<span>789FGDF</span></li>
                                     </ul>
                                     <div class="quickview-cart">
-                                        <a href="#" class="theme-btn">Add to cart</a>
-                                    </div>
-                                    <div class="quickview-social">
-                                        <span>Share:</span>
-                                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                        <a href="#"><i class="fab fa-x-twitter"></i></a>
-                                        <a href="#"><i class="fab fa-pinterest-p"></i></a>
-                                        <a href="#"><i class="fab fa-instagram"></i></a>
-                                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                        <a href="#" class="theme-btn">Додади во кошничка</a>
                                     </div>
                                 </div>
                             </div>

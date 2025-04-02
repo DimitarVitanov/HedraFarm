@@ -3,6 +3,9 @@ import { ref, onMounted,computed,watch, nextTick } from 'vue';
 import { usePage, Head } from '@inertiajs/vue3';
 import Header from '@/Components/Header.vue';
 import Footer from '@/Components/Footer.vue';
+import { useCart } from '@/utils/useCart';
+
+const { addToCart} = useCart()
 
 const { url, props } = usePage();
 const route = new URL(url, window.location.origin);
@@ -15,6 +18,20 @@ const selectedCategories = ref([]);
 const selectedSubcategories = ref([]);
 const currentPage = ref(1);
 const itemsPerPage = 12;
+const fireMessage = (message, success = false, reload = false) => {
+  Swal.fire({
+    position: "top",
+    toast: true,
+    icon: success ? "success" : "error",
+    title: message,
+    showConfirmButton: false,
+    timer: 1500,
+  }).then(() => {
+    if (reload) {
+      location.reload();
+    }
+  });
+};
 onMounted(async()=>{
     loading.value = true
     await fetchProducts()
@@ -128,6 +145,11 @@ const totalPages = computed(() => {
 watch(searchQuery, () => {
   currentPage.value = 1;
 });
+
+function addProduct(product){
+    addToCart(product)
+    fireMessage('Продуктот е додаден во вашата кошничка', true)
+}
 </script>
 
 <template>
@@ -167,6 +189,57 @@ watch(searchQuery, () => {
         <div class="shop-area2 py-5">
             <div class="container">
                 <div class="row g-4">
+                    <div class="col-lg-3">
+                        <div class="shop-sidebar">
+                            <div class="shop-widget">
+                                <div class="shop-search-form">
+                                    <h4 class="shop-widget-title">Пребарувач</h4>
+                                    <form action="#">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="Пребарувач" v-model="searchQuery">
+                                            <button type="search"><i class="fa fa-search"></i></button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="shop-widget d-none d-md-block">
+                                <h4 class="shop-widget-title">Категории</h4>
+                                <ul class="shop-checkbox-list" >
+                                    <li v-for="(category,index) in categories">
+                                        <div class="form-check">
+                                            <input
+                                                class="form-check-input"
+                                                type="checkbox"
+                                                :id="category.name"
+                                                :value="category.id"
+                                                v-model="selectedCategories"
+                                                >
+                                            <label class="form-check-label" for="brand1">{{category.translated}}<span>(12)</span></label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="shop-widget subcategories d-none d-md-block">
+                                <h4 class="shop-widget-title">Намена</h4>
+                                <ul class="shop-checkbox-list" >
+                                    <li v-for="(subcategory,index) in subcategories">
+                                        <div class="form-check">
+                                            <input
+                                                class="form-check-input"
+                                                type="checkbox"
+                                                :id="subcategory.name"
+                                                :value="subcategory.id"
+                                                v-model="selectedSubcategories"
+                                                >
+                                            <label class="form-check-label" for="brand1">{{subcategory.translated}}<span>(12)</span></label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
                     <div class="col-lg-9">
                         <div class="shop-item-wrap item-2">
                             <div class="row g-4">
@@ -194,7 +267,7 @@ watch(searchQuery, () => {
                                                 <div class="product-price">
                                                     <span>{{product.price}}ден</span>
                                                 </div>
-                                                <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
+                                                <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Додади во кошничка" @click="addProduct(product)">
                                                     <i class="fa fa-shopping-bag"></i>
                                                 </button>
                                             </div>
@@ -226,57 +299,6 @@ watch(searchQuery, () => {
                             </div>
                         </div>
                         <!-- pagination end -->
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="shop-sidebar">
-                            <div class="shop-widget">
-                                <div class="shop-search-form">
-                                    <h4 class="shop-widget-title">Пребарувач</h4>
-                                    <form action="#">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="Пребарувач" v-model="searchQuery">
-                                            <button type="search"><i class="fa fa-search"></i></button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="shop-widget">
-                                <h4 class="shop-widget-title">Категории</h4>
-                                <ul class="shop-checkbox-list" >
-                                    <li v-for="(category,index) in categories">
-                                        <div class="form-check">
-                                            <input
-                                                class="form-check-input"
-                                                type="checkbox"
-                                                :id="category.name"
-                                                :value="category.id"
-                                                v-model="selectedCategories"
-                                                >
-                                            <label class="form-check-label" for="brand1">{{category.translated}}<span>(12)</span></label>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="shop-widget subcategories">
-                                <h4 class="shop-widget-title">Намена</h4>
-                                <ul class="shop-checkbox-list" >
-                                    <li v-for="(subcategory,index) in subcategories">
-                                        <div class="form-check">
-                                            <input
-                                                class="form-check-input"
-                                                type="checkbox"
-                                                :id="subcategory.name"
-                                                :value="subcategory.id"
-                                                v-model="selectedSubcategories"
-                                                >
-                                            <label class="form-check-label" for="brand1">{{subcategory.translated}}<span>(12)</span></label>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-
-                        </div>
                     </div>
                 </div>
             </div>

@@ -3,6 +3,7 @@ import {ref, onMounted} from 'vue';
 import {Head} from '@inertiajs/vue3';
 import Header from '@/Components/Header.vue';
 import Footer from '@/Components/Footer.vue';
+import {useCart} from '@/utils/useCart';
 
 const props = defineProps({
     data: {
@@ -10,6 +11,23 @@ const props = defineProps({
         required: true
     },
 })
+
+const {addToCart} = useCart()
+const fireMessage = (message, success = false, reload = false) => {
+  Swal.fire({
+    position: "top",
+    toast: true,
+    icon: success ? "success" : "error",
+    title: message,
+    showConfirmButton: false,
+    timer: 1500,
+  }).then(() => {
+    if (reload) {
+      location.reload();
+    }
+  });
+};
+
 const product = ref({})
 const related_products = ref({})
 const loading = ref(false);
@@ -46,6 +64,11 @@ async function fetchProduct(id){
         console.log(error)
         return []
     }
+}
+
+const addProduct = (product) => {
+    addToCart(product)
+    fireMessage('Продуктот е додаден во вашата кошничка', true)
 }
 </script>
 
@@ -135,7 +158,7 @@ async function fetchProduct(id){
                                 <div class="row align-items-center">
                                     <div class="col-md-6 col-lg-12 col-xl-6">
                                         <div class="shop-single-btn">
-                                            <a href="#" class="theme-btn"><span class="fa fa-shopping-bag"></span>Додади во кошничка</a>
+                                            <a href="#" @click="addProduct(product)" class="theme-btn"><span class="fa fa-shopping-bag"></span>Додади во кошничка</a>
                                         </div>
                                     </div>
                                 </div>
@@ -301,7 +324,7 @@ async function fetchProduct(id){
                                             <div class="product-price">
                                                 <span>{{product.price}} ден</span>
                                             </div>
-                                            <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Додај во кошничка">
+                                            <button @click="addProduct(product)" type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Додади во кошничка">
                                                 <i class="fa fa-shopping-bag"></i>
                                             </button>
                                         </div>

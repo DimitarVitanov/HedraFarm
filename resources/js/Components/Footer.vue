@@ -77,7 +77,7 @@ async function fetchCategories(){
                         </div>
                     </div>
                     <div class="col-md-6 col-lg-2">
-                        <div class="footer-widget-box list">
+                <div class="footer-widget-box list">
                             <h4 class="footer-widget-title">Категории</h4>
                             <ul class="footer-list" v-for="(category,index) in categories">
                                 <li ><a href="shop-grid.html">{{category.translated}}</a></li>
@@ -107,16 +107,15 @@ async function fetchCategories(){
                     <div class="row">
                         <div class="col-12 col-lg-6 align-self-center">
                             <p class="copyright-text">
-                                &copy; Copyright <span id="date"></span> <a href="/"> ХЕДРАФарм+ </a> All Rights Reserved.
+                                &copy; Copyright <span id="date"></span> <a href="/"> Хедерафарм+ </a> All Rights Reserved.
                             </p>
                         </div>
                         <div class="col-12 col-lg-6 align-self-center">
                             <div class="footer-social">
-                                <span>Follow Us:</span>
+                                <span>Социјални Мрежи:</span>
                                 <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#"><i class="fab fa-x-twitter"></i></a>
+                                <a href="#"><i class="fab fa-instagram"></i></a>
                                 <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                                <a href="#"><i class="fab fa-youtube"></i></a>
                             </div>
                         </div>
                     </div>

@@ -5,62 +5,53 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Autoplay, Navigation } from "swiper/modules";
+import { useCart } from "@/utils/useCart";
+const { addToCart } = useCart()
 
 // Define product items
-const products = ref([
-  {
-    id: 1,
-    img: "/assets/img/product/01.png",
-    label: "New",
-    title: "Surgical Face Mask",
-    price: "$250.00",
-    discountPrice: null,
-  },
-  {
-    id: 2,
-    img: "/assets/img/product/02.png",
-    label: "Hot",
-    title: "Surgical Face Mask",
-    price: "$250.00",
-    discountPrice: null,
-  },
-  {
-    id: 3,
-    img: "/assets/img/product/03.png",
-    label: "Out Of Stock",
-    title: "Surgical Face Mask",
-    price: "$250.00",
-    discountPrice: null,
-  },
-  {
-    id: 4,
-    img: "/assets/img/product/04.png",
-    label: "10% Off",
-    title: "Surgical Face Mask",
-    price: "$250.00",
-    discountPrice: "$190.00",
-  },
-  {
-    id: 5,
-    img: "/assets/img/product/05.png",
-    label: "",
-    title: "Surgical Face Mask",
-    price: "$250.00",
-    discountPrice: null,
-  },
-  {
-    id: 6,
-    img: "/assets/img/product/06.png",
-    label: "",
-    title: "Surgical Face Mask",
-    price: "$250.00",
-    discountPrice: null,
-  },
-]);
+const loading = ref(false)
+const products = ref([])
+const fireMessage = (message, success = false, reload = false) => {
+  Swal.fire({
+    position: "top",
+    toast: true,
+    icon: success ? "success" : "error",
+    title: message,
+    showConfirmButton: false,
+    timer: 1500,
+  }).then(() => {
+    if (reload) {
+      location.reload();
+    }
+  });
+};
 
-onMounted(() => {
-  console.log("Product Slider Initialized");
-});
+onMounted(async()=>{
+    products.value = await fetchTrendingProducts()
+})
+
+async function fetchTrendingProducts() {
+    try {
+        loading.value = true
+    const response = await fetch('/products/trending/fetch');
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        loading.value = false
+        return data.data;
+    } catch (error) {
+        loading.value = false
+        console.error('Error fetching trending products:', error);
+        return [];
+    }
+}
+
+function addProduct(product){
+    addToCart(product)
+    fireMessage('Продуктот е додаден во вашата кошничка', true)
+}
+
 </script>
 
 <template>
@@ -74,7 +65,7 @@ onMounted(() => {
         </div>
       </div>
 
-      <div class="product-wrap item-2">
+      <div v-if="!loading" class="product-wrap item-2">
         <Swiper
           :slides-per-view="1"
           :breakpoints="{
@@ -89,19 +80,17 @@ onMounted(() => {
           class="product-slider"
         >
           <SwiperSlide v-for="product in products" :key="product.id">
-            <div class="product-item">
+            <div class="product-item bg-white  mx-2">
               <div class="product-img">
                 <span v-if="product.label" class="type">{{ product.label }}</span>
-                <a href="shop-single.html">
+                <a :href="'/products/' + product.id + '/view'">
                   <img :src="product.img" alt="Product Image" />
                 </a>
                 <div class="product-action-wrap">
                   <div class="product-action">
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" title="Quick View">
-                      <i class="far fa-eye"></i>
+                    <a :href="'/products/' + product.id + '/view'"><img :src="product.main_image" alt="">
+                    <i class="far fa-eye"></i>
                     </a>
-                    <a href="#" title="Add To Wishlist"><i class="far fa-heart"></i></a>
-                    <a href="#" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
                   </div>
                 </div>
               </div>
@@ -115,15 +104,15 @@ onMounted(() => {
                   <i class="fas fa-star"></i>
                   <i class="fas fa-star"></i>
                   <i class="fas fa-star"></i>
-                  <i class="far fa-star"></i>
+                  <i class="fas fa-star"></i>
                 </div>
 
                 <div class="product-bottom">
                   <div class="product-price">
-                    <del v-if="product.discountPrice">{{ product.price }}</del>
-                    <span>{{ product.discountPrice || product.price }}</span>
+                    <del v-if="product.disscount">{{ product.price }} ден</del>
+                    <span>{{ product.disscount || product.price }} ден</span>
                   </div>
-                  <button type="button" class="product-cart-btn" title="Add To Cart">
+                  <button type="button" @click="addProduct(product)" class="product-cart-btn" title="Додади во кошничка">
                     <i class="fa fa-shopping-bag"></i>
                   </button>
                 </div>

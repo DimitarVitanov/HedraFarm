@@ -13,10 +13,10 @@ import { createApp, h } from 'vue';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 import PrimeVue from 'primevue/config';
 
-const appName = import.meta.env.VITE_APP_NAME || 'HedraFarm';
+const appName = import.meta.env.VITE_APP_NAME || 'Хедерафарм+';
 
 createInertiaApp({
-    title: (title) => `${title} - ${appName}`,
+    title: (title) => `Хедерафарм+`,
     resolve: (name) =>
         resolvePageComponent(
             `./Pages/${name}.vue`,

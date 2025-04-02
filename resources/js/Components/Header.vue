@@ -1,10 +1,10 @@
 <script setup>
 import {onMounted, ref } from 'vue';
-
+import { useCart } from '@/utils/useCart';
 const company = ref([]);
 const showCategories = ref(false);
 const categories = ref([])
-
+const { cart, totalPrice } = useCart()
 
 onMounted(async () => {
     company.value = await fetchCompanyInfo();
@@ -175,7 +175,7 @@ const toggleCategories = () => {
                     <div class="row align-items-center justify-content-between">
                         <div class="col-5 col-lg-3 col-xl-3">
                             <div class="header-middle-logo">
-                                <a class="navbar-brand" href="index.html">
+                                <a class="navbar-brand" href="/">
                                     <img src="/assets/img/logo/logo.png" alt="logo">
                                 </a>
                             </div>
@@ -207,7 +207,7 @@ const toggleCategories = () => {
                         <div class="col-7 col-lg-3 col-xl-4">
                             <div class="header-middle-right">
                                 <ul class="header-middle-list">
-                                    <li>
+                                    <li class="d-none">
                                         <a href="#" class="list-item">
                                             <div class="list-item-icon">
                                                 <i class="far fa-user-circle"></i>
@@ -218,58 +218,30 @@ const toggleCategories = () => {
                                         </a>
                                     </li>
                                     <li class="dropdown-cart">
-                                        <a href="#" class="shop-cart list-item">
+                                        <a href="/cart-preview" class="shop-cart list-item">
                                             <div class="list-item-icon">
-                                                <i class="fa fa-shopping-bag"></i><span>5</span>
+                                                <i class="fa fa-shopping-bag"></i>
+                                                <span>{{ cart && cart.items ? cart.items.reduce((total, item) => total + item.quantity, 0) : 0 }}</span>
                                             </div>
                                             <div class="list-item-info">
-                                                <h6>350.00ден</h6>
+                                                <h6>{{totalPrice}}ден</h6>
                                                 <h5>Кошничка</h5>
                                             </div>
                                         </a>
                                         <div class="dropdown-cart-menu">
                                             <div class="dropdown-cart-header">
-                                                <span>03 Items</span>
-                                                <a href="#">View Cart</a>
+                                                <span>{{ cart && cart.items ? cart.items.reduce((total, item) => total + item.quantity, 0) : 0 }} продукти</span>                                                <a href="/cart-preview">Преглед</a>
                                             </div>
-                                            <ul class="dropdown-cart-list">
-                                                <li>
+                                            <ul class="dropdown-cart-list cart-list">
+                                                <li v-for="(item,index) in cart.items" :key="index">
                                                     <div class="dropdown-cart-item">
                                                         <div class="cart-img">
-                                                            <a href="#"><img src="/assets/img/product/01.png" alt="#"></a>
+                                                            <a href=""><img :src="item.img || item.main_image" alt="#"></a>
                                                         </div>
                                                         <div class="cart-info">
-                                                            <h4><a href="#">Surgical Face Mask</a></h4>
-                                                            <p class="cart-qty">1x - <span
-                                                                    class="cart-amount">$200.00</span></p>
-                                                        </div>
-                                                        <a href="#" class="cart-remove" title="Remove this item"><i
-                                                                class="far fa-times-circle"></i></a>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="dropdown-cart-item">
-                                                        <div class="cart-img">
-                                                            <a href="#"><img src="/assets/img/product/02.png" alt="#"></a>
-                                                        </div>
-                                                        <div class="cart-info">
-                                                            <h4><a href="#">Surgical Face Mask</a></h4>
-                                                            <p class="cart-qty">1x - <span
-                                                                    class="cart-amount">$120.00</span></p>
-                                                        </div>
-                                                        <a href="#" class="cart-remove" title="Remove this item"><i
-                                                                class="far fa-times-circle"></i></a>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="dropdown-cart-item">
-                                                        <div class="cart-img">
-                                                            <a href="#"><img src="/assets/img/product/03.png" alt="#"></a>
-                                                        </div>
-                                                        <div class="cart-info">
-                                                            <h4><a href="#">Surgical Face Mask</a></h4>
-                                                            <p class="cart-qty">1x - <span
-                                                                    class="cart-amount">$330.00</span></p>
+                                                            <h4><a href="#">{{item.title ?? item.name}}</a></h4>
+                                                            <p class="cart-qty">{{item.quantity}} X <span
+                                                                    class="cart-amount">{{item.price}}ден</span></p>
                                                         </div>
                                                         <a href="#" class="cart-remove" title="Remove this item"><i
                                                                 class="far fa-times-circle"></i></a>
@@ -281,7 +253,7 @@ const toggleCategories = () => {
                                                     <span>Total</span>
                                                     <span class="total-amount">$650.00</span>
                                                 </div>
-                                                <a href="#" class="theme-btn">Checkout</a>
+                                                <a href="/cart-preview" class="theme-btn">Вашата Кошничка</a>
                                             </div>
                                         </div>
                                     </li>
@@ -297,7 +269,7 @@ const toggleCategories = () => {
             <div class="main-navigation">
                 <nav class="navbar navbar-expand-lg">
                     <div class="container position-relative">
-                        <a class="navbar-brand" href="index.html">
+                        <a class="navbar-brand" href="/">
                             <img src="/assets/img/logo/logo.png" class="logo-scrolled" alt="logo">
                         </a>
                         <div class="category-all">
@@ -327,7 +299,7 @@ const toggleCategories = () => {
                         <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar"
                             aria-labelledby="offcanvasNavbarLabel">
                             <div class="offcanvas-header">
-                                <a href="index.html" class="offcanvas-brand" id="offcanvasNavbarLabel">
+                                <a href="/" class="offcanvas-brand" id="offcanvasNavbarLabel">
                                     <img src="/assets/img/logo/logo.png" alt="">
                                 </a>
                                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
@@ -370,5 +342,23 @@ const toggleCategories = () => {
 
 
 <style scoped>
+.cart-list{
+    max-height: 300px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #ccc transparent;
+}
+.cart-list::-webkit-scrollbar {
+    width: 5px;
+}
+
+.cart-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.cart-list::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 10px;
+}
 
 </style>

@@ -295,7 +295,8 @@ const updateProduct = async() =>{
         }
         const data = await response.json();
         if(data.success){
-            product.value = await fetchProducts()
+            products.value = await fetchProducts()
+            closeProductModal()
             fireMessage('Product updated successfully', true, false)
         }else{
             fireMessage('An error occurred while updating the product')

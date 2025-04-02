@@ -4,7 +4,8 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <title inertia>{{ config('app.name', 'HedraFarm') }}</title>
+        <title inertia>{{ config('app.name', 'Хедерафарм+') }}</title>
+        <link rel="icon" href="/assets/img/logo/logo.png">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -17,7 +18,6 @@
         <link rel="stylesheet" href="/assets/css/magnific-popup.min.css">
         <link rel="stylesheet" href="/assets/css/owl.carousel.min.css">
         <link rel="stylesheet" href="/assets/css/jquery-ui.min.css">
-        <link rel="stylesheet" href="/assets/css/nice-select.min.css">
         <link rel="stylesheet" href="/assets/css/style.css">
         <!-- Scripts -->
         <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
