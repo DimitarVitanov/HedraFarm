@@ -134,5 +134,4 @@ async function fetchSliders() {
 </template>
 
 <style scoped>
-
 </style>

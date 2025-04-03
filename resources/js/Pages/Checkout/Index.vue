@@ -3,6 +3,80 @@ import Header from '@/Components/Header.vue';
 import Footer from '@/Components/Footer.vue';
 import { Head } from '@inertiajs/vue3';
 import { ref, onMounted } from 'vue';
+import { useCart } from '@/utils/useCart';
+
+const { cart, removeFromCart, updateQuantity, totalPrice } = useCart()
+const fireMessage = (message, success = false, reload = false) => {
+  Swal.fire({
+    position: "top",
+    toast: true,
+    icon: success ? "success" : "error",
+    title: message,
+    showConfirmButton: false,
+    timer: 1500,
+  }).then(() => {
+    if (reload) {
+      location.reload();
+    }
+  });
+};
+
+const order=ref({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    address: '',
+    city: '',
+    municipality: '',
+    postalCode: '',
+    country: 'Северна Македонија',
+    additionalDescription: ''
+})
+
+const handleOrder = async() =>{
+    if(order.value.firstName === '' || order.value.lastName === '' || order.value.email === '' || order.value.phone === '' || order.value.address === '' || order.value.city === '' || order.value.municipality === '' || order.value.postalCode === ''){
+        alert('Пополнете ги сите полиња')
+        return
+    }
+
+    const formData = new FormData();
+    formData.append('firstName', order.value.firstName);
+    formData.append('lastName', order.value.lastName);
+    formData.append('email', order.value.email);
+    formData.append('phone', order.value.phone);
+    formData.append('address', order.value.address);
+    formData.append('city', order.value.city);
+    formData.append('municipality', order.value.municipality);
+    formData.append('postalCode', order.value.postalCode);
+    formData.append('country', order.value.country);
+    formData.append('additionalDescription', order.value.additionalDescription);
+    formData.append('cart', JSON.stringify(cart.value));
+    formData.append('deliveryPrice', 200);
+    formData.append('discount', 20);
+    formData.append('totalPrice', totalPrice.value + 200);
+    formData.append('paymentMethod', 'cash');
+    formData.append('status', 'pending');
+
+    const _token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    formData.append('_token', _token);
+
+    const reponse = await fetch('/api/store/make-order', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRF-TOKEN': _token,
+            'Accept': 'application/json',
+        },
+    });
+    const data = await reponse.json();
+    if(data.status === 'success'){
+        window.location.href = '/';
+    }else{
+      fireMessage('Грешка при создавање на нарачката', false, false)
+    }
+
+}
 </script>
 
 <template>
@@ -57,49 +131,49 @@ import { ref, onMounted } from 'vue';
                                                         <div class="col-lg-6">
                                                             <div class="form-group">
                                                                 <label>Име</label>
-                                                                <input type="text" class="form-control" placeholder="Име">
+                                                                <input type="text" v-model="order.firstName" class="form-control" placeholder="Име">
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <div class="form-group">
                                                                 <label>Презиме</label>
-                                                                <input type="text" class="form-control" placeholder="Презиме">
+                                                                <input type="text" v-model="order.lastName" class="form-control" placeholder="Презиме">
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <div class="form-group">
                                                                 <label>Еmail</label>
-                                                                <input type="email" class="form-control" placeholder="Email">
+                                                                <input type="email" v-model="order.email" class="form-control" placeholder="Email">
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <div class="form-group">
                                                                 <label>Телефон</label>
-                                                                <input type="text" class="form-control" placeholder="Телефон">
+                                                                <input type="text" v-model="order.phone" class="form-control" placeholder="Телефон">
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-12">
                                                             <div class="form-group">
                                                                 <label>Адреса</label>
-                                                                <input type="text" class="form-control" placeholder="Адреса">
+                                                                <input type="text" v-model="order.address" class="form-control" placeholder="Адреса">
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <div class="form-group">
                                                                 <label>Град</label>
-                                                                <input type="text" class="form-control" placeholder="Град">
+                                                                <input type="text" v-model="order.city" class="form-control" placeholder="Град">
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <div class="form-group">
                                                                 <label>Општина</label>
-                                                                <input type="text" class="form-control" placeholder="Општина">
+                                                                <input type="text" v-model="order.municipality" class="form-control" placeholder="Општина">
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <div class="form-group">
                                                                 <label>Поштенски Код</label>
-                                                                <input type="text" class="form-control" placeholder="Поштенски код">
+                                                                <input type="text" v-model="order.postalCode" class="form-control" placeholder="Поштенски код">
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-6">
@@ -111,7 +185,7 @@ import { ref, onMounted } from 'vue';
                                                         <div class="col-lg-12">
                                                             <div class="form-group">
                                                                 <label>Дополнителен Опис</label>
-                                                                <textarea cols="30" rows="4" class="form-control" placeholder="Your Message"></textarea>
+                                                                <textarea v-model="order.additionalDescription" cols="30" rows="4" class="form-control" placeholder="Your Message"></textarea>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -127,13 +201,13 @@ import { ref, onMounted } from 'vue';
                             <div class="shop-cart-summary mt-0">
                                 <h5>Вашата Кошничка</h5>
                                 <ul>
-                                    <li><strong>Вкупно</strong> <span>3000 ден</span></li>
+                                    <li><strong>Вкупно</strong> <span>{{totalPrice}}ден</span></li>
                                     <li><strong>Попуст:</strong> <span>20 ден</span></li>
-                                    <li><strong>Достава:</strong> <span>200 ден</span></li>
-                                    <li class="shop-cart-total"><strong>Вкупно:</strong> <span>2800 ден</span></li>
+                                    <li v-if="totalPrice < 2000"><strong>Достава:</strong> <span>200 ден</span></li>
+                                    <li class="shop-cart-total"><strong>Вкупно:</strong> <span>{{totalPrice + 200}}</span></li>
                                 </ul>
                                 <div class="text-end mt-40">
-                                    <a href="#" class="theme-btn">Наплати<i
+                                    <a @click="handleOrder" class="theme-btn">Наплати<i
                                     class="fas fa-arrow-right"></i></a>
                                 </div>
                             </div>

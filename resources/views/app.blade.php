@@ -16,7 +16,6 @@
         <link rel="stylesheet" href="/assets/css/all-fontawesome.min.css">
         <link rel="stylesheet" href="/assets/css/animate.min.css">
         <link rel="stylesheet" href="/assets/css/magnific-popup.min.css">
-        <link rel="stylesheet" href="/assets/css/owl.carousel.min.css">
         <link rel="stylesheet" href="/assets/css/jquery-ui.min.css">
         <link rel="stylesheet" href="/assets/css/style.css">
         <!-- Scripts -->
@@ -36,11 +35,7 @@
         <script src="/assets/js/isotope.pkgd.min.js"></script>
         <script src="/assets/js/jquery.appear.min.js"></script>
         <script src="/assets/js/jquery.easing.min.js"></script>
-        <script src="/assets/js/owl.carousel.min.js"></script>
-        <script src="/assets/js/counter-up.js"></script>
         <script src="/assets/js/jquery-ui.min.js"></script>
-        <script src="/assets/js/jquery.nice-select.min.js"></script>
-        <script src="/assets/js/countdown.min.js"></script>
         <script src="/assets/js/wow.min.js"></script>
         <script src="/assets/js/main.js"></script>
     </body>

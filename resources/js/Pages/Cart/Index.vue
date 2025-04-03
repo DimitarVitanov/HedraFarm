@@ -103,7 +103,7 @@ const { cart, removeFromCart, updateQuantity, totalPrice } = useCart()
                                         <li class="shop-cart-total"><strong>Вкупно:</strong> <span>{{totalPrice + 200}}</span></li>
                                     </ul>
                                     <div class="text-end mt-40">
-                                        <a href="#" class="theme-btn">Наплати<i
+                                        <a href="/checkout" class="theme-btn">Наплати<i
                                         class="fas fa-arrow-right"></i></a>
                                     </div>
                                 </div>

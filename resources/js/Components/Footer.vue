@@ -86,15 +86,13 @@ async function fetchCategories(){
                     </div>
                     <div class="col-md-6 col-lg-2">
                         <div class="footer-widget-box list">
-                            <h4 class="footer-widget-title">Support Center</h4>
+                            <h4 class="footer-widget-title">Центар за поддршка</h4>
                             <ul class="footer-list">
-                                <li><a href="faq.html">FAQ's</a></li>
-                                <li><a href="help.html">How To Buy</a></li>
-                                <li><a href="help.html">Support Center</a></li>
-                                <li><a href="track-order.html">Track Your Order</a></li>
-                                <li><a href="return.html">Returns Policy</a></li>
-                                <li><a href="affiliate.html">Our Affiliates</a></li>
-                                <li><a href="contact.html">Sitemap</a></li>
+                                <li><a href="faq.html">Често поставувани прашања</a></li>
+                                <li><a href="help.html">Како да направите нарачка</a></li>
+                                <li><a href="/contact">Контакт</a></li>
+                                <li><a href="/privacy">Политика на приватност</a></li>
+                                <li><a href="/delivery-policy">Политика на достава</a></li>
                             </ul>
                         </div>
                     </div>

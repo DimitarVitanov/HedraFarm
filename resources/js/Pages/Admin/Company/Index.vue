@@ -133,7 +133,7 @@ const saveCompanyInfo = async () =>{
 
     <Head title="Company" />
     <AuthenticatedLayout>
-        <div class="header">
+        <div class="header pb-10">
                     <!-- preloader -->
             <div v-if="loading" class="preloader">
                 <div class="loader-ripple">

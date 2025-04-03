@@ -14,6 +14,7 @@ class Product extends Model
         'short_description',
         'description',
         'price',
+        'disscount',
         'quantity',
         'main_image',
         'show_trending',

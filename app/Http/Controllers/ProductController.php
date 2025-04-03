@@ -22,6 +22,7 @@ class ProductController extends Controller
                 'description' => $product->description,
                 'clean_description' => Str::limit(strip_tags($product->description), 100),
                 'price' => $product->price,
+                'disscount' => $product->disscount ?? null,
                 'product_category_id' => $product->product_category_id,
                 'product_category_name' =>ClientHelper::tidyName($product->category->name),
                 'quantity' => $product->quantity,
@@ -80,6 +81,7 @@ class ProductController extends Controller
                 'description' => $product->description,
                 'clean_description' => Str::limit(strip_tags($product->description), 100),
                 'price' => $product->price,
+                'disscount' => $product->disscount ?? null,
                 'product_category_id' => $product->product_category_id,
                 'quantity' => $product->quantity,
                 'category' => $product->category->name,
@@ -108,6 +110,7 @@ class ProductController extends Controller
             'short_description' => $request->short_description,
             'description' => $request->description,
             'price' => $request->price,
+            'disscount' => $request->disscount,
             'quantity' => $request->quantity,
             'main_image' => $imagePath,
             'show_trending' => $request->show_trending == 'true' ? 1 : 0,
@@ -160,6 +163,9 @@ class ProductController extends Controller
         }
         if($request->price){
             $product->price = $request->price;
+        }
+        if($request->disscount && $request->disscount != 'null'){
+            $product->disscount = $request->disscount;
         }
         if($request->quantity){
             $product->quantity = $request->quantity;
@@ -257,7 +263,8 @@ class ProductController extends Controller
                 'img' =>  $product->main_image,
                 'title' => $product->name,
                 'price' => $product->price,
-                'disscount' => $product->discount ?? null,
+                'disscount' => $product->disscount ?? null,
+                'category_name' => $product->category->translated,
             ];
         });
 
@@ -279,6 +286,11 @@ class ProductController extends Controller
             case 'top-rated':
                 $products = Product::where('show_top_rated', 1)->where('is_active', 1)->with('category')->get();
                 break;
+            case 'popular':
+                $products = Product::where('is_active', 1)->with('category')
+                 ->orderByDesc('quantity')
+                 ->take(4)->get();
+                 break;
             default:
                 $products = Product::where('is_active', 1)->with('category')->get();
                 break;

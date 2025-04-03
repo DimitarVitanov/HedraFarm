@@ -16,6 +16,7 @@ const product = ref({
     description: '',
     quantity: '',
     price: '',
+    disscount: null,
     product_category_id: '',
     subcategories:[],
     main_image:'',
@@ -24,7 +25,7 @@ const product = ref({
     show_trending:false,
     show_on_sale: false,
     show_best_seller:false,
-    show_featured:false,
+    show_top_rated:false,
 });
 const products = ref([]);
 const loading = ref(false);
@@ -145,6 +146,7 @@ const clearForm = () =>{
         description: '',
         quantity: '',
         price: '',
+        disscount: null,
         product_category_id: '',
         main_image:'',
         gallery:[],
@@ -152,7 +154,7 @@ const clearForm = () =>{
         show_trending:false,
         show_on_sale: false,
         show_best_seller:false,
-        show_featured:false,
+        show_top_rated:false,
         show_trending:'',
         subcategories:[],
     }
@@ -215,12 +217,13 @@ const addProduct = async () => {
     formData.append("description", product.value.description);
     formData.append("quantity", product.value.quantity);
     formData.append("price", product.value.price);
+    formData.append("price", product.value.disscount);
     formData.append("product_category_id", product.value.product_category_id);
     formData.append("is_active", product.value.is_active);
     formData.append("show_trending", product.value.show_trending);
     formData.append("show_on_sale", product.value.show_on_sale);
     formData.append("show_best_seller", product.value.show_best_seller);
-    formData.append("show_featured", product.value.show_featured);
+    formData.append("show_top_rated", product.value.show_top_rated);
     formData.append("main_image", product.value.main_image);
     if (product.value.subcategories.length > 0) {
             const uniqueSubIds = [...new Set(product.value.subcategories.map(sub => typeof sub === 'object' ? sub.id : sub))];
@@ -265,12 +268,13 @@ const updateProduct = async() =>{
         formData.append('description', product.value.description)
         formData.append('quantity', product.value.quantity)
         formData.append('price', product.value.price)
+        formData.append('disscount', product.value.disscount)
         formData.append('product_category_id', product.value.product_category_id)
         formData.append('is_active', product.value.is_active)
         formData.append('show_trending', product.value.show_trending)
         formData.append('show_on_sale', product.value.show_on_sale)
         formData.append('show_best_seller', product.value.show_best_seller)
-        formData.append('show_featured', product.value.show_featured)
+        formData.append('show_top_rated', product.value.show_top_rated)
         formData.append('main_image', product.value.main_image)
         // Append multiple gallery images
         if(product.value.gallery && product.value.gallery.length > 0){
@@ -352,7 +356,7 @@ const deleteProduct = async(id, type,index) =>{
 <template>
     <Head title="Admin Products"/>
     <AuthenticatedLayout>
-        <div class="products">
+        <div class="products pb-3">
             <div class="col-12 px-6">
                 <div class="d-flex justify-content-between align-items-center">
                     <h2>Products</h2>
@@ -375,6 +379,11 @@ const deleteProduct = async(id, type,index) =>{
                             <template #body="{data}">
                                 <span>{{ data.price }} ден</span>
                             </template>
+                            </Column>
+                            <Column field="disscount" header="Disscount" sortable>
+                                <template #body="{data}">
+                                    <span v-if="data.disscount" class="text-danger">{{ data.disscount }}%</span>
+                                </template>
                             </Column>
                             <Column field="product_category_id" header="Category" sortable>
                             <template #body="{data}">
@@ -405,9 +414,9 @@ const deleteProduct = async(id, type,index) =>{
                                 </div>
                             </template>
                             </Column>
-                            <Column field="show_featured" header="Featured" sortable>
+                            <Column field="show_top_rated" header="Top Rated" sortable>
                             <template #body="{data}">
-                                <div :class="data.show_featured ? 'bg-success dot' : 'bg-danger dot'">
+                                <div :class="data.show_top_rated ? 'bg-success dot' : 'bg-danger dot'">
                                 </div>
                             </template>
                             </Column>
@@ -451,16 +460,22 @@ const deleteProduct = async(id, type,index) =>{
                 <Editor :modelValue="product.description" @update:modelValue="product.description = $event" />
             </div>
             <div class="row mt-2">
-                <div class="col-12 col-md-3">
+                <div class="col-12 col-md-2">
                     <div class="form-group mt-2">
                         <label for="quantity">Quantity</label>
                         <input type="number" class="form-control" id="quantity" v-model="product.quantity">
                     </div>
                 </div>
-                <div class="col-12 col-md-3">
+                <div class="col-12 col-md-2">
                     <div class="form-group mt-2">
                         <label for="price">Price</label>
                         <input type="number" class="form-control" id="price" v-model="product.price">
+                    </div>
+                </div>
+                <div class="col-12 col-md-2">
+                    <div class="form-group mt-2">
+                        <label for="disscount">Disscount</label>
+                        <input type="number" class="form-control" id="disscount" v-model="product.disscount">
                     </div>
                 </div>
                 <div class="col-12 col-md-3">
@@ -509,8 +524,8 @@ const deleteProduct = async(id, type,index) =>{
                     <input type="checkbox" class="form-check-input ms-2"  v-model="product.show_best_seller">
                 </div>
                 <div class="form-group col-12 col-md-2">
-                    <label for="show_featured">Featured</label>
-                    <input type="checkbox"  class="form-check-input ms-2" v-model="product.show_featured">
+                    <label for="show_top_rated">Top Rated</label>
+                    <input type="checkbox"  class="form-check-input ms-2" v-model="product.show_top_rated">
                 </div>
             </div>
 

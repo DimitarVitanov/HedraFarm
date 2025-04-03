@@ -20,6 +20,7 @@ use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductSubcategoryController;
 #blog controller
 use App\Http\Controllers\BlogController;
+#order
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -160,7 +161,13 @@ Route::group(['prefix' => 'checkout'], function(){
     Route::get('/', function(){
         return Inertia::render('Checkout/Index');
     })->name('checkout');
+    Route::get('complete', function(){
+        return Inertia::render('Checkout/Message');
+    })->name('checkout.message');
 });
+
+#order
+
 
 #privacy
 Route::group(['prefix' => 'privacy'], function(){

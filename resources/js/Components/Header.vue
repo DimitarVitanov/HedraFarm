@@ -4,7 +4,7 @@ import { useCart } from '@/utils/useCart';
 const company = ref([]);
 const showCategories = ref(false);
 const categories = ref([])
-const { cart, totalPrice } = useCart()
+const { cart, totalPrice, removeFromCart } = useCart()
 
 onMounted(async () => {
     company.value = await fetchCompanyInfo();
@@ -230,7 +230,7 @@ const toggleCategories = () => {
                                         </a>
                                         <div class="dropdown-cart-menu">
                                             <div class="dropdown-cart-header">
-                                                <span>{{ cart && cart.items ? cart.items.reduce((total, item) => total + item.quantity, 0) : 0 }} продукти</span>                                                <a href="/cart-preview">Преглед</a>
+                                                <span>{{ cart && cart.items ? cart.items.reduce((total, item) => total + item.quantity, 0) : 0 }} продукти</span>  <a href="/cart-preview">Преглед</a>
                                             </div>
                                             <ul class="dropdown-cart-list cart-list">
                                                 <li v-for="(item,index) in cart.items" :key="index">
@@ -243,7 +243,7 @@ const toggleCategories = () => {
                                                             <p class="cart-qty">{{item.quantity}} X <span
                                                                     class="cart-amount">{{item.price}}ден</span></p>
                                                         </div>
-                                                        <a href="#" class="cart-remove" title="Remove this item"><i
+                                                        <a  @click="removeFromCart(item.id)" class="cart-remove" title="Remove this item"><i
                                                                 class="far fa-times-circle"></i></a>
                                                     </div>
                                                 </li>
@@ -282,11 +282,8 @@ const toggleCategories = () => {
                         </div>
                         <div class="mobile-menu-right">
                             <div class="mobile-menu-btn">
-                                <a href="#" class="nav-right-link search-box-outer"><i class="far fa-search"></i></a>
-                                <a href="wishlist.html" class="nav-right-link"><i
-                                        class="far fa-heart"></i><span>2</span></a>
-                                <a href="shop-cart.html" class="nav-right-link"><i
-                                        class="far fa-shopping-bag"></i><span>5</span></a>
+                                <a href="/cart-preview" class="nav-right-link"><i
+                                        class="fa fa-shopping-bag"></i><span>{{cart && cart.items ? cart.items.reduce((total, item) => total + item.quantity, 0) : 0}}</span></a>
                             </div>
                             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
                                 data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar"
@@ -342,6 +339,7 @@ const toggleCategories = () => {
 
 
 <style scoped>
+
 .cart-list{
     max-height: 300px;
     overflow-y: auto;
@@ -360,5 +358,23 @@ const toggleCategories = () => {
     background-color: #ccc;
     border-radius: 10px;
 }
+.category-all {
+    position: relative;
+    z-index: 9999;
+  }
+  .category-all {
+    position: relative;
+    z-index: 100;
+  }
 
+  .main-category {
+    position: absolute;
+    top: 55px;
+    left: 0;
+    z-index: 9999;
+    background: white;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    padding: 10px;
+    border-radius: 10px;
+  }
 </style>
