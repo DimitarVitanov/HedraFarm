@@ -34,9 +34,9 @@ const order=ref({
     additionalDescription: ''
 })
 
-const handleOrder = async() =>{
-    if(order.value.firstName === '' || order.value.lastName === '' || order.value.email === '' || order.value.phone === '' || order.value.address === '' || order.value.city === '' || order.value.municipality === '' || order.value.postalCode === ''){
-        alert('Пополнете ги сите полиња')
+const createOrder = async() =>{
+    if(order.value.firstName === '' || order.value.lastName === '' || order.value.email === '' || order.value.phone === '' || order.value.address === '' || order.value.city === '' || order.value.postalCode === ''){
+        fireMessage('Пополнете ги сите полиња', false ,false)
         return
     }
 
@@ -51,7 +51,7 @@ const handleOrder = async() =>{
     formData.append('postalCode', order.value.postalCode);
     formData.append('country', order.value.country);
     formData.append('additionalDescription', order.value.additionalDescription);
-    formData.append('cart', JSON.stringify(cart.value));
+    formData.append('cart', JSON.stringify(cart));
     formData.append('deliveryPrice', 200);
     formData.append('discount', 20);
     formData.append('totalPrice', totalPrice.value + 200);
@@ -71,7 +71,7 @@ const handleOrder = async() =>{
     });
     const data = await reponse.json();
     if(data.status === 'success'){
-        window.location.href = '/';
+        window.location.href = '/checkout/' + data.data.id + '/complete';
     }else{
       fireMessage('Грешка при создавање на нарачката', false, false)
     }
@@ -207,7 +207,7 @@ const handleOrder = async() =>{
                                     <li class="shop-cart-total"><strong>Вкупно:</strong> <span>{{totalPrice + 200}}</span></li>
                                 </ul>
                                 <div class="text-end mt-40">
-                                    <a @click="handleOrder" class="theme-btn">Наплати<i
+                                    <a @click="createOrder" class="theme-btn">Наплати<i
                                     class="fas fa-arrow-right"></i></a>
                                 </div>
                             </div>

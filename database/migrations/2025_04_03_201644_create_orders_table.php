@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('phone');
             $table->string('address');
             $table->string('city');
-            $table->string('municipality');
+            $table->string('municipality')->nullable();
             $table->string('postal_code');
             $table->string('country')->default('Северна Македонија');
             $table->text('additional_description')->nullable();

@@ -20,6 +20,8 @@ use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductSubcategoryController;
 #blog controller
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\OrderController;
+
 #order
 
 Route::get('/dashboard', function () {
@@ -98,6 +100,14 @@ Route::middleware('auth')->prefix('admin')->group(function () {
         Route::post('update', [BlogController::class, 'update'])->name('blog.update');
         Route::post('delete', [BlogController::class, 'delete'])->name('blog.delete');
     });
+
+    Route::group(['prefix' => 'orders'], function(){
+        Route::get('/', function(){
+            return Inertia::render('Admin/Orders/Index');
+        })->name('admin.orders');
+        Route::get('fetch', [OrderController::class, 'getOrders'])->name('admin.orders.fetch');
+        Route::post('update', [OrderController::class, 'update'])->name('admin.orders.update');
+    });
 });
 Route::get('/product-categories/fetch', [ProductCategoryController::class, 'getCategories'])->name('admin.categories.fetch');
 
@@ -161,12 +171,15 @@ Route::group(['prefix' => 'checkout'], function(){
     Route::get('/', function(){
         return Inertia::render('Checkout/Index');
     })->name('checkout');
-    Route::get('complete', function(){
+    Route::get('{order_id}/complete', function(){
         return Inertia::render('Checkout/Message');
     })->name('checkout.message');
 });
 
 #order
+Route::group(['prefix' => 'api'], function(){
+    Route::post('store/make-order', [OrderController::class, 'store'])->name('orders.store');
+});
 
 
 #privacy
