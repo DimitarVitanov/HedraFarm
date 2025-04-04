@@ -250,8 +250,8 @@ const toggleCategories = () => {
                                             </ul>
                                             <div class="dropdown-cart-bottom">
                                                 <div class="dropdown-cart-total">
-                                                    <span>Total</span>
-                                                    <span class="total-amount">$650.00</span>
+                                                    <span>Тотал</span>
+                                                    <span class="total-amount">{{totalPrice}}</span>
                                                 </div>
                                                 <a href="/cart-preview" class="theme-btn">Вашата Кошничка</a>
                                             </div>
