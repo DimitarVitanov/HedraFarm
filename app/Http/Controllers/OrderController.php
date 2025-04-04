@@ -4,11 +4,34 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Order;
+use Illuminate\Support\Carbon;
 
 class OrderController extends Controller
 {
     public function getOrders(){
-        $orders = Order::with('items')->latest()->get();
+        $orders = Order::with('items')->latest()->get()->map(function($order){
+            return[
+                'id' => $order->id,
+                'first_name' => $order->first_name,
+                'last_name' => $order->last_name,
+                'email' => $order->email,
+                'phone' => $order->phone,
+                'address' => $order->address,
+                'city' => $order->city,
+                'municipality' => $order->municipality,
+                'postal_code' => $order->postal_code,
+                'country' => $order->country,
+                'additional_description' => $order->additional_description,
+                'payment_method' => $order->payment_method,
+                'status' => $order->status,
+                'subtotal' => $order->subtotal,
+                'discount' => $order->discount,
+                'delivery_price' => $order->delivery_price,
+                'total_price' => $order->total_price,
+                'items' => $order->items,
+                'created_at' => Carbon::parse($order->created_at)->format('Y-m-d H:i'),
+            ];
+        });
         return response()->json(['status' => 'success', 'data' => $orders]);
     }
     public function store(Request $request)

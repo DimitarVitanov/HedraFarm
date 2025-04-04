@@ -5,6 +5,7 @@ import  AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Button from 'primevue/button';
+import { data } from 'autoprefixer';
 const page = usePage();
 const logged_user = ref(page.props.user);
 
@@ -41,12 +42,12 @@ const checkPermission = ()=>{
     <Head title="Admin Orders"/>
     <AuthenticatedLayout>
         <div class="products pb-3 bg-white">
-            <div class="col-12 px-6">
+            <div class="col-12 px-6 py-5">
                 <div class="d-flex justify-content-between align-items-center">
                     <h2>Orders</h2>
                 </div>
             </div>
-            <div class="col-12 px-6">
+            <div class="col-12 px-6 py-2">
                 <DataTable :value="orders" :paginator="true" :rows="10" :loading="loading" dataKey="id">
                     <Column field="email" header="Email"></Column>
                     <Column field="phone" header="Phone"></Column>
@@ -56,14 +57,18 @@ const checkPermission = ()=>{
                     <Column field="payment_method" header="Payment Method"></Column>
                     <Column field="delivery_price" header="Delivery Price"></Column>
                     <Column field="total_price" header="Total"></Column>
-                    <Column field="status" header="Status"></Column>
+                    <Column field="status" header="Status">
+                    <template #body="{ data }">
+                        <span v-if="data.status == 'completed'" class="badge badge-success">completed</span>
+                        <span v-if="data.status == 'pending'" class="badge badge-danger d-flex align-items-center justify-content-center pb-2">{{data.status}}</span>
+                    </template>
+                    </Column>
                     <Column field="created_at" header="Created At"></Column>
                     <Column field="actions" header="Actions">
                         <template #body="{ data }">
                             <Button><i class="fa fa-check"></i></Button>
                             <Button class="bg-danger ml-2"><i class="fa fa-cancel"></i></Button>
                             <Button class="bg-danger ml-2"><i class="fa fa-trash"></i></Button>
-
                         </template>
                     </Column>
                 </DataTable>
@@ -77,5 +82,11 @@ const checkPermission = ()=>{
 
 
 <style scoped>
-
+.badge-danger{
+    background-color: red;
+    color: white;
+    font-size: 0.75rem;
+    padding: 0.4em 0.6em;
+    border-radius: 0.5rem;
+}
 </style>
