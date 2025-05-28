@@ -103,12 +103,14 @@ async function fetchSliders() {
                               {{ slide.description }}
                             </p>
                             <div class="hero-btn" data-animation="fadeInUp">
-                              <a href="shop-grid.html" class="theme-btn">
+                              <a href="/store" class="theme-btn">
                                Онлине Продавница <i class="fas fa-arrow-right"></i>
                               </a>
-                              <a href="about.html" class="theme-btn theme-btn2">
+                              <!--
+                              <a href="/products" class="theme-btn theme-btn2">
                                 Дознај Повеќе <i class="fas fa-arrow-right"></i>
                               </a>
+                            -->
                             </div>
                           </div>
                         </div>

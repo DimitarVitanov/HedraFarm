@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use Illuminate\Support\Carbon;
+use App\Mail\OrderMail;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
@@ -69,5 +71,24 @@ class OrderController extends Controller
         }
 
         return response()->json(['status' => 'success', 'data' => $order, 'message' => 'Order created successfully.']);
+    }
+
+    public function approveOrder(Request $request)
+    {
+        $order = Order::with('items')->whereId($request->order_id)->first();
+        if ($order) {
+            //$order->update(['status' => 'completed']);
+            Mail::to($order->email)->send(new OrderMail([
+                'subject' => 'Ваша нарачка е одобрена!',
+                'title' => 'Нарачка одобрена!',
+                'message' => 'Ваша нарачка е одобрена и ќе биде испратена во најскоро време. <br> Ви благодариме!',
+                'button_url' => 'https://hederafarmplus.mk',
+                'button_text' => 'Посетете ја нашата веб страна',
+                'order' => $order
+            ]));
+
+            return response()->json(['status' => 'success', 'message' => 'Order approved successfully.']);
+        }
+        return response()->json(['status' => 'error', 'message' => 'Order not found.']);
     }
 }

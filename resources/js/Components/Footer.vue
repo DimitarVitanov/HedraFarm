@@ -112,7 +112,7 @@ async function fetchCategories(){
                             <div class="footer-social">
                                 <span>Социјални Мрежи:</span>
                                 <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#"><i class="fab fa-instagram"></i></a>
+                                <a href="https://www.instagram.com/hederafarmplus/"><i class="fab fa-instagram"></i></a>
                                 <a href="#"><i class="fab fa-linkedin-in"></i></a>
                             </div>
                         </div>

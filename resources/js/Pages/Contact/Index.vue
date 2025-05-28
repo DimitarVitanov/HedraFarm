@@ -6,11 +6,64 @@ import NewsLetter from '@/Components/NewsLetter.vue';
 
 const company = ref([])
 const loading = ref(false)
+
+const contact_form = ref({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+})
+const fireMessage = (message, success = false, reload = false) => {
+  Swal.fire({
+    position: "top",
+    toast: true,
+    icon: success ? "success" : "error",
+    title: message,
+    showConfirmButton: false,
+    timer: 1500,
+  }).then(() => {
+    if (reload) {
+      location.reload();
+    }
+  });
+};
 onMounted(async()=> {
     loading.value = true
     company.value = await fetchCompanyInfo()
     loading.value = false
 })
+
+const sendContantEmail =async () =>{
+        try{
+            const formData = new FormData();
+            formData.append('name', contact_form.value.name);
+            formData.append('email', contact_form.value.email);
+            formData.append('subject', contact_form.value.subject);
+            formData.append('message', contact_form.value.message);
+            const _token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            formData.append('_token', _token);
+            const response = await fetch('/contact/support/send-email',{
+                method:'POST',
+                body: formData
+            })
+            if(!response.ok){
+                throw new Error('An error occurred while sending the email')
+            }
+            const data = await response.json()
+            if(data.status == 'success'){
+                fireMessage(data.message, true, true)
+                contact_form.value.name = ''
+                contact_form.value.email = ''
+                contact_form.value.subject = ''
+                contact_form.value.message = ''
+            }else{
+                fireMessage(data.message, false, true)
+            }
+        }
+        catch(error){
+            console.log(error)
+        }
+}
 
 async function fetchCompanyInfo(){
     try{
@@ -135,26 +188,26 @@ async function fetchCompanyInfo(){
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <input type="text" class="form-control" name="name"
+                                            <input v-model="contact_form.first_name" type="text" class="form-control" name="name"
                                                 placeholder="Вашето име" required>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <input type="email" class="form-control" name="email"
+                                            <input v-model="contact_form.last_name" type="email" class="form-control" name="email"
                                                 placeholder="Вашето Презиме" required>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control" name="subject"
-                                        placeholder="Предмент" required>
+                                    <input type="text" v-model="contact_form.subject" class="form-control" name="subject"
+                                        placeholder="Предмет" required>
                                 </div>
                                 <div class="form-group">
-                                    <textarea name="message" cols="30" rows="4" class="form-control"
+                                    <textarea v-model="contact_form.message" name="message" cols="30" rows="4" class="form-control"
                                         placeholder="Напишете ја вашата порака" required></textarea>
                                 </div>
-                                <button type="submit" class="theme-btn">Испрати
+                                <button @click="sendContantEmail()" class="theme-btn">Испрати
                                     Порака <i class="far fa-paper-plane"></i></button>
                             </form>
                         </div>

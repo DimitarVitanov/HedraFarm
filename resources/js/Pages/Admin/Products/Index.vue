@@ -217,7 +217,7 @@ const addProduct = async () => {
     formData.append("description", product.value.description);
     formData.append("quantity", product.value.quantity);
     formData.append("price", product.value.price);
-    formData.append("price", product.value.disscount);
+    formData.append("disccount", product.value.disscount);
     formData.append("product_category_id", product.value.product_category_id);
     formData.append("is_active", product.value.is_active);
     formData.append("show_trending", product.value.show_trending);

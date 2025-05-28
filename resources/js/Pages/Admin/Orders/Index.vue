@@ -10,7 +10,20 @@ const page = usePage();
 const logged_user = ref(page.props.user);
 
 const orders = ref([])
-
+const fireMessage = (message, success = false, reload = false) => {
+  Swal.fire({
+    position: "top",
+    toast: true,
+    icon: success ? "success" : "error",
+    title: message,
+    showConfirmButton: false,
+    timer: 1500,
+  }).then(() => {
+    if (reload) {
+      location.reload();
+    }
+  });
+};
 onMounted(async()=>{
     checkPermission();
     orders.value = await fetchOrders();
@@ -26,6 +39,32 @@ async function fetchOrders() {
         return [];
     }
     return data.data;
+}
+
+const approveOrder = async (order)=>{
+    try{
+        const formData = new FormData();
+        formData.append('order_id', order.id);
+        formData.append('status', 'completed');
+        const _token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        formData.append('_token', _token);
+        const reponse = await fetch('/admin/orders/approve',{
+            method:'POST',
+            body: formData
+        })
+        if (!reponse.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await reponse.json();
+        if(data.status == 'success'){
+            fireMessage('Order approved successfully', true, true);
+        }else{
+            fireMessage('Error occurred while trying to approve order', true, true);
+
+        }
+    }catch(error){
+        console.error('Error approving order:', error);
+    }
 }
 const checkPermission = ()=>{
     if (!logged_user.value || !logged_user.value.team_id) {
@@ -66,7 +105,7 @@ const checkPermission = ()=>{
                     <Column field="created_at" header="Created At"></Column>
                     <Column field="actions" header="Actions">
                         <template #body="{ data }">
-                            <Button><i class="fa fa-check"></i></Button>
+                            <Button @click="approveOrder(data)"><i class="fa fa-check"></i></Button>
                             <Button class="bg-danger ml-2"><i class="fa fa-cancel"></i></Button>
                             <Button class="bg-danger ml-2"><i class="fa fa-trash"></i></Button>
                         </template>
@@ -78,8 +117,6 @@ const checkPermission = ()=>{
     </AuthenticatedLayout>
 
 </template>
-
-
 
 <style scoped>
 .badge-danger{

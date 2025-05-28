@@ -111,8 +111,8 @@ const addProduct = (product) => {
                                     <del v-if="product.disscount">{{product.disscount}}%</del><span>{{product.price - (product.price * (product.disscount / 100))}}ден</span>
                                 </div>
                             </div>
-                            <a href="#" class="product-list-btn" data-bs-placement="left" data-tooltip="tooltip"
-                                title="Додади во кошничка"><i class="fa fa-shopping-bag"></i></a>
+                            <button href="#" class="product-list-btn" data-bs-placement="left" data-tooltip="tooltip"
+                                title="Додади во кошничка"><i class="fa fa-shopping-bag"></i></button>
                         </div>
                     </div>
                 </div>
@@ -136,8 +136,8 @@ const addProduct = (product) => {
                                     <del v-if="product.disscount">{{product.disscount}}%</del><span>{{product.price - (product.price * (product.disscount / 100))}}ден</span>
                                 </div>
                             </div>
-                            <a @click="addProduct(product)" class="product-list-btn" data-bs-placement="left" data-tooltip="tooltip"
-                                title="Додади во кошничка"><i class="fa fa-shopping-bag"></i></a>
+                            <button @click="addProduct(product)" class="product-list-btn" data-bs-placement="left" data-tooltip="tooltip"
+                                title="Додади во кошничка"><i class="fa fa-shopping-bag"></i></button>
                         </div>
                     </div>
                 </div>
@@ -161,8 +161,8 @@ const addProduct = (product) => {
                                     <del v-if="product.disscount">{{product.disscount}}%</del><span>{{product.price - (product.price * (product.disscount / 100))}}ден</span>
                                 </div>
                             </div>
-                            <a @click="addProduct(product)" class="product-list-btn" data-bs-placement="left" data-tooltip="tooltip"
-                                title="Додади во кошничка"><i class="fa fa-shopping-bag"></i></a>
+                            <button @click="addProduct(product)" class="product-list-btn" data-bs-placement="left" data-tooltip="tooltip"
+                                title="Додади во кошничка"><i class="fa fa-shopping-bag"></i></button>
                         </div>
                     </div>
                 </div>

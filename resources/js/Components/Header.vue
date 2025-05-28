@@ -156,7 +156,7 @@ const toggleCategories = () => {
                                             <div class="header-top-social">
                                                 <span>Социјални мрежи: </span>
                                                 <a href="#"><i class="fab fa-facebook"></i></a>
-                                                <a href="#"><i class="fab fa-instagram"></i></a>
+                                                <a href="https://www.instagram.com/hederafarmplus/"><i class="fab fa-instagram"></i></a>
                                                 <a href="#"><i class="fab fa-linkedin"></i></a>
                                             </div>
                                         </li>

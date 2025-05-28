@@ -20,6 +20,7 @@ use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductSubcategoryController;
 #blog controller
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\OrderController;
 
 #order
@@ -107,6 +108,7 @@ Route::middleware('auth')->prefix('admin')->group(function () {
         })->name('admin.orders');
         Route::get('fetch', [OrderController::class, 'getOrders'])->name('admin.orders.fetch');
         Route::post('update', [OrderController::class, 'update'])->name('admin.orders.update');
+        Route::post('approve', [OrderController::class, 'approveOrder'])->name('admin.orders.approve');
     });
 });
 Route::get('/product-categories/fetch', [ProductCategoryController::class, 'getCategories'])->name('admin.categories.fetch');
@@ -194,6 +196,11 @@ Route::group(['prefix' => 'delivery-policy'], function(){
     Route::get('/', function(){
         return Inertia::render('Delivery/Index');
     })->name('delivery-policy');
+});
+
+#mail
+Route::group(['prefix' => 'contact'], function(){
+    Route::post('support/send-email', [MailController::class, 'sendEmail'])->name('contact.send-email');
 });
 
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])

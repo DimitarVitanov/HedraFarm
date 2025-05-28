@@ -14,6 +14,11 @@ class ProductSubcategorySeeder extends Seeder
     {
         DB::table('product_subcategories')->insert([
             [
+                'name' => 'pain',
+                'translated' => 'Болка',
+                'product_category_id' => 1,
+            ],
+            [
             'name' => 'cold',
             'translated' => 'Настинка',
             'product_category_id' => 1,
@@ -28,6 +33,7 @@ class ProductSubcategorySeeder extends Seeder
                 'translated' => 'Кашлица',
                 'product_category_id' => 1,
             ],
+
             [
                 'name' => 'sore_throat',
                 'translated' => 'Болно грло',
@@ -298,6 +304,7 @@ class ProductSubcategorySeeder extends Seeder
                 'translated' => 'Стерилизатори',
                 'product_category_id' => 10,
             ]
+
     ]);
     }
 }
