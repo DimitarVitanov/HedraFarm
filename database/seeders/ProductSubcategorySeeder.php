@@ -305,6 +305,7 @@ class ProductSubcategorySeeder extends Seeder
                 'product_category_id' => 10,
             ]
 
+
     ]);
     }
 }
