@@ -20,7 +20,11 @@ use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductSubcategoryController;
 #blog controller
 use App\Http\Controllers\BlogController;
+#mail controller
 use App\Http\Controllers\MailController;
+#newsletter controller
+use App\Http\Controllers\NewsLetterController;
+#order controller
 use App\Http\Controllers\OrderController;
 
 #order
@@ -199,6 +203,11 @@ Route::group(['prefix' => 'delivery-policy'], function(){
         return Inertia::render('Delivery/Index');
     })->name('delivery-policy');
 });
+
+#newsletter
+Route::post('newsletter/send-email', [NewsLetterController::class, 'sendNewsletterEmail'])->name('newsletter.send-email');
+Route::get('/api/news/unsubscribe/{email}', [NewsLetterController::class, 'unsubscribe'])->name('newsletter.unsubscribe');
+
 
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])
     ->name('login');
