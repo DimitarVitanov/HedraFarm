@@ -51,13 +51,13 @@ const sendContantEmail =async () =>{
             }
             const data = await response.json()
             if(data.status == 'success'){
-                fireMessage(data.message, true, true)
+                fireMessage(data.message, true, false)
                 contact_form.value.name = ''
                 contact_form.value.email = ''
                 contact_form.value.subject = ''
                 contact_form.value.message = ''
             }else{
-                fireMessage(data.message, false, true)
+                fireMessage(data.message, false, false)
             }
         }
         catch(error){
@@ -184,18 +184,18 @@ async function fetchCompanyInfo(){
                                 <p> За било каква информациа, слободно пополнета ја нашата контакт форма. </p>
                             </div>
                             <div class="form-message"></div>
-                            <form method="post" action="/medica/assets/php/contact.php" id="contact-form">
+                            <form id="contact-form">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <input v-model="contact_form.first_name" type="text" class="form-control" name="name"
+                                            <input v-model="contact_form.name" type="text" class="form-control" name="name"
                                                 placeholder="Вашето име" required>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <input v-model="contact_form.last_name" type="email" class="form-control" name="email"
-                                                placeholder="Вашето Презиме" required>
+                                            <input v-model="contact_form.email" type="email" class="form-control" name="email"
+                                                placeholder="Вашиот Е-маил" required>
                                         </div>
                                     </div>
                                 </div>

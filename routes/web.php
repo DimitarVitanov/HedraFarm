@@ -113,7 +113,6 @@ Route::middleware('auth')->prefix('admin')->group(function () {
 });
 Route::get('/product-categories/fetch', [ProductCategoryController::class, 'getCategories'])->name('admin.categories.fetch');
 
-
 #company
 Route::group(['prefix' => 'company'], function(){
     Route::get('fetch', [CompanyInfoController::class, 'getCompanyInfo'])->name('company.fetch');
@@ -132,6 +131,9 @@ Route::get('contact', function(){
     return Inertia::render('Contact/Index');
 })->name('contact');
 
+Route::group(['prefix' => 'contact'], function(){
+    Route::post('support/send-email', [MailController::class, 'sendSupportEmail'])->name('contact.send-email');
+});
 #blog
 Route::group(['prefix' => 'blogs'], function(){
     Route::get('/', function(){
@@ -196,11 +198,6 @@ Route::group(['prefix' => 'delivery-policy'], function(){
     Route::get('/', function(){
         return Inertia::render('Delivery/Index');
     })->name('delivery-policy');
-});
-
-#mail
-Route::group(['prefix' => 'contact'], function(){
-    Route::post('support/send-email', [MailController::class, 'sendEmail'])->name('contact.send-email');
 });
 
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])

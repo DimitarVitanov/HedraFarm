@@ -304,8 +304,6 @@ class ProductSubcategorySeeder extends Seeder
                 'translated' => 'Стерилизатори',
                 'product_category_id' => 10,
             ]
-
-
     ]);
     }
 }
