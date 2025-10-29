@@ -75,7 +75,7 @@ const addProduct = (product) => {
 <template>
 <Head title="Single Product" />
     <!-- preloader -->
-    <div class="preloader">
+    <div v-if="loading" class="preloader">
         <div class="loader-ripple">
             <div></div>
             <div></div>

@@ -97,7 +97,7 @@ function addProduct(product){
 
               <div class="product-content">
                 <h3 class="product-title">
-                  <a href="shop-single.html">{{ product.title }}</a>
+                  <a :href="'/products/' + product.id + '/view'">{{ product.title }}</a>
                 </h3>
                 <div class="product-rate">
                   <i class="fas fa-star"></i>

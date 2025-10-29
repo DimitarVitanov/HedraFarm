@@ -59,11 +59,37 @@ const approveOrder = async (order)=>{
         if(data.status == 'success'){
             fireMessage('Order approved successfully', true, true);
         }else{
-            fireMessage('Error occurred while trying to approve order', true, true);
+            fireMessage(data.message || 'Error occurred while trying to approve order', false, false);
 
         }
     }catch(error){
         console.error('Error approving order:', error);
+        fireMessage('Error occurred while trying to approve order', false, false);
+    }
+}
+
+const cancelOrder = async (order)=>{
+    try{
+        const formData = new FormData();
+        formData.append('order_id', order.id);
+        const _token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        formData.append('_token', _token);
+        const reponse = await fetch('/admin/orders/cancel',{
+            method:'POST',
+            body: formData
+        })
+        if (!reponse.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await reponse.json();
+        if(data.status == 'success'){
+            fireMessage('Order cancelled successfully', true, true);
+        }else{
+            fireMessage(data.message || 'Error occurred while trying to cancel order', false, false);
+        }
+    }catch(error){
+        console.error('Error cancelling order:', error);
+        fireMessage('Error occurred while trying to cancel order', false, false);
     }
 }
 const checkPermission = ()=>{
@@ -99,15 +125,15 @@ const checkPermission = ()=>{
                     <Column field="status" header="Status">
                     <template #body="{ data }">
                         <span v-if="data.status == 'completed'" class="badge badge-success">completed</span>
-                        <span v-if="data.status == 'pending'" class="badge badge-danger d-flex align-items-center justify-content-center pb-2">{{data.status}}</span>
+                        <span v-if="data.status == 'pending'" class="badge badge-warning d-flex align-items-center justify-content-center pb-2">{{data.status}}</span>
+                        <span v-if="data.status == 'cancelled'" class="badge badge-danger d-flex align-items-center justify-content-center pb-2">{{data.status}}</span>
                     </template>
                     </Column>
                     <Column field="created_at" header="Created At"></Column>
                     <Column field="actions" header="Actions">
                         <template #body="{ data }">
-                            <Button @click="approveOrder(data)"><i class="fa fa-check"></i></Button>
-                            <Button class="bg-danger ml-2"><i class="fa fa-cancel"></i></Button>
-                            <Button class="bg-danger ml-2"><i class="fa fa-trash"></i></Button>
+                            <Button v-if="data.status === 'pending'" @click="approveOrder(data)" class="mr-2" title="Approve Order"><i class="fa fa-check"></i></Button>
+                            <Button v-if="data.status !== 'cancelled'" @click="cancelOrder(data)" class="bg-danger mr-2" title="Cancel Order"><i class="fa fa-times"></i></Button>
                         </template>
                     </Column>
                 </DataTable>
@@ -120,10 +146,34 @@ const checkPermission = ()=>{
 
 <style scoped>
 .badge-danger{
-    background-color: red;
+    background-color: #dc3545;
     color: white;
     font-size: 0.75rem;
     padding: 0.4em 0.6em;
     border-radius: 0.5rem;
+}
+
+.badge-warning{
+    background-color: #ffc107;
+    color: #212529;
+    font-size: 0.75rem;
+    padding: 0.4em 0.6em;
+    border-radius: 0.5rem;
+}
+
+.badge-success{
+    background-color: #28a745;
+    color: white;
+    font-size: 0.75rem;
+    padding: 0.4em 0.6em;
+    border-radius: 0.5rem;
+}
+
+.mr-2{
+    margin-right: 0.5rem;
+}
+
+.bg-danger{
+    background-color: #dc3545 !important;
 }
 </style>

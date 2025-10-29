@@ -17,6 +17,8 @@ class UserSeeder extends Seeder
             'email' => 'vitanov1@yahoo.com',
             'email_verified_at' => now(),
             'password' => Hash::make('_admin123'),
+            'team_id' => '1',
+            'is_active' => true,
         ]);
     }
 }

@@ -36,6 +36,7 @@
         "@vueup/vue-quill": "^1.2.0",
         "@vueuse/core": "^12.7.0",
         "bootstrap": "^5.3.3",
+        "chart.js": "^4.5.1",
         "floating-vue": "^5.2.2",
         "primeflex": "^4.0.0",
         "primeicons": "^7.0.0",

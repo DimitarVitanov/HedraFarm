@@ -1,13 +1,18 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
 
 const showingNavigationDropdown = ref(false);
+const page = usePage();
+
+const isAdmin = computed(() => {
+    return page.props.auth.user?.team_id == '1' || page.props.auth.user?.team_id == 1;
+});
 </script>
 
 <template>
@@ -36,54 +41,64 @@ const showingNavigationDropdown = ref(false);
                                 <NavLink
                                     :href="route('dashboard')"
                                     :active="route().current('dashboard')"
+                                    class="relative"
                                 >
-                                    Dashboard
+                                    <span class="flex items-center">
+                                        Dashboard
+                                        <span v-if="isAdmin" class="ml-2 px-2 py-1 bg-blue-500 text-white text-xs rounded-full">
+                                            Admin
+                                        </span>
+                                    </span>
                                 </NavLink>
-                                <!--
-                                <NavLink
-                                    :href="route('home')"
-                                    :active="route().current('home')"
-                                >
-                                    Home
-                                </NavLink>
-                            -->
-                                <NavLink
-                                    :href="route('admin.company')"
-                                    :active="route().current('admin.company')"
-                                >
-                                    Company
-                                </NavLink>
-                                <NavLink
-                                :href="route('admin.users')"
-                                :active="route().current('admin.users')"
-                            >
-                                Users
+                                <!-- Admin Navigation Links -->
+                                <template v-if="isAdmin">
+                                    <NavLink
+                                        :href="route('admin.company')"
+                                        :active="route().current('admin.company')"
+                                    >
+                                        Company
                                     </NavLink>
                                     <NavLink
-                                    :href="route('admin.blog')"
-                                    :active="route().current('admin.blog')"
+                                        :href="route('admin.users')"
+                                        :active="route().current('admin.users')"
                                     >
-                                    Blog
-                                </NavLink>
+                                        Users
+                                    </NavLink>
+                                    <NavLink
+                                        :href="route('admin.blog')"
+                                        :active="route().current('admin.blog')"
+                                    >
+                                        Blog
+                                    </NavLink>
+                                    <NavLink
+                                        :href="route('admin.slider')"
+                                        :active="route().current('admin.slider')"
+                                    >
+                                        Slider
+                                    </NavLink>
+                                    <NavLink
+                                        :href="route('admin.products')"
+                                        :active="route().current('admin.products')"
+                                    >
+                                        Products
+                                    </NavLink>
+                                    <NavLink
+                                        :href="route('admin.orders')"
+                                        :active="route().current('admin.orders')"
+                                    >
+                                        Orders
+                                    </NavLink>
+                                </template>
 
-                                <NavLink
-                                :href="route('admin.slider')"
-                                :active="route().current('admin.slider')"
-                            >
-                                Slider
-                            </NavLink>
-                            <NavLink
-                            :href="route('admin.products')"
-                            :active="route().current('admin.products')"
-                            >
-                                Products
-                            </NavLink>
-                            <NavLink
-                            :href="route('admin.orders')"
-                            :active="route().current('admin.orders')"
-                            >
-                                Orders
-                            </NavLink>
+                                <!-- Regular User Navigation -->
+                                <template v-else>
+                                    <NavLink
+                                        :href="route('home')"
+                                        :active="route().current('home')"
+                                    >
+                                        Home
+                                    </NavLink>
+                                </template>
 
                             </div>
                         </div>

@@ -82,14 +82,14 @@ const addPorduct = (product) => {
                                         <a :href="'/products/' + product.id + '/view'"><img :src="product.img" alt=""></a>
                                         <div class="product-action-wrap">
                                             <div class="product-action">
-                                                <a :href="'/products/' + product.id + '/view'" data-bs-toggle="modal" data-bs-target="#quickview"
+                                                <a :href="'/products/' + product.id + '/view'"
                                                     data-bs-placement="top" data-tooltip="tooltip"
                                                     title="Отвори"><i class="far fa-eye"></i></a>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="product-content">
-                                        <h3 class="product-title"><a :href="'/products' + product.id + '/view'">{{product.title}}</a></h3>
+                                        <h3 class="product-title"><a :href="'/products/' + product.id + '/view'">{{product.title}}</a></h3>
                                         <div class="product-rate">
                                             <i class="fas fa-star"></i>
                                             <i class="fas fa-star"></i>

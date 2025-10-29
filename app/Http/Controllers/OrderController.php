@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Support\Carbon;
 use App\Mail\OrderMail;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -75,9 +77,42 @@ class OrderController extends Controller
 
     public function approveOrder(Request $request)
     {
-        $order = Order::with('items')->whereId($request->order_id)->first();
-        if ($order) {
-            //$order->update(['status' => 'completed']);
+        $order = Order::with('items.product')->whereId($request->order_id)->first();
+        if (!$order) {
+            return response()->json(['status' => 'error', 'message' => 'Order not found.']);
+        }
+
+        // Check if order is already approved
+        if ($order->status === 'completed') {
+            return response()->json(['status' => 'error', 'message' => 'Order is already approved.']);
+        }
+
+        try {
+            DB::transaction(function () use ($order) {
+                // Validate stock availability for all items before proceeding
+                foreach ($order->items as $item) {
+                    if (!$item->product) {
+                        throw new \Exception("Product not found for order item: {$item->title}");
+                    }
+                    
+                    // Refresh product data to get latest quantity
+                    $item->product->refresh();
+                    
+                    if ($item->product->quantity < $item->quantity) {
+                        throw new \Exception("Insufficient stock for product: {$item->title}. Available: {$item->product->quantity}, Required: {$item->quantity}");
+                    }
+                }
+
+                // Deduct quantities from products
+                foreach ($order->items as $item) {
+                    $item->product->decrement('quantity', $item->quantity);
+                }
+
+                // Update order status to completed
+                $order->update(['status' => 'completed']);
+            });
+
+            // Send approval email (outside transaction to avoid rollback on email failures)
             Mail::to($order->email)->send(new OrderMail([
                 'subject' => 'Ваша нарачка е одобрена!',
                 'title' => 'Нарачка одобрена!',
@@ -87,8 +122,44 @@ class OrderController extends Controller
                 'order' => $order
             ]));
 
-            return response()->json(['status' => 'success', 'message' => 'Order approved successfully.']);
+            return response()->json(['status' => 'success', 'message' => 'Order approved successfully and product quantities updated.']);
+
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }
-        return response()->json(['status' => 'error', 'message' => 'Order not found.']);
+    }
+
+    public function cancelOrder(Request $request)
+    {
+        $order = Order::with('items.product')->whereId($request->order_id)->first();
+        if (!$order) {
+            return response()->json(['status' => 'error', 'message' => 'Order not found.']);
+        }
+
+        // Check if order is already cancelled
+        if ($order->status === 'cancelled') {
+            return response()->json(['status' => 'error', 'message' => 'Order is already cancelled.']);
+        }
+
+        try {
+            DB::transaction(function () use ($order) {
+                // If the order was completed, restore the product quantities
+                if ($order->status === 'completed') {
+                    foreach ($order->items as $item) {
+                        if ($item->product) {
+                            $item->product->increment('quantity', $item->quantity);
+                        }
+                    }
+                }
+
+                // Update order status to cancelled
+                $order->update(['status' => 'cancelled']);
+            });
+
+            return response()->json(['status' => 'success', 'message' => 'Order cancelled successfully. Product quantities have been restored if applicable.']);
+
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+        }
     }
 }

@@ -26,14 +26,17 @@ use App\Http\Controllers\MailController;
 use App\Http\Controllers\NewsLetterController;
 #order controller
 use App\Http\Controllers\OrderController;
+#dashboard controller
+use App\Http\Controllers\DashboardController;
 
 #order
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/dashboard/settings', [DashboardController::class, 'getDashboardSettings'])->name('dashboard.settings');
+    Route::post('/dashboard/settings', [DashboardController::class, 'updateDashboardSettings'])->name('dashboard.settings.update');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -113,6 +116,7 @@ Route::middleware('auth')->prefix('admin')->group(function () {
         Route::get('fetch', [OrderController::class, 'getOrders'])->name('admin.orders.fetch');
         Route::post('update', [OrderController::class, 'update'])->name('admin.orders.update');
         Route::post('approve', [OrderController::class, 'approveOrder'])->name('admin.orders.approve');
+        Route::post('cancel', [OrderController::class, 'cancelOrder'])->name('admin.orders.cancel');
     });
 });
 Route::get('/product-categories/fetch', [ProductCategoryController::class, 'getCategories'])->name('admin.categories.fetch');
