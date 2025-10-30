@@ -94,10 +94,10 @@ class OrderController extends Controller
                     if (!$item->product) {
                         throw new \Exception("Product not found for order item: {$item->title}");
                     }
-                    
+
                     // Refresh product data to get latest quantity
                     $item->product->refresh();
-                    
+
                     if ($item->product->quantity < $item->quantity) {
                         throw new \Exception("Insufficient stock for product: {$item->title}. Available: {$item->product->quantity}, Required: {$item->quantity}");
                     }
@@ -115,7 +115,7 @@ class OrderController extends Controller
             // Send approval email (outside transaction to avoid rollback on email failures)
             Mail::to($order->email)->send(new OrderMail([
                 'subject' => 'Ваша нарачка е одобрена!',
-                'title' => 'Нарачка одобрена!',
+                'title' => 'Вашата нарачка е одобрена!',
                 'message' => 'Ваша нарачка е одобрена и ќе биде испратена во најскоро време. <br> Ви благодариме!',
                 'button_url' => 'https://hederafarmplus.mk',
                 'button_text' => 'Посетете ја нашата веб страна',
