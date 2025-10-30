@@ -266,7 +266,7 @@ async function fetchBlogs(){
             <ProductList/>
 
             <!-- gallery-area -->
-            <div class="gallery-area  py-100">
+            <div class="gallery-area  py-100 d-none">
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-6 mx-auto">
