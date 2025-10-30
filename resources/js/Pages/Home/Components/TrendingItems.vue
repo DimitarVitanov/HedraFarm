@@ -110,7 +110,7 @@ function addProduct(product){
                 <div class="product-bottom">
                   <div class="product-price">
                     <del v-if="product.disscount">{{ product.price }} ден</del>
-                    <span>{{ product.disscount || product.price }} ден</span>
+                    <span>{{product.disscount ? (product.price - (product.price * product.disscount / 100)).toFixed(2) : product.price}} ден</span>
                   </div>
                   <button type="button" @click="addProduct(product)" class="product-cart-btn" title="Додади во кошничка">
                     <i class="fa fa-shopping-bag"></i>

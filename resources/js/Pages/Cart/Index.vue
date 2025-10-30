@@ -1,11 +1,60 @@
 <script setup>
 import { Head } from '@inertiajs/vue3';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import Header from '@/Components/Header.vue';
 import Footer from '@/Components/Footer.vue';
 import { useCart } from '@/utils/useCart';
 
-const { cart, removeFromCart, updateQuantity, totalPrice } = useCart()
+const { cart, removeFromCart, updateQuantity, totalPrice, subtotal, applyCoupon } = useCart()
+const couponCode = ref('')
+
+const fireMessage = (message, success = false, reload = false) => {
+  Swal.fire({
+    position: "top",
+    toast: true,
+    icon: success ? "success" : "error",
+    title: message,
+    showConfirmButton: false,
+    timer: 1500,
+  }).then(() => {
+    if (reload) {
+      location.reload();
+    }
+  });
+};
+
+const applyCartCoupon = () => {
+  if (!couponCode.value.trim()) {
+    fireMessage('Внесете код за попуст', false, false)
+    return
+  }
+
+  if (applyCoupon(couponCode.value)) {
+    fireMessage('Кодот за попуст е успешно применет!', true, false)
+  } else {
+    fireMessage('Невалиден код за попуст', false, false)
+  }
+}
+
+// Calculate the total discount amount (product discounts + coupon discount)
+const totalDiscount = computed(() => {
+  // Product discounts
+  const productDiscountAmount = cart.items.reduce((sum, item) => {
+    if (item.disscount) {
+      const discountAmount = (item.price * item.disscount / 100) * item.quantity
+      return sum + discountAmount
+    }
+    return sum
+  }, 0)
+
+  // Add coupon discount
+  return productDiscountAmount + cart.discount
+})
+
+// Calculate the subtotal before any discounts
+const subtotalBeforeDiscounts = computed(() => {
+  return cart.items.reduce((sum, item) => sum + item.price * item.quantity, 0)
+})
 
 </script>
 
@@ -54,13 +103,24 @@ const { cart, removeFromCart, updateQuantity, totalPrice } = useCart()
                                                 <tr v-for="item in cart.items" :key="item.id">
                                                     <td><img :src="item.img ?? item.main_image" alt="Cart Product Image" class="cart-product-image" /></td>
                                                     <td>{{ item.title ?? item.name }}</td>
-                                                    <td>{{ item.price }} ден</td>
+                                                    <td>
+                                                      <span v-if="item.disscount">
+                                                        <del>{{ item.price }} ден</del><br>
+                                                        {{ (item.price - (item.price * item.disscount / 100)).toFixed(2) }} ден
+                                                      </span>
+                                                      <span v-else>{{ item.price }} ден</span>
+                                                    </td>
                                                     <td>
                                                       <button class="text-danger fs-5 " @click="updateQuantity(item.id, item.quantity - 1)" :disabled="item.quantity <= 1">-</button>
                                                       <input class="cart-input" type="text" :value="item.quantity" disabled />
                                                       <button class="text-success fs-5" @click="updateQuantity(item.id, item.quantity + 1)">+</button>
                                                     </td>
-                                                    <td>{{ item.quantity * item.price }} ден</td>
+                                                    <td>
+                                                      {{ item.disscount ?
+                                                         ((item.price - (item.price * item.disscount / 100)) * item.quantity).toFixed(2) :
+                                                         (item.quantity * item.price).toFixed(2)
+                                                      }} ден
+                                                    </td>
                                                     <td><a href="#" @click.prevent="removeFromCart(item.id)"><i class="fa fa-times"></i></a></td>
                                                   </tr>
                                             </tbody>
@@ -71,9 +131,14 @@ const { cart, removeFromCart, updateQuantity, totalPrice } = useCart()
                                     <div class="row">
                                         <div class="col-md-7 col-lg-6">
                                             <div class="shop-cart-coupon">
-                                                <div class="form-group">
-                                                    <input type="text" class="form-control" placeholder="Доколку имате код за попуст">
-                                                    <button class="theme-btn" type="submit">Вашиот Купон</button>
+                                                <form @submit.prevent="applyCartCoupon">
+                                                    <div class="form-group">
+                                                        <input type="text" v-model="couponCode" class="form-control" placeholder="Доколку имате код за попуст">
+                                                        <button class="theme-btn" type="submit">Примени Купон</button>
+                                                    </div>
+                                                </form>
+                                                <div v-if="cart.couponCode" class="text-success mt-2">
+                                                    Применет купон: {{ cart.couponCode }} (-{{ cart.discount }} ден)
                                                 </div>
                                             </div>
                                         </div>
@@ -89,10 +154,11 @@ const { cart, removeFromCart, updateQuantity, totalPrice } = useCart()
                                 <div class="shop-cart-summary mt-0">
                                     <h5>Вашата Кошничка</h5>
                                     <ul>
-                                        <li><strong>Вкупно</strong> <span>{{totalPrice}}ден</span></li>
-                                        <li><strong>Попуст:</strong> <span>20 ден</span></li>
+                                        <li><strong>Подвкупно</strong> <span>{{subtotalBeforeDiscounts.toFixed(2)}} ден</span></li>
+                                        <li v-if="totalDiscount > 0"><strong>Попуст:</strong> <span>-{{totalDiscount.toFixed(2)}} ден</span></li>
+                                        <li><strong>Вкупно</strong> <span>{{totalPrice.toFixed(2)}} ден</span></li>
                                         <li v-if="totalPrice < 2000"><strong>Достава:</strong> <span>200 ден</span></li>
-                                        <li class="shop-cart-total"><strong>Вкупно:</strong> <span>{{totalPrice + 200}}</span></li>
+                                        <li class="shop-cart-total"><strong>Финална цена:</strong> <span>{{(totalPrice + (totalPrice < 2000 ? 200 : 0)).toFixed(2)}} ден</span></li>
                                     </ul>
                                     <div class="text-end mt-40">
                                         <a href="/checkout" class="theme-btn">Наплати<i

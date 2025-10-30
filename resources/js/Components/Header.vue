@@ -241,7 +241,7 @@ const toggleCategories = () => {
                                                         <div class="cart-info">
                                                             <h4><a href="#">{{item.title ?? item.name}}</a></h4>
                                                             <p class="cart-qty">{{item.quantity}} X <span
-                                                                    class="cart-amount">{{item.price}}ден</span></p>
+                                                                    class="cart-amount">{{item.disscount ? (item.price - (item.price * item.disscount / 100)).toFixed(2) : item.price}} ден</span></p>
                                                         </div>
                                                         <a  @click="removeFromCart(item.id)" class="cart-remove" title="Remove this item"><i
                                                                 class="far fa-times-circle"></i></a>

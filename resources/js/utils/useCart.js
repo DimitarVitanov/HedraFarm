@@ -33,13 +33,13 @@ const clearCart = () => {
 
 const applyCoupon = (couponCode) => {
   // Simple coupon logic - you can extend this with API calls
-  // Values represent the final discounted price the customer will pay
+  // Values represent the discount amount to subtract from total
   const coupons = {
-    'SAVE20': 20,    // Customer pays 20 denars regardless of original price
-    'SAVE50': 50,    // Customer pays 50 denars regardless of original price
-    'SAVE100': 100,  // Customer pays 100 denars regardless of original price
-    'DISCOUNT10': 10, // Customer pays 10 denars regardless of original price
-    'НОВГОДИНА': 30   // Customer pays 30 denars regardless of original price
+    'SAVE20': 20,    // 20 denars discount
+    'SAVE50': 50,    // 50 denars discount  
+    'SAVE100': 100,  // 100 denars discount
+    'DISCOUNT10': 10, // 10 denars discount
+    'НОВГОДИНА': 30   // 30 denars discount
   }
   
   if (coupons[couponCode.toUpperCase()]) {
@@ -55,14 +55,19 @@ const removeCoupon = () => {
   cart.couponCode = ''
 }
 
-const subtotal = computed(() =>
-  cart.items.reduce((sum, item) => sum + item.price * item.quantity, 0)
-)
+const subtotal = computed(() => {
+  return cart.items.reduce((sum, item) => {
+    // Calculate the price considering individual product discounts
+    const itemPrice = item.disscount ? 
+      item.price - (item.price * item.disscount / 100) : 
+      item.price
+    return sum + itemPrice * item.quantity
+  }, 0)
+})
 
 const totalPrice = computed(() => {
-  // If discount is applied, the total becomes the discount value (discounted price)
-  // Otherwise, use the subtotal
-  return cart.discount > 0 ? cart.discount : subtotal.value
+  // Subtract coupon discount from subtotal, but never go below 0
+  return Math.max(0, subtotal.value - cart.discount)
 })
 
 // Persist cart in localStorage

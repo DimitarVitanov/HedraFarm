@@ -126,8 +126,8 @@ const addProduct = (product) => {
                                 <i class="fas fa-star"></i>
                             </div>
                             <div class="shop-single-price">
-                                <del v-if="product.disscount">{{product.price * product.disscount}}</del>
-                                <span class="amount">{{product.price}}</span>
+                                <del v-if="product.disscount">{{product.price}} ден</del>
+                                <span class="amount">{{product.disscount ? (product.price - (product.price * product.disscount / 100)).toFixed(2) : product.price}} ден</span>
                                 <span v-if="product.disscount" class="discount-percentage">{{product.disscount}}% Off</span>
                             </div>
                             <p class="mb-3">
@@ -322,7 +322,8 @@ const addProduct = (product) => {
                                         </div>
                                         <div class="product-bottom">
                                             <div class="product-price">
-                                                <span>{{product.price}} ден</span>
+                                                <del v-if="product.disscount">{{product.price}} ден</del>
+                                                <span>{{product.disscount ? (product.price - (product.price * product.disscount / 100)).toFixed(2) : product.price}} ден</span>
                                             </div>
                                             <button @click="addProduct(product)" type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Додади во кошничка">
                                                 <i class="fa fa-shopping-bag"></i>

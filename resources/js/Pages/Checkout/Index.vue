@@ -4,8 +4,29 @@ import Footer from '@/Components/Footer.vue';
 import { Head } from '@inertiajs/vue3';
 import { ref, onMounted } from 'vue';
 import { useCart } from '@/utils/useCart';
+import { computed } from 'vue';
 
-const { cart, removeFromCart, updateQuantity, totalPrice } = useCart()
+const { cart, removeFromCart, updateQuantity, totalPrice, subtotal } = useCart()
+
+// Calculate the total discount amount (product discounts + coupon discount)
+const totalDiscount = computed(() => {
+  // Product discounts
+  const productDiscountAmount = cart.items.reduce((sum, item) => {
+    if (item.disscount) {
+      const discountAmount = (item.price * item.disscount / 100) * item.quantity
+      return sum + discountAmount
+    }
+    return sum
+  }, 0)
+  
+  // Add coupon discount
+  return productDiscountAmount + cart.discount
+})
+
+// Calculate the subtotal before any discounts
+const subtotalBeforeDiscounts = computed(() => {
+  return cart.items.reduce((sum, item) => sum + item.price * item.quantity, 0)
+})
 const fireMessage = (message, success = false, reload = false) => {
   Swal.fire({
     position: "top",
@@ -52,9 +73,9 @@ const createOrder = async() =>{
     formData.append('country', order.value.country);
     formData.append('additionalDescription', order.value.additionalDescription);
     formData.append('cart', JSON.stringify(cart));
-    formData.append('deliveryPrice', 200);
-    formData.append('discount', 20);
-    formData.append('totalPrice', totalPrice.value + 200);
+    formData.append('deliveryPrice', totalPrice.value < 2000 ? 200 : 0);
+    formData.append('discount', totalDiscount.value);
+    formData.append('totalPrice', totalPrice.value + (totalPrice.value < 2000 ? 200 : 0));
     formData.append('paymentMethod', 'cash');
     formData.append('status', 'pending');
 
@@ -193,10 +214,11 @@ const createOrder = async() =>{
                             <div class="shop-cart-summary mt-0">
                                 <h5>Вашата Кошничка</h5>
                                 <ul>
-                                    <li><strong>Вкупно</strong> <span>{{totalPrice}}ден</span></li>
-                                    <li><strong>Попуст:</strong> <span>20 ден</span></li>
+                                    <li><strong>Подвкупно</strong> <span>{{subtotalBeforeDiscounts.toFixed(2)}} ден</span></li>
+                                    <li v-if="totalDiscount > 0"><strong>Попуст:</strong> <span>-{{totalDiscount.toFixed(2)}} ден</span></li>
+                                    <li><strong>Вкупно</strong> <span>{{totalPrice.toFixed(2)}} ден</span></li>
                                     <li v-if="totalPrice < 2000"><strong>Достава:</strong> <span>200 ден</span></li>
-                                    <li class="shop-cart-total"><strong>Вкупно:</strong> <span>{{totalPrice + 200}}</span></li>
+                                    <li class="shop-cart-total"><strong>Финална цена:</strong> <span>{{(totalPrice + (totalPrice < 2000 ? 200 : 0)).toFixed(2)}} ден</span></li>
                                 </ul>
                                 <div class="text-end mt-40">
                                     <a @click="createOrder" class="theme-btn">Наплати<i
