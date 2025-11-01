@@ -133,7 +133,7 @@ const subtotalBeforeDiscounts = computed(() => {
                                             <div class="shop-cart-coupon">
                                                 <form @submit.prevent="applyCartCoupon">
                                                     <div class="form-group">
-                                                        <input type="text" v-model="couponCode" class="form-control" placeholder="Доколку имате код за попуст">
+                                                        <input type="text" v-model="couponCode" class="form-control" placeholder="Код за попуст" />
                                                         <button class="theme-btn" type="submit">Примени Купон</button>
                                                     </div>
                                                 </form>
@@ -142,7 +142,7 @@ const subtotalBeforeDiscounts = computed(() => {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-5 col-lg-6">
+                                        <div class="col-md-5 col-lg-6 pb-4 pb-md-0">
                                             <div class="shop-cart-btn text-md-end">
                                                 <a href="/store" class="theme-btn"><span class="fas fa-arrow-left"></span> Продолжи да купуваш</a>
                                             </div>
