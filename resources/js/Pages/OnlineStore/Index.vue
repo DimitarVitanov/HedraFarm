@@ -154,14 +154,7 @@ function addProduct(product){
 
 <template>
 <Head title="Online Store" />
-    <!-- preloader -->
-    <div class="preloader">
-        <div class="loader-ripple">
-            <div></div>
-            <div></div>
-        </div>
-    </div>
-    <!-- preloader end -->
+
 
     <!-- header -->
     <Header />
