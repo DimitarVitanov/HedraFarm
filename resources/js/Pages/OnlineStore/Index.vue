@@ -142,6 +142,36 @@ const totalPages = computed(() => {
   return Math.ceil(filteredProducts.value.length / itemsPerPage);
 });
 
+const visiblePages = computed(() => {
+  const pages = [];
+  const total = totalPages.value;
+  const current = currentPage.value;
+  
+  if (total <= 3) {
+    // Show all pages if total is 3 or less
+    for (let i = 1; i <= total; i++) {
+      pages.push(i);
+    }
+  } else {
+    // Show 3 pages around current page
+    let start = Math.max(1, current - 1);
+    let end = Math.min(total, current + 1);
+    
+    // Adjust if we're at the beginning or end
+    if (current === 1) {
+      end = Math.min(total, 3);
+    } else if (current === total) {
+      start = Math.max(1, total - 2);
+    }
+    
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+  }
+  
+  return pages;
+});
+
 watch(searchQuery, () => {
   currentPage.value = 1;
 });
@@ -279,7 +309,7 @@ function addProduct(product){
                             </div>
                         </div>
                         <!-- pagination -->
-                        <div class="pagination-area mt-50">
+                        <div class="pagination-area mt-50" v-if="totalPages > 1">
                             <div aria-label="Page navigation example">
                                 <ul class="pagination">
                                     <li class="page-item" :class="{ disabled: currentPage === 1 }">
@@ -288,7 +318,7 @@ function addProduct(product){
                                       </a>
                                     </li>
 
-                                    <li class="page-item" v-for="page in totalPages" :key="page" :class="{ active: currentPage === page }">
+                                    <li class="page-item" v-for="page in visiblePages" :key="page" :class="{ active: currentPage === page }">
                                       <a class="page-link" href="#" @click.prevent="currentPage = page">{{ page }}</a>
                                     </li>
 
