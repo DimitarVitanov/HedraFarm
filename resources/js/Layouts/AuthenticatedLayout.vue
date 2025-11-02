@@ -207,6 +207,56 @@ const isAdmin = computed(() => {
                         >
                             Dashboard
                         </ResponsiveNavLink>
+                        
+                        <!-- Admin Navigation Links for Mobile -->
+                        <template v-if="isAdmin">
+                            <ResponsiveNavLink
+                                :href="route('admin.company')"
+                                :active="route().current('admin.company')"
+                            >
+                                Company
+                            </ResponsiveNavLink>
+                            <ResponsiveNavLink
+                                :href="route('admin.users')"
+                                :active="route().current('admin.users')"
+                            >
+                                Users
+                            </ResponsiveNavLink>
+                            <ResponsiveNavLink
+                                :href="route('admin.blog')"
+                                :active="route().current('admin.blog')"
+                            >
+                                Blog
+                            </ResponsiveNavLink>
+                            <ResponsiveNavLink
+                                :href="route('admin.slider')"
+                                :active="route().current('admin.slider')"
+                            >
+                                Slider
+                            </ResponsiveNavLink>
+                            <ResponsiveNavLink
+                                :href="route('admin.products')"
+                                :active="route().current('admin.products')"
+                            >
+                                Products
+                            </ResponsiveNavLink>
+                            <ResponsiveNavLink
+                                :href="route('admin.orders')"
+                                :active="route().current('admin.orders')"
+                            >
+                                Orders
+                            </ResponsiveNavLink>
+                        </template>
+                        
+                        <!-- Regular User Navigation for Mobile -->
+                        <template v-else>
+                            <ResponsiveNavLink
+                                :href="route('home')"
+                                :active="route().current('home')"
+                            >
+                                Home
+                            </ResponsiveNavLink>
+                        </template>
                     </div>
 
                     <!-- Responsive Settings Options -->
