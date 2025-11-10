@@ -89,7 +89,6 @@ const isAdmin = computed(() => {
                                         Orders
                                     </NavLink>
                                 </template>
-
                                 <!-- Regular User Navigation -->
                                 <template v-else>
                                     <NavLink
@@ -97,6 +96,12 @@ const isAdmin = computed(() => {
                                         :active="route().current('home')"
                                     >
                                         Home
+                                    </NavLink>
+                                          <NavLink
+                                        :href="route('home')"
+                                        :active="route().current('home')"
+                                    >
+                                        Products
                                     </NavLink>
                                 </template>
 
@@ -235,8 +240,8 @@ const isAdmin = computed(() => {
                                 Slider
                             </ResponsiveNavLink>
                             <ResponsiveNavLink
-                                :href="route('admin.products')"
-                                :active="route().current('admin.products')"
+                            :href="route('admin.products')"
+                            :active="route().current('admin.products')"
                             >
                                 Products
                             </ResponsiveNavLink>

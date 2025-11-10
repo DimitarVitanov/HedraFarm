@@ -86,7 +86,7 @@ Route::middleware('auth')->prefix('admin')->group(function () {
 
     Route::group(['prefix' => 'products'], function(){
         Route::get('/', function(){
-            return Inertia::render('Admin/Products/Index');
+        return Inertia::render('Admin/Products/Index');
         })->name('admin.products');
         Route::post('store', [ProductController::class, 'store'])->name('admin.products.store');
         Route::post('update', [ProductController::class, 'update'])->name('admin.products.update');
