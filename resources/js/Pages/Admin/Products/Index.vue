@@ -66,7 +66,7 @@ const checkPermission = ()=>{
     if (!logged_user.value || !logged_user.value.team_id) {
         return;
     }
-    if (logged_user.value.team_id != '1') {
+    if (logged_user.value.team_id != '1' || logged_user.value.team_id != '2') {
         location.href = '/dashboard';
     }
 }
