@@ -98,8 +98,8 @@ const isAdmin = computed(() => {
                                         Home
                                     </NavLink>
                                     <NavLink
-                                        :href="route('home')"
-                                        :active="route().current('home')"
+                                        :href="route('admin.products')"
+                                        :active="route().current('admin.products')"
                                     >
                                         Products
                                     </NavLink>
