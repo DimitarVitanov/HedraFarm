@@ -8,6 +8,7 @@ import Button from 'primevue/button';
 import Modal from '@/Components/Modal.vue';
 import Editor from '@/Components/Editor.vue'
 import Multiselect from 'primevue/multiselect';
+import InputText from 'primevue/inputtext';
 const page = usePage();
 const logged_user = ref(page.props.user);
 const product = ref({
@@ -32,6 +33,12 @@ const loading = ref(false);
 const subcategories = ref([]);
 
 const categories = ref(false);
+
+const filters = ref({
+    name: { value: null, matchMode: 'contains' },
+    short_description: { value: null, matchMode: 'contains' },
+    clean_description: { value: null, matchMode: 'contains' }
+});
 
 const fireMessage = (message, success = false, reload = false) => {
   Swal.fire({
@@ -365,11 +372,22 @@ const deleteProduct = async(id, type,index) =>{
                 <hr class="w-100 text-gray-300">
 
                 <div class="table-responsive pt-4">
-                        <DataTable :value="products" :loading="loading" :paginator="true" :rows="10" :rowsPerPageOptions="[5,10,20]">
+                        <DataTable :value="products" :loading="loading" :paginator="true" :rows="10" :rowsPerPageOptions="[5,10,20]" v-model:filters="filters" filterDisplay="row">
                             <Column field="id" header="ID" sortable></Column>
-                            <Column field="name" header="Name" sortable></Column>
-                            <Column field="short_description" header="Short Description" sortable></Column>
-                            <Column field="description" header="Description" sortable>
+                            <Column field="name" header="Name" sortable filterField="name" :showFilterMenu="false">
+                                <template #filter="{ filterModel, filterCallback }">
+                                    <InputText v-model="filterModel.value" @input="filterCallback()" type="text" class="p-column-filter" placeholder="Search by name" />
+                                </template>
+                            </Column>
+                            <Column field="short_description" header="Short Description" sortable filterField="short_description" :showFilterMenu="false">
+                                <template #filter="{ filterModel, filterCallback }">
+                                    <InputText v-model="filterModel.value" @input="filterCallback()" type="text" class="p-column-filter" placeholder="Search by short description" />
+                                </template>
+                            </Column>
+                            <Column field="description" header="Description" sortable filterField="clean_description" :showFilterMenu="false">
+                                <template #filter="{ filterModel, filterCallback }">
+                                    <InputText v-model="filterModel.value" @input="filterCallback()" type="text" class="p-column-filter" placeholder="Search by description" />
+                                </template>
                             <template #body="{data}">
                                 <div>{{data.clean_description}}</div>
                             </template>
