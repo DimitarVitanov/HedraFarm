@@ -48,7 +48,7 @@ async function fetchCategories(){
                 <div class="row footer-widget-wrapper pt-100 pb-40">
                     <div class="col-md-6 col-lg-3">
                         <div class="footer-widget-box about-us">
-                            <a href="index.html" class="footer-logo">
+                            <a href="/" class="footer-logo">
                                 <img src="/assets/img/logo/logo-without-bg.png" alt="">
                             </a>
 
@@ -68,7 +68,7 @@ async function fetchCategories(){
                                 <li><a href="/">Почетна</a></li>
                                 <li><a href="/store">Оналјн Продавница</a></li>
                                 <li><a href="/about">За Нас</a></li>
-                                <li><a href="/blog">Блог</a></li>
+                                <li><a href="/blogs">Блог</a></li>
                                 <li><a href="/contact">Контакт</a></li>
                                 <li><a href="/privacy">Политика на приватност</a></li>
                                 <li><a href="/delivery-policy">Политика на достава</a></li>
@@ -80,7 +80,7 @@ async function fetchCategories(){
                 <div class="footer-widget-box list">
                             <h4 class="footer-widget-title">Категории</h4>
                             <ul class="footer-list" v-for="(category,index) in categories">
-                                <li ><a href="shop-grid.html">{{category.translated}}</a></li>
+                                <li ><a href="/store">{{category.translated}}</a></li>
                             </ul>
                         </div>
                     </div>
@@ -88,8 +88,8 @@ async function fetchCategories(){
                         <div class="footer-widget-box list">
                             <h4 class="footer-widget-title">Центар за поддршка</h4>
                             <ul class="footer-list">
-                                <li><a href="faq.html">Често поставувани прашања</a></li>
-                                <li><a href="help.html">Како да направите нарачка</a></li>
+                                <li><a href="/contact">Често поставувани прашања</a></li>
+                                <li><a href="/contact">Како да направите нарачка</a></li>
                                 <li><a href="/contact">Контакт</a></li>
                                 <li><a href="/privacy">Политика на приватност</a></li>
                                 <li><a href="/delivery-policy">Политика на достава</a></li>
@@ -111,9 +111,9 @@ async function fetchCategories(){
                         <div class="col-12 col-lg-6 align-self-center">
                             <div class="footer-social">
                                 <span>Социјални Мрежи:</span>
-                                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                <a href="https://www.instagram.com/hederafarmplus/"><i class="fab fa-instagram"></i></a>
-                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="javascript:void(0)"><i class="fab fa-facebook-f"></i></a>
+                                <a href="https://www.instagram.com/hederafarmplus/" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
+                                <a href="javascript:void(0)"><i class="fab fa-linkedin-in"></i></a>
                             </div>
                         </div>
                     </div>
