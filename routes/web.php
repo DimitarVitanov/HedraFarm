@@ -31,7 +31,9 @@ use App\Http\Controllers\DashboardController;
 
 #order
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', function () {
+    return Inertia::render('Dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard/settings', [DashboardController::class, 'getDashboardSettings'])->name('dashboard.settings');
