@@ -164,8 +164,9 @@ class ProductController extends Controller
         if($request->price){
             $product->price = $request->price;
         }
-        if($request->disscount && $request->disscount != 'null'){
-            $product->disscount = $request->disscount;
+        if($request->has('disscount')){
+            // Handle discount: can be null, 0, or a positive number
+            $product->disscount = $request->disscount === 'null' || $request->disscount === '' ? null : $request->disscount;
         }
         if($request->quantity){
             $product->quantity = $request->quantity;
