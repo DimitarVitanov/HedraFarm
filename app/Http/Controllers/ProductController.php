@@ -14,7 +14,7 @@ class ProductController extends Controller
 {
     public function getProducts()
     {
-        $products = Product::with('category')->where('is_active', 1)->get()->map(function($product){
+        $products = Product::with('category')->get()->map(function($product){
             return [
                 'id' => $product->id,
                 'name' => $product->name,
