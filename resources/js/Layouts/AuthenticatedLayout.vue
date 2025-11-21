@@ -77,6 +77,12 @@ const isAdmin = computed(() => {
                                         Slider
                                     </NavLink>
                                     <NavLink
+                                        :href="route('admin.categories')"
+                                        :active="route().current('admin.categories')"
+                                    >
+                                        Categories
+                                    </NavLink>
+                                    <NavLink
                                         :href="route('admin.products')"
                                         :active="route().current('admin.products')"
                                     >
@@ -244,6 +250,12 @@ const isAdmin = computed(() => {
                                 :active="route().current('admin.slider')"
                             >
                                 Slider
+                            </ResponsiveNavLink>
+                            <ResponsiveNavLink
+                                :href="route('admin.categories')"
+                                :active="route().current('admin.categories')"
+                            >
+                                Categories
                             </ResponsiveNavLink>
                             <ResponsiveNavLink
                             :href="route('admin.products')"

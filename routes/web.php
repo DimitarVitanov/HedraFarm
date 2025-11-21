@@ -94,11 +94,18 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     });
 
     Route::group(['prefix' => 'product-categories'], function(){
-       /*
         Route::get('/', function(){
             return Inertia::render('Admin/Categories/Index');
         })->name('admin.categories');
-        */
+
+        Route::post('store', [ProductCategoryController::class, 'store'])->name('admin.categories.store');
+        Route::post('update', [ProductCategoryController::class, 'update'])->name('admin.categories.update');
+        Route::post('delete', [ProductCategoryController::class, 'delete'])->name('admin.categories.delete');
+    });
+    Route::group(['prefix' => 'product-subcategories'], function(){
+        Route::post('store', [ProductSubcategoryController::class, 'store'])->name('admin.subcategories.store');
+        Route::post('update', [ProductSubcategoryController::class, 'update'])->name('admin.subcategories.update');
+        Route::post('delete', [ProductSubcategoryController::class, 'delete'])->name('admin.subcategories.delete');
     });
     Route::group(['prefix' => 'blogs'], function(){
         Route::get('/', function(){
