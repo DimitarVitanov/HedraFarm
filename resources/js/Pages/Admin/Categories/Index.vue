@@ -12,6 +12,7 @@ import Dropdown from 'primevue/dropdown';
 
 const categories = ref([]);
 const subcategories = ref([]);
+const logged_user = ref(page.props.user);
 
 const loadingCategories = ref(false);
 const loadingSubcategories = ref(false);
