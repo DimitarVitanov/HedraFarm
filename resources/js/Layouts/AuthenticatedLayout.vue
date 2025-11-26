@@ -103,18 +103,26 @@ const isAdmin = computed(() => {
                                     >
                                         Home
                                     </NavLink>
+                                       <NavLink
+                                        :href="route('admin.categories')"
+                                        :active="route().current('admin.categories')"
+                                    >
+                                        Categories
+                                    </NavLink>
                                     <NavLink
                                         :href="route('admin.products')"
                                         :active="route().current('admin.products')"
                                     >
                                         Products
                                     </NavLink>
+                                   
                                     <NavLink
                                         :href="route('admin.orders')"
                                         :active="route().current('admin.orders')"
                                     >
                                         Orders
                                     </NavLink>
+                                    
                                 </template>
 
                             </div>
