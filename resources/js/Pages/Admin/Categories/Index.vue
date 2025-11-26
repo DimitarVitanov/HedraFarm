@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
-import { Head } from '@inertiajs/vue3';
+import { usePage,Head } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
