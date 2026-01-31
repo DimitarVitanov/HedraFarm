@@ -183,7 +183,18 @@ function addProduct(product){
 </script>
 
 <template>
-<Head title="Online Store" />
+<Head>
+        <title>Онлајн Продавница - Хедра Фарм | Лекови и Козметика</title>
+        <meta name="description" content="Разгледајте ја нашата онлајн продавница со широк избор на лекови, козметика, витамини и здравствени производи. Бесплатна достава над 2000 денари." />
+        <meta name="keywords" content="онлајн продавница, аптека, лекови, козметика, витамини, здравствени производи, Хедра Фарм, купи онлајн" />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:title" content="Онлајн Продавница - Хедра Фарм" />
+        <meta property="og:description" content="Широк избор на лекови, козметика и витамини. Бесплатна достава над 2000 денари." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://hedrafarm.mk/store" />
+        <meta property="og:locale" content="mk_MK" />
+        <link rel="canonical" href="https://hedrafarm.mk/store" />
+    </Head>
     <!-- preloader -->
         <div v-if="loading" class="preloader">
             <div class="loader-ripple">

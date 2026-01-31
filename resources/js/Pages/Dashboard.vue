@@ -211,7 +211,11 @@ const formatNumber = (value) => {
 </script>
 
 <template>
-    <Head title="Dashboard" />
+    <Head>
+        <title>Контролна Табла - Хедра Фарм</title>
+        <meta name="description" content="Контролна табла за управување со вашата сметка на Хедра Фарм." />
+        <meta name="robots" content="noindex, nofollow" />
+    </Head>
 
     <AuthenticatedLayout>
         <template #header>

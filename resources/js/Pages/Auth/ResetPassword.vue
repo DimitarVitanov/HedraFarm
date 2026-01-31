@@ -33,7 +33,11 @@ const submit = () => {
 
 <template>
     <GuestLayout>
-        <Head title="Reset Password" />
+        <Head>
+            <title>Ресетирање Лозинка - Хедра Фарм</title>
+            <meta name="description" content="Поставете нова лозинка за вашата сметка на Хедра Фарм." />
+            <meta name="robots" content="noindex, nofollow" />
+        </Head>
 
         <form @submit.prevent="submit">
             <div>

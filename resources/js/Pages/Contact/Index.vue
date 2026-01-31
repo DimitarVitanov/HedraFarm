@@ -1,5 +1,6 @@
 <script setup>
 import { onMounted, ref } from 'vue';
+import { Head } from '@inertiajs/vue3';
 import Header from '@/Components/Header.vue';
 import Footer from '@/Components/Footer.vue';
 import NewsLetter from '@/Components/NewsLetter.vue';
@@ -84,6 +85,18 @@ async function fetchCompanyInfo(){
 </script>
 
 <template>
+    <Head>
+        <title>Контакт - Хедра Фарм | Контактирајте Не</title>
+        <meta name="description" content="Контактирајте ја Хедра Фарм за било какви прашања. Работно време: Пон-Саб 10:00-22:00. Брза и професионална поддршка за сите ваши потреби." />
+        <meta name="keywords" content="контакт, Хедра Фарм, аптека контакт, работно време, поддршка, прашања" />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:title" content="Контакт - Хедра Фарм" />
+        <meta property="og:description" content="Контактирајте ја Хедра Фарм за било какви прашања. Брза и професионална поддршка." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://hedrafarm.mk/contact" />
+        <meta property="og:locale" content="mk_MK" />
+        <link rel="canonical" href="https://hedrafarm.mk/contact" />
+    </Head>
  <!-- preloader -->
  <div v-if="loading" class="preloader">
     <div class="loader-ripple">

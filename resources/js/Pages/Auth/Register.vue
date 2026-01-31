@@ -22,7 +22,11 @@ const submit = () => {
 
 <template>
     <GuestLayout>
-        <Head title="Register" />
+        <Head>
+            <title>Регистрација - Хедра Фарм</title>
+            <meta name="description" content="Креирајте сметка на Хедра Фарм за полесно нарачување." />
+            <meta name="robots" content="noindex, nofollow" />
+        </Head>
 
         <form @submit.prevent="submit">
             <div>

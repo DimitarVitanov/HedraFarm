@@ -60,6 +60,11 @@ const subtotalBeforeDiscounts = computed(() => {
 
 
 <template>
+    <Head>
+        <title>Кошничка - Хедра Фарм</title>
+        <meta name="description" content="Прегледајте ја вашата кошничка и завршете ја нарачката на Хедра Фарм. Бесплатна достава над 2000 денари." />
+        <meta name="robots" content="noindex, nofollow" />
+    </Head>
 
     <Header />
 

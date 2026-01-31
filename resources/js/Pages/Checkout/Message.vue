@@ -1,13 +1,16 @@
 <script setup>
+import { Head } from '@inertiajs/vue3';
 import Footer from '@/Components/Footer.vue';
 import Header from '@/Components/Header.vue';
-
-
-
 </script>
 
 
 <template>
+    <Head>
+        <title>Успешна Нарачка - Хедра Фарм</title>
+        <meta name="description" content="Вашата нарачка е успешно примена. Ви благодариме за довербата!" />
+        <meta name="robots" content="noindex, nofollow" />
+    </Head>
 
         <!-- preloader -->
         <div class="preloader">

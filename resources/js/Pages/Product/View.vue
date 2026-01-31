@@ -73,7 +73,19 @@ const addProduct = (product) => {
 </script>
 
 <template>
-<Head title="Single Product" />
+<Head>
+        <title>{{ product.name }} - Хедра Фарм</title>
+        <meta name="description" :content="product.short_description || product.name + ' - Купете онлајн на Хедра Фарм со бесплатна достава над 2000 денари.'" />
+        <meta name="keywords" :content="product.name + ', купи онлајн, Хедра Фарм, аптека'" />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:title" :content="product.name + ' - Хедра Фарм'" />
+        <meta property="og:description" :content="product.short_description || product.name + ' - Купете онлајн на Хедра Фарм.'" />
+        <meta property="og:type" content="product" />
+        <meta property="og:image" :content="product.main_image" />
+        <meta property="og:locale" content="mk_MK" />
+        <meta property="product:price:amount" :content="product.price" />
+        <meta property="product:price:currency" content="MKD" />
+    </Head>
     <!-- preloader -->
     <div v-if="loading" class="preloader">
         <div class="loader-ripple">

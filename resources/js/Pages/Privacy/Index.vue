@@ -31,7 +31,18 @@ async function fetchCompany(){
 </script>
 
 <template>
-    <Head title="Privacy Policy"/>
+    <Head>
+        <title>Политика на Приватност - Хедра Фарм</title>
+        <meta name="description" content="Политика на приватност на Хедра Фарм. Дознајте како ги собираме, користиме и заштитуваме вашите лични податоци." />
+        <meta name="keywords" content="политика на приватност, лични податоци, заштита на податоци, Хедра Фарм, GDPR" />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:title" content="Политика на Приватност - Хедра Фарм" />
+        <meta property="og:description" content="Дознајте како ги собираме, користиме и заштитуваме вашите лични податоци." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://hedrafarm.mk/privacy" />
+        <meta property="og:locale" content="mk_MK" />
+        <link rel="canonical" href="https://hedrafarm.mk/privacy" />
+    </Head>
     <Header/>
     <div class="main">
      <!-- breadcrumb -->

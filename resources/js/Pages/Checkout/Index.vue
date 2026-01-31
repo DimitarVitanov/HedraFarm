@@ -101,7 +101,11 @@ const createOrder = async() =>{
 </script>
 
 <template>
-    <Head title="Checkout" />
+    <Head>
+        <title>Наплата - Хедра Фарм</title>
+        <meta name="description" content="Завршете ја вашата нарачка на Хедра Фарм. Безбедно плаќање и брза достава." />
+        <meta name="robots" content="noindex, nofollow" />
+    </Head>
 
     <Header />
 

@@ -56,7 +56,22 @@ async function fetchBlogs(){
 </script>
 
 <template>
-    <Head title="Home"/>
+    <Head>
+        <title>Хедра Фарм - Онлајн Аптека | Лекови, Козметика и Здравствени Производи</title>
+        <meta name="description" content="Хедра Фарм е вашата доверлива онлајн аптека во Македонија. Широк избор на лекови, козметика, витамини и здравствени производи со бесплатна достава над 2000 денари." />
+        <meta name="keywords" content="аптека, онлајн аптека, лекови, козметика, витамини, здравје, Македонија, Хедра Фарм, бесплатна достава" />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:title" content="Хедра Фарм - Онлајн Аптека | Лекови и Здравствени Производи" />
+        <meta property="og:description" content="Вашата доверлива онлајн аптека во Македонија. Широк избор на лекови, козметика и витамини со бесплатна достава." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://hedrafarm.mk" />
+        <meta property="og:image" content="/assets/img/logo/logo.png" />
+        <meta property="og:locale" content="mk_MK" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Хедра Фарм - Онлајн Аптека" />
+        <meta name="twitter:description" content="Вашата доверлива онлајн аптека во Македонија. Широк избор на лекови, козметика и витамини." />
+        <link rel="canonical" href="https://hedrafarm.mk" />
+    </Head>
     <div>
 
         <!-- preloader -->

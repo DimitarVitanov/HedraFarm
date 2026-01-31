@@ -27,7 +27,11 @@ const submit = () => {
 
 <template>
     <BreezeGuestLayout>
-        <Head title="Log in" />
+        <Head>
+            <title>Најава - Хедра Фарм</title>
+            <meta name="description" content="Најавете се на вашата сметка на Хедра Фарм." />
+            <meta name="robots" content="noindex, nofollow" />
+        </Head>
 
         <BreezeValidationErrors class="mb-4" />
 

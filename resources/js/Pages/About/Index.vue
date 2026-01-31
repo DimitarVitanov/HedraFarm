@@ -31,7 +31,19 @@ async function fetchCompanyInfo(){
 </script>
 
 <template>
-        <Head title="About"/>
+        <Head>
+        <title>За Нас - Хедра Фарм | Вашата Доверлива Аптека</title>
+        <meta name="description" content="Дознајте повеќе за Хедра Фарм - вашата доверлива аптека со долгогодишно искуство. Се грижиме за здравјето на сите генерации со квалитетни производи и професионална услуга." />
+        <meta name="keywords" content="за нас, Хедра Фарм, аптека Македонија, здравствена грижа, искуство, професионална услуга" />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:title" content="За Нас - Хедра Фарм" />
+        <meta property="og:description" content="Дознајте повеќе за Хедра Фарм - вашата доверлива аптека со долгогодишно искуство во здравствената грижа." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://hedrafarm.mk/about" />
+        <meta property="og:image" content="/assets/img/about/hedra_about_1.png" />
+        <meta property="og:locale" content="mk_MK" />
+        <link rel="canonical" href="https://hedrafarm.mk/about" />
+    </Head>
         <div>
 
             <!-- preloader -->

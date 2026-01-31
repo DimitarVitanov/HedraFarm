@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue';
+import { Head } from '@inertiajs/vue3';
 import Header from '@/Components/Header.vue';
 import Footer from '@/Components/Footer.vue';
 
@@ -31,7 +32,18 @@ async function fetchBlogs(){
 </script>
 
 <template>
-    <Head title="Blog" />
+    <Head>
+        <title>Блог - Хедра Фарм | Новости и Здравствени Совети</title>
+        <meta name="description" content="Прочитајте ги најновите блог статии од Хедра Фарм. Здравствени совети, новости за производи и корисни информации за вашето здравје." />
+        <meta name="keywords" content="блог, здравствени совети, новости, Хедра Фарм, здравје, аптека блог" />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:title" content="Блог - Хедра Фарм" />
+        <meta property="og:description" content="Здравствени совети, новости за производи и корисни информации за вашето здравје." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://hedrafarm.mk/blogs" />
+        <meta property="og:locale" content="mk_MK" />
+        <link rel="canonical" href="https://hedrafarm.mk/blogs" />
+    </Head>
     <!-- preloader -->
     <div v-if="loading" class="preloader">
         <div class="loader-ripple">

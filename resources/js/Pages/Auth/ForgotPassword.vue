@@ -23,7 +23,11 @@ const submit = () => {
 
 <template>
     <GuestLayout>
-        <Head title="Forgot Password" />
+        <Head>
+            <title>Заборавена Лозинка - Хедра Фарм</title>
+            <meta name="description" content="Ресетирајте ја вашата лозинка на Хедра Фарм." />
+            <meta name="robots" content="noindex, nofollow" />
+        </Head>
 
         <div class="mb-4 text-sm text-gray-600">
             Forgot your password? No problem. Just let us know your email
