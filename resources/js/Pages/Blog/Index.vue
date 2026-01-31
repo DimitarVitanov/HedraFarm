@@ -33,12 +33,12 @@ async function fetchBlogs(){
 
 <template>
     <Head>
-        <title>Блог - Хедра Фарм | Новости и Здравствени Совети</title>
-        <meta name="description" content="Прочитајте ги најновите блог статии од Хедра Фарм. Здравствени совети, новости за производи и корисни информации за вашето здравје." />
-        <meta name="keywords" content="блог, здравствени совети, новости, Хедра Фарм, здравје, аптека блог" />
+        <title>Блог - Аптека Струмица | Хедра Фарм</title>
+        <meta name="description" content="Блог на Аптека Струмица - Хедра Фарм. Здравствени совети, новости за производи и корисни информации за вашето здравје." />
+        <meta name="keywords" content="блог, здравствени совети, новости, Хедра Фарм, аптека Струмица, здравје, apteka Strumica" />
         <meta name="robots" content="index, follow" />
-        <meta property="og:title" content="Блог - Хедра Фарм" />
-        <meta property="og:description" content="Здравствени совети, новости за производи и корисни информации за вашето здравје." />
+        <meta property="og:title" content="Блог - Аптека Струмица | Хедра Фарм" />
+        <meta property="og:description" content="Блог на Аптека Струмица - Здравствени совети и корисни информации." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://hedrafarm.mk/blogs" />
         <meta property="og:locale" content="mk_MK" />

@@ -184,12 +184,12 @@ function addProduct(product){
 
 <template>
 <Head>
-        <title>Онлајн Продавница - Хедра Фарм | Лекови и Козметика</title>
-        <meta name="description" content="Разгледајте ја нашата онлајн продавница со широк избор на лекови, козметика, витамини и здравствени производи. Бесплатна достава над 2000 денари." />
-        <meta name="keywords" content="онлајн продавница, аптека, лекови, козметика, витамини, здравствени производи, Хедра Фарм, купи онлајн" />
+        <title>Онлајн Продавница - Аптека Струмица | Хедра Фарм</title>
+        <meta name="description" content="Аптека Струмица онлајн продавница - широк избор на лекови, козметика, витамини и здравствени производи. Бесплатна достава над 2000 денари низ Македонија." />
+        <meta name="keywords" content="онлајн продавница, аптека Струмица, аптека во Струмица, лекови, козметика, витамини, здравствени производи, Хедра Фарм, купи онлајн, apteka Strumica" />
         <meta name="robots" content="index, follow" />
-        <meta property="og:title" content="Онлајн Продавница - Хедра Фарм" />
-        <meta property="og:description" content="Широк избор на лекови, козметика и витамини. Бесплатна достава над 2000 денари." />
+        <meta property="og:title" content="Онлајн Продавница - Аптека Струмица | Хедра Фарм" />
+        <meta property="og:description" content="Аптека Струмица - Широк избор на лекови, козметика и витамини. Бесплатна достава над 2000 денари." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://hedrafarm.mk/store" />
         <meta property="og:locale" content="mk_MK" />

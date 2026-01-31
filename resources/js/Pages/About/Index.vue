@@ -32,12 +32,12 @@ async function fetchCompanyInfo(){
 
 <template>
         <Head>
-        <title>За Нас - Хедра Фарм | Вашата Доверлива Аптека</title>
-        <meta name="description" content="Дознајте повеќе за Хедра Фарм - вашата доверлива аптека со долгогодишно искуство. Се грижиме за здравјето на сите генерации со квалитетни производи и професионална услуга." />
-        <meta name="keywords" content="за нас, Хедра Фарм, аптека Македонија, здравствена грижа, искуство, професионална услуга" />
+        <title>За Нас - Аптека Струмица | Хедра Фарм</title>
+        <meta name="description" content="Дознајте повеќе за Хедра Фарм - вашата доверлива аптека во Струмица со долгогодишно искуство. Аптека Струмица која се грижи за здравјето на сите генерации со квалитетни производи." />
+        <meta name="keywords" content="за нас, Хедра Фарм, аптека Струмица, аптека во Струмица, здравствена грижа, искуство, професионална услуга, apteka Strumica" />
         <meta name="robots" content="index, follow" />
-        <meta property="og:title" content="За Нас - Хедра Фарм" />
-        <meta property="og:description" content="Дознајте повеќе за Хедра Фарм - вашата доверлива аптека со долгогодишно искуство во здравствената грижа." />
+        <meta property="og:title" content="За Нас - Аптека Струмица | Хедра Фарм" />
+        <meta property="og:description" content="Дознајте повеќе за Хедра Фарм - вашата доверлива аптека во Струмица со долгогодишно искуство." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://hedrafarm.mk/about" />
         <meta property="og:image" content="/assets/img/about/hedra_about_1.png" />

@@ -30,12 +30,12 @@ async function fetchCompany(){
 
 <template>
     <Head>
-        <title>Политика на Достава - Хедра Фарм</title>
-        <meta name="description" content="Информации за достава на производи од Хедра Фарм. Бесплатна достава над 2000 денари. Испорака низ цела Македонија." />
-        <meta name="keywords" content="достава, политика на достава, испорака, бесплатна достава, Хедра Фарм, Македонија" />
+        <title>Политика на Достава - Аптека Струмица | Хедра Фарм</title>
+        <meta name="description" content="Достава од Аптека Струмица - Хедра Фарм. Бесплатна достава над 2000 денари. Испорака низ цела Македонија." />
+        <meta name="keywords" content="достава, аптека Струмица достава, испорака, бесплатна достава, Хедра Фарм, Македонија, apteka Strumica" />
         <meta name="robots" content="index, follow" />
-        <meta property="og:title" content="Политика на Достава - Хедра Фарм" />
-        <meta property="og:description" content="Информации за достава на производи. Бесплатна достава над 2000 денари." />
+        <meta property="og:title" content="Политика на Достава - Аптека Струмица" />
+        <meta property="og:description" content="Достава од Аптека Струмица. Бесплатна достава над 2000 денари." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://hedrafarm.mk/delivery" />
         <meta property="og:locale" content="mk_MK" />

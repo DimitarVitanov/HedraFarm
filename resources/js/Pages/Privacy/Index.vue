@@ -32,12 +32,12 @@ async function fetchCompany(){
 
 <template>
     <Head>
-        <title>Политика на Приватност - Хедра Фарм</title>
-        <meta name="description" content="Политика на приватност на Хедра Фарм. Дознајте како ги собираме, користиме и заштитуваме вашите лични податоци." />
-        <meta name="keywords" content="политика на приватност, лични податоци, заштита на податоци, Хедра Фарм, GDPR" />
+        <title>Политика на Приватност - Аптека Струмица | Хедра Фарм</title>
+        <meta name="description" content="Политика на приватност на Аптека Струмица - Хедра Фарм. Дознајте како ги заштитуваме вашите лични податоци." />
+        <meta name="keywords" content="политика на приватност, аптека Струмица, лични податоци, заштита на податоци, Хедра Фарм, GDPR, apteka Strumica" />
         <meta name="robots" content="index, follow" />
-        <meta property="og:title" content="Политика на Приватност - Хедра Фарм" />
-        <meta property="og:description" content="Дознајте како ги собираме, користиме и заштитуваме вашите лични податоци." />
+        <meta property="og:title" content="Политика на Приватност - Аптека Струмица" />
+        <meta property="og:description" content="Политика на приватност на Аптека Струмица - Хедра Фарм." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://hedrafarm.mk/privacy" />
         <meta property="og:locale" content="mk_MK" />

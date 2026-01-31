@@ -86,12 +86,12 @@ async function fetchCompanyInfo(){
 
 <template>
     <Head>
-        <title>Контакт - Хедра Фарм | Контактирајте Не</title>
-        <meta name="description" content="Контактирајте ја Хедра Фарм за било какви прашања. Работно време: Пон-Саб 10:00-22:00. Брза и професионална поддршка за сите ваши потреби." />
-        <meta name="keywords" content="контакт, Хедра Фарм, аптека контакт, работно време, поддршка, прашања" />
+        <title>Контакт - Аптека Струмица | Хедра Фарм</title>
+        <meta name="description" content="Контактирајте ја Аптека Струмица - Хедра Фарм за било какви прашања. Работно време: Пон-Саб 10:00-22:00. Брза и професионална поддршка." />
+        <meta name="keywords" content="контакт, Хедра Фарм, аптека Струмица контакт, аптека во Струмица, работно време, поддршка, apteka Strumica" />
         <meta name="robots" content="index, follow" />
-        <meta property="og:title" content="Контакт - Хедра Фарм" />
-        <meta property="og:description" content="Контактирајте ја Хедра Фарм за било какви прашања. Брза и професионална поддршка." />
+        <meta property="og:title" content="Контакт - Аптека Струмица | Хедра Фарм" />
+        <meta property="og:description" content="Контактирајте ја Аптека Струмица - Хедра Фарм за било какви прашања." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://hedrafarm.mk/contact" />
         <meta property="og:locale" content="mk_MK" />
