@@ -180,6 +180,16 @@ function addProduct(product){
     addToCart(product)
     fireMessage('Продуктот е додаден во вашата кошничка', true)
 }
+
+function getCategoryProductCount(categoryId) {
+    return products.value.filter(p => p.product_category_id === categoryId).length;
+}
+
+function getSubcategoryProductCount(subcategoryId) {
+    return products.value.filter(p => 
+        p.subcategories && p.subcategories.some(sub => sub.id === subcategoryId)
+    ).length;
+}
 </script>
 
 <template>
@@ -255,7 +265,7 @@ function addProduct(product){
                                                 :value="category.id"
                                                 v-model="selectedCategories"
                                                 >
-                                            <label class="form-check-label" for="brand1">{{category.translated}}<span>(12)</span></label>
+                                            <label class="form-check-label" for="brand1">{{category.translated}}<span>({{ getCategoryProductCount(category.id) }})</span></label>
                                         </div>
                                     </li>
                                 </ul>
@@ -273,7 +283,7 @@ function addProduct(product){
                                                 :value="subcategory.id"
                                                 v-model="selectedSubcategories"
                                                 >
-                                            <label class="form-check-label" for="brand1">{{subcategory.translated}}<span>(12)</span></label>
+                                            <label class="form-check-label" for="brand1">{{subcategory.translated}}<span>({{ getSubcategoryProductCount(subcategory.id) }})</span></label>
                                         </div>
                                     </li>
                                 </ul>
