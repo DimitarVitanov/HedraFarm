@@ -1,14 +1,19 @@
 <script setup>
-import {onMounted, ref } from 'vue';
+import {onMounted, ref, computed } from 'vue';
 import { useCart } from '@/utils/useCart';
 const company = ref([]);
 const showCategories = ref(false);
 const categories = ref([])
+const products = ref([])
+const searchQuery = ref('')
+const showSearchResults = ref(false)
+const selectedCategory = ref('')
 const { cart, totalPrice, removeFromCart } = useCart()
 
 onMounted(async () => {
     company.value = await fetchCompanyInfo();
     categories.value = await fetchCategories();
+    products.value = await fetchProducts();
 });
 
 
@@ -56,6 +61,71 @@ const showCategoriesOnHover = () => {
 
 const hideCategoriesOnLeave = () => {
   showCategories.value = false;
+};
+
+async function fetchProducts() {
+    try {
+        const response = await fetch('/products/fetch');
+        if (!response.ok) {
+            throw new Error('An error occurred while fetching products');
+        }
+        const data = await response.json();
+        if (data.success) {
+            return data.data;
+        }
+        return [];
+    } catch (error) {
+        console.log(error);
+        return [];
+    }
+}
+
+const filteredSearchResults = computed(() => {
+    if (!searchQuery.value || searchQuery.value.length < 2) return [];
+    
+    let results = products.value;
+    const query = searchQuery.value.toLowerCase();
+    
+    // Filter by category if selected
+    if (selectedCategory.value) {
+        results = results.filter(p => p.product_category_id === parseInt(selectedCategory.value));
+    }
+    
+    // Filter by search query
+    results = results.filter(p => 
+        p.name.toLowerCase().includes(query) ||
+        (p.short_description && p.short_description.toLowerCase().includes(query))
+    );
+    
+    return results.slice(0, 8); // Limit to 8 results
+});
+
+const handleSearch = () => {
+    if (searchQuery.value.length >= 2) {
+        showSearchResults.value = true;
+    } else {
+        showSearchResults.value = false;
+    }
+};
+
+const hideSearchResults = () => {
+    setTimeout(() => {
+        showSearchResults.value = false;
+    }, 200);
+};
+
+const goToProduct = (productId) => {
+    window.location.href = `/products/${productId}/view`;
+};
+
+const submitSearch = () => {
+    if (searchQuery.value) {
+        let url = `/store?search=${encodeURIComponent(searchQuery.value)}`;
+        if (selectedCategory.value) {
+            url += `&category=${selectedCategory.value}`;
+        }
+        window.location.href = url;
+    }
 };
 </script>
 
@@ -139,28 +209,51 @@ const hideCategoriesOnLeave = () => {
                                 </a>
                             </div>
                         </div>
-                        <div class="d-none  col-lg-6 col-xl-5">
-                            <div class="header-middle-search">
-                                <form action="#">
+                        <div class="col-lg-6 col-xl-5 d-none d-lg-block">
+                            <div class="header-middle-search position-relative">
+                                <form @submit.prevent="submitSearch">
                                     <div class="search-content">
-                                        <select class="select">
-                                            <option value="">All Category</option>
-                                            <option value="1">Medicine</option>
-                                            <option value="2">Medical Equipments</option>
-                                            <option value="3">Beauty Care</option>
-                                            <option value="4">Baby & Mom Care</option>
-                                            <option value="5">Healthcare</option>
-                                            <option value="6">Food & Nutrition</option>
-                                            <option value="7">Medical Supplies</option>
-                                            <option value="8">Lab Test</option>
-                                            <option value="9">Fitness</option>
-                                            <option value="10">Vitamins & Supplement</option>
-                                            <option value="11">Pet Care</option>
+                                        <select class="select" v-model="selectedCategory">
+                                            <option value="">Сите Категории</option>
+                                            <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.translated }}</option>
                                         </select>
-                                        <input type="text" class="form-control" placeholder="Search Here...">
-                                        <button type="submit" class="search-btn"><i class="far fa-search"></i></button>
+                                        <input 
+                                            type="text" 
+                                            class="form-control" 
+                                            placeholder="Пребарај производи..."
+                                            v-model="searchQuery"
+                                            @input="handleSearch"
+                                            @focus="handleSearch"
+                                            @blur="hideSearchResults"
+                                        >
+                                        <button type="submit" class="search-btn">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <circle cx="11" cy="11" r="8"></circle>
+                                                <path d="m21 21-4.35-4.35"></path>
+                                            </svg>
+                                        </button>
                                     </div>
                                 </form>
+                                <!-- Search Results Dropdown -->
+                                <div v-if="showSearchResults && filteredSearchResults.length > 0" class="search-results-dropdown">
+                                    <ul>
+                                        <li v-for="product in filteredSearchResults" :key="product.id" @mousedown="goToProduct(product.id)">
+                                            <div class="search-result-item">
+                                                <img :src="product.main_image" :alt="product.name" width="50" height="50">
+                                                <div class="search-result-info">
+                                                    <h6>{{ product.name }}</h6>
+                                                    <span class="price">{{ product.disscount ? (product.price - (product.price * product.disscount / 100)).toFixed(0) : product.price }} ден</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <a v-if="filteredSearchResults.length >= 8" href="#" @mousedown.prevent="submitSearch" class="view-all-results">
+                                        Прикажи ги сите резултати
+                                    </a>
+                                </div>
+                                <div v-else-if="showSearchResults && searchQuery.length >= 2" class="search-results-dropdown">
+                                    <p class="no-results">Нема пронајдени производи</p>
+                                </div>
                             </div>
                         </div>
                         <div class="col-7 col-lg-3 col-xl-4">
