@@ -15,6 +15,11 @@ import PrimeVue from 'primevue/config';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Хедерафарм+';
 
+// Force light theme - remove dark mode
+document.documentElement.removeAttribute('data-bs-theme');
+document.body.removeAttribute('data-bs-theme');
+document.documentElement.setAttribute('data-bs-theme', 'light');
+
 createInertiaApp({
     title: (title) => `Хедерафарм+`,
     resolve: (name) =>

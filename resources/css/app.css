@@ -907,3 +907,20 @@ body[data-bs-theme='dark'] .swal2-popup{
 body[data-bs-theme='dark'] .swal2-title{
   color:white !important
 }
+
+/* FORCE LIGHT THEME - Override all dark theme styles */
+html[data-bs-theme='light'] body,
+html[data-bs-theme='light'] .bg-body-emphasis,
+html[data-bs-theme='light'] .p-card,
+html[data-bs-theme='light'] .p-datatable,
+html[data-bs-theme='light'] .p-datatable .p-datatable-thead > tr > th,
+html[data-bs-theme='light'] .p-datatable .p-datatable-tbody > tr > td {
+  background-color: #fff !important;
+  color: #333 !important;
+}
+
+html[data-bs-theme='light'] .navbar-vertical,
+html[data-bs-theme='light'] .content,
+html[data-bs-theme='light'] .card {
+  background-color: #fff !important;
+}
