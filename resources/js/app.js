@@ -2,10 +2,7 @@ import '../css/app.css';
 import '../../public/assets/css/bootstrap.min.css';
 import '../css/theme.min.css'
 import '../css/styles.css'
-import '@fortawesome/fontawesome-free/css/all.min.css';
-import '@fortawesome/fontawesome-free/css/brands.min.css'; // For fab
-import '@fortawesome/fontawesome-free/css/regular.min.css'; // For far
-import '@fortawesome/fontawesome-free/css/solid.min.css'; // For fas
+import '@fortawesome/fontawesome-free/css/all.min.css'; // Includes solid, regular, and brands
 import Lara from '@primeuix/themes/lara'
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';

@@ -23,6 +23,15 @@
             @font-face { font-family: "Font Awesome 5 Brands"; font-display: swap !important; }
         </style>
         
+        <!-- Preload critical FontAwesome fonts (hashes from production build) -->
+        @php
+            $manifest = json_decode(file_get_contents(public_path('build/manifest.json')), true);
+            $faFonts = array_filter(array_keys($manifest), fn($k) => str_contains($k, 'fa-') && str_ends_with($k, '.woff2'));
+        @endphp
+        @foreach($faFonts as $font)
+            <link rel="preload" href="/build/{{ $manifest[$font]['file'] }}" as="font" type="font/woff2" crossorigin>
+        @endforeach
+        
         <!-- Preload critical CSS -->
         <link rel="preload" href="/assets/css/bootstrap.min.css" as="style">
         <link rel="preload" href="/assets/css/style.css" as="style">
@@ -32,7 +41,7 @@
         <link rel="stylesheet" href="/assets/css/style.css">
         
         <!-- Non-critical CSS - loaded asynchronously -->
-        <link rel="stylesheet" href="/assets/css/all-fontawesome.min.css" media="print" onload="this.media='all'">
+        <!-- FontAwesome is loaded via Vite in app.js, no need to load again -->
         <link rel="stylesheet" href="/assets/css/animate.min.css" media="print" onload="this.media='all'">
         <link rel="stylesheet" href="/assets/css/magnific-popup.min.css" media="print" onload="this.media='all'">
         <link rel="stylesheet" href="/assets/css/jquery-ui.min.css" media="print" onload="this.media='all'">
