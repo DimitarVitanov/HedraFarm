@@ -371,7 +371,7 @@ async function fetchBlogs(){
                                 <div class="blog-item-info">
                                     <div class="blog-item-meta">
                                         <ul class="ps-0 py-0 pb-0">
-                                            <li><a href="#"><i class="far fa-user-circle"></i> {{blog.user}}</a></li>
+                                            <li class="d-none"><a href="#"><i class="far fa-user-circle"></i> {{blog.user}}</a></li>
                                         </ul>
                                     </div>
                                     <h4 class="blog-title">

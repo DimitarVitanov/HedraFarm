@@ -161,9 +161,9 @@ const addProduct = (product) => {
                             </div>
                             <div class="shop-single-sortinfo">
                                 <ul>
-                                    <li>Достапна количина: <span>{{product.quantity}}</span></li>
+                                    <li class="d-none">Достапна количина: <span>{{product.quantity}}</span></li>
                                     <li v-if="product.category">Категорија: <span>{{product.category.translated}}</span></li>
-                                    <li>Бренд: <a href="#">Novak</a></li>
+                                    <li class="d-none">Бренд: <a href="#">Novak</a></li>
                                 </ul>
                             </div>
                             <div class="shop-single-action">
