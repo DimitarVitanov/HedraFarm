@@ -182,7 +182,8 @@ async function fetchCompanyInfo(){
                                         </div>
                                         <div class="contact-info-content">
                                             <h5>Работно Време</h5>
-                                            <p>Пон - Саб (10:00 - 22:00)</p>
+                                            <p>Пон - Пет (07:30 - 22:00)</p>
+                                            <p>Сабота (07:30 - 21:00)</p>
                                             <p>Недела - <span class="text-danger">Затворено</span></p>
                                         </div>
                                     </div>

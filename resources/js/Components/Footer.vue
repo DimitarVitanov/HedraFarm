@@ -66,13 +66,10 @@ async function fetchCategories(){
                             <h4 class="footer-widget-title">Линкови</h4>
                             <ul class="footer-list">
                                 <li><a href="/">Почетна</a></li>
-                                <li><a href="/store">Оналјн Продавница</a></li>
+                                <li><a href="/store">Онлајн Продавница</a></li>
                                 <li><a href="/about">За Нас</a></li>
                                 <li><a href="/blogs">Блог</a></li>
                                 <li><a href="/contact">Контакт</a></li>
-                                <li><a href="/privacy">Политика на приватност</a></li>
-                                <li><a href="/delivery-policy">Политика на достава</a></li>
-
                             </ul>
                         </div>
                     </div>
@@ -113,7 +110,7 @@ async function fetchCategories(){
                                 <span>Социјални Мрежи:</span>
                                 <a href="javascript:void(0)"><i class="fab fa-facebook-f"></i></a>
                                 <a href="https://www.instagram.com/hederafarmplus/" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
-                                <a href="javascript:void(0)"><i class="fab fa-linkedin-in"></i></a>
+                                <a class="d-none" href="javascript:void(0)"><i class="fab fa-linkedin-in"></i></a>
                             </div>
                         </div>
                     </div>

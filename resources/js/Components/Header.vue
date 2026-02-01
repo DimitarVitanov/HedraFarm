@@ -114,7 +114,7 @@ const toggleCategories = () => {
                                         <li><a :href="'mailto:' + company.email"><i class="far fa-envelopes"></i>
                                             {{company.email}}</a></li>
                                         <li><a href="tel:+21236547898"><i class="fa fa-headset"></i> {{company.phone}}</a></li>
-                                        <li class="help"><a href="#"><i class="fa fa-comment"></i> Ви треба помош?</a></li>
+                                        <li class="help"><a href="/contact"><i class="fa fa-comment"></i> Ви треба помош?</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -157,7 +157,7 @@ const toggleCategories = () => {
                                                 <span>Социјални мрежи: </span>
                                                 <a href="#"><i class="fab fa-facebook"></i></a>
                                                 <a href="https://www.instagram.com/hederafarmplus/"><i class="fab fa-instagram"></i></a>
-                                                <a href="#"><i class="fab fa-linkedin"></i></a>
+                                                <a href="#"><i class="fab fa-linkedin d-none"></i></a>
                                             </div>
                                         </li>
                                     </ul>
@@ -224,8 +224,8 @@ const toggleCategories = () => {
                                                 <span>{{ cart && cart.items ? cart.items.reduce((total, item) => total + item.quantity, 0) : 0 }}</span>
                                             </div>
                                             <div class="list-item-info">
-                                                <h6>{{totalPrice}}ден</h6>
-                                                <h5>Кошничка</h5>
+                                                <h6 class="pl-2">{{totalPrice}} ден</h6>
+                                                <h5 class="pl-2">Кошничка</h5>
                                             </div>
                                         </a>
                                         <div class="dropdown-cart-menu">
