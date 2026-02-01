@@ -140,7 +140,7 @@ async function fetchCompanyInfo(){
         <div class="counter-area pt-50 pb-50">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-3 col-sm-6">
+                    <div class="col-lg-4 col-sm-6">
                         <div class="counter-box">
                             <div class="icon d-flex justify-content-center">
                                 <img src="assets/img/icon/sale.svg" alt="">
@@ -153,7 +153,7 @@ async function fetchCompanyInfo(){
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-sm-6">
+                    <div class="col-lg-4 col-sm-6">
                         <div class="counter-box">
                             <div class="icon d-flex justify-content-center">
                                 <img src="assets/img/icon/rate.svg" alt="">
@@ -166,7 +166,7 @@ async function fetchCompanyInfo(){
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-sm-6">
+                    <div class="col-lg-4 col-sm-6">
                         <div class="counter-box">
                             <div class="icon d-flex justify-content-center">
                                 <img src="assets/img/icon/employee.svg" alt="">
@@ -180,7 +180,7 @@ async function fetchCompanyInfo(){
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-sm-6">
+                    <div class="col-lg-4 col-sm-6 d-none">
                         <div class="counter-box">
                             <div class="icon d-flex justify-content-center">
                                 <img src="assets/img/icon/award.svg" alt="">
