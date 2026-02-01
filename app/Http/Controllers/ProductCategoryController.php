@@ -9,11 +9,27 @@ class ProductCategoryController extends Controller
 {
     public function getCategories()
     {
-        $categories = ProductCategory::get()->map(function($category){
+        $iconMap = [
+            'Симптоми и состојби' => 'fa-pills',
+            'Додатоци во исхрана' => 'fa-capsules',
+            'Гелови, кремови и масти' => 'fa-pump-soap',
+            'Бебешки и детски производи' => 'fa-baby',
+            'Регенерација на кожата' => 'fa-leaf',
+            'Храна за бебиња' => 'fa-utensils',
+            'Опрема за бебиња' => 'fa-baby-carriage',
+            'Козметика' => 'fa-spa',
+            'Орално здравје' => 'fa-tooth',
+            'Апарати' => 'fa-stethoscope',
+            'Препарати за деца' => 'fa-child',
+            'Хомеопатски препарати' => 'fa-mortar-pestle',
+        ];
+
+        $categories = ProductCategory::get()->map(function($category) use ($iconMap) {
             return [
                 'id' => $category->id,
                 'translated' => $category->translated,
                 'name' => $category->name,
+                'icon' => $iconMap[$category->translated] ?? 'fa-box-open',
             ];
         });
 

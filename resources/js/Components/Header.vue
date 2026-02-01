@@ -12,55 +12,6 @@ onMounted(async () => {
 });
 
 
-const getCategoryImage = (category) => {
-    switch(category){
-        case 'symptomps_conditions':
-            return '/assets/img/icon/medicine.svg'
-        case 'vitamins_dietry_supplements':
-            return '/assets/img/icon/supplements.svg'
-        case 'gels_creams':
-            return '/assets/img/icon/beauty-care.svg'
-        case 'children_remedies':
-            return '/assets/img/icon/baby-mom-care.svg'
-        case 'homeopathic_remedies':
-            return '/assets/img/icon/medicine.svg'
-        case 'baby_food':
-            return '/assets/img/icon/food-nutrition.svg'
-        case 'baby_equipment':
-            return '/assets/img/icon/medical-equipements.svg'
-        case 'cosmetics':
-            return '/assets/img/icon/beauty-care.svg'
-        case 'oral_health':
-            return '/assets/img/icon/health-care.svg'
-        case 'meedical_devices':
-            return '/assets/img/icon/medical-equipements.svg'
-    }
-};
-const getCategoryName = (name) => {
-    switch(name){
-        case 'symptomps_conditions':
-            return 'Симптоми и состојби'
-        case 'vitamins_dietry_supplements':
-            return 'Витамини и додатоци во исхрана'
-        case 'gels_creams':
-            return 'Гелови и креми'
-        case 'children_remedies':
-            return 'Препарати за деца'
-        case 'homeopathic_remedies':
-            return 'Хомеопатски препарати'
-        case 'baby_food':
-            return 'Храна за деца'
-        case 'baby_equipment':
-            return 'Опрема за деца'
-        case 'cosmetics':
-            return 'Козметика'
-        case 'oral_health':
-            return 'Орално здравје'
-        case 'meedical_devices':
-            return 'Медицински уреди'
-
-    }
-};
 
 async function fetchCompanyInfo() {
     try {
@@ -97,6 +48,14 @@ async function fetchCategories(){
 
 const toggleCategories = () => {
   showCategories.value = !showCategories.value;
+};
+
+const showCategoriesOnHover = () => {
+  showCategories.value = true;
+};
+
+const hideCategoriesOnLeave = () => {
+  showCategories.value = false;
 };
 </script>
 
@@ -272,12 +231,17 @@ const toggleCategories = () => {
                         <a class="navbar-brand" href="/">
                             <img src="/assets/img/logo/logo.png" class="logo-scrolled" alt="logo" width="150" height="50">
                         </a>
-                        <div class="category-all">
-                            <button @click="toggleCategories()" class="category-btn" type="button">
+                        <div class="category-all" @mouseenter="showCategoriesOnHover" @mouseleave="hideCategoriesOnLeave">
+                            <button class="category-btn" type="button">
                                 <i class="fas fa-list-ul"></i><span>Категории</span>
                             </button>
-                            <ul  v-if="showCategories" class="main-category d-block">
-                                <li v-for="(category,index) in categories"><a :href="'/store?category=' + category.id"><img :src="getCategoryImage(category.name)" :alt="getCategoryName(category.name)" width="30" height="30"><span>{{getCategoryName(category.name)}}</span></a></li>
+                            <ul v-if="showCategories" class="main-category d-block">
+                                <li v-for="(category, index) in categories" :key="category.id">
+                                    <a :href="'/store?category=' + category.id">
+                                        <i :class="'fas ' + (category.icon || 'fa-cube')" style="width: 24px; text-align: center; margin-right: 8px; color: #0cb8b6;"></i>
+                                        <span>{{ category.translated }}</span>
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                         <div class="mobile-menu-right">
