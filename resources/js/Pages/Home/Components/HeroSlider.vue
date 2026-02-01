@@ -121,7 +121,7 @@ async function fetchSliders() {
                                 <span>Цена</span>
                                 <span>{{ slide.price }} ден</span>
                               </div>
-                              <img :src="slide.image" alt="Hero Image" />
+                              <img :src="slide.image" alt="Hero Image" width="500" height="400" loading="eager" />
                             </div>
                           </div>
                         </div>
@@ -136,4 +136,12 @@ async function fetchSliders() {
 </template>
 
 <style scoped>
+.hero-section {
+  min-height: 500px;
+}
+.hero-img img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 500 / 400;
+}
 </style>

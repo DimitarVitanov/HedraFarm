@@ -176,7 +176,7 @@ const toggleCategories = () => {
                         <div class="col-5 col-lg-3 col-xl-3">
                             <div class="header-middle-logo">
                                 <a class="navbar-brand" href="/">
-                                    <img src="/assets/img/logo/logo.png" alt="logo">
+                                    <img src="/assets/img/logo/logo.png" alt="logo" width="150" height="50">
                                 </a>
                             </div>
                         </div>
@@ -270,14 +270,14 @@ const toggleCategories = () => {
                 <nav class="navbar navbar-expand-lg">
                     <div class="container position-relative">
                         <a class="navbar-brand" href="/">
-                            <img src="/assets/img/logo/logo.png" class="logo-scrolled" alt="logo">
+                            <img src="/assets/img/logo/logo.png" class="logo-scrolled" alt="logo" width="150" height="50">
                         </a>
                         <div class="category-all">
                             <button @click="toggleCategories()" class="category-btn" type="button">
                                 <i class="fas fa-list-ul"></i><span>Категории</span>
                             </button>
                             <ul  v-if="showCategories" class="main-category d-block">
-                                <li v-for="(category,index) in categories"><a :href="'/store?category=' + category.id"><img :src="getCategoryImage(category.name)" alt=""><span>{{getCategoryName(category.name)}}</span></a></li>
+                                <li v-for="(category,index) in categories"><a :href="'/store?category=' + category.id"><img :src="getCategoryImage(category.name)" :alt="getCategoryName(category.name)" width="30" height="30"><span>{{getCategoryName(category.name)}}</span></a></li>
                             </ul>
                         </div>
                         <div class="mobile-menu-right">
@@ -297,7 +297,7 @@ const toggleCategories = () => {
                             aria-labelledby="offcanvasNavbarLabel">
                             <div class="offcanvas-header">
                                 <a href="/" class="offcanvas-brand" id="offcanvasNavbarLabel">
-                                    <img src="/assets/img/logo/logo.png" alt="">
+                                    <img src="/assets/img/logo/logo.png" alt="logo" width="150" height="50">
                                 </a>
                                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
                                     aria-label="Close"></button>
