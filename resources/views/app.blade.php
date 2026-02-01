@@ -11,6 +11,16 @@
         <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
         <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
         
+        <!-- Font display swap override for FontAwesome -->
+        <style>
+            @font-face { font-family: "Font Awesome 6 Pro"; font-display: swap !important; }
+            @font-face { font-family: "Font Awesome 6 Brands"; font-display: swap !important; }
+            @font-face { font-family: "Font Awesome 6 Duotone"; font-display: swap !important; }
+            @font-face { font-family: "Font Awesome 6 Sharp"; font-display: swap !important; }
+            @font-face { font-family: "Font Awesome 5 Pro"; font-display: swap !important; }
+            @font-face { font-family: "Font Awesome 5 Brands"; font-display: swap !important; }
+        </style>
+        
         <!-- Preload critical CSS -->
         <link rel="preload" href="/assets/css/bootstrap.min.css" as="style">
         <link rel="preload" href="/assets/css/style.css" as="style">
