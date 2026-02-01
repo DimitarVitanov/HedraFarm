@@ -39,9 +39,9 @@ async function fetchCompany(){
         <meta property="og:title" content="Политика на Приватност - Аптека Струмица" />
         <meta property="og:description" content="Политика на приватност на Аптека Струмица - Хедра Фарм." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://hedrafarm.mk/privacy" />
+        <meta property="og:url" content="https://hederafarmplus.mk/privacy" />
         <meta property="og:locale" content="mk_MK" />
-        <link rel="canonical" href="https://hedrafarm.mk/privacy" />
+        <link rel="canonical" href="https://hederafarmplus.mk/privacy" />
     </Head>
     <Header/>
     <div class="main">

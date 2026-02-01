@@ -191,9 +191,9 @@ function addProduct(product){
         <meta property="og:title" content="Онлајн Продавница - Аптека Струмица | Хедра Фарм" />
         <meta property="og:description" content="Аптека Струмица - Широк избор на лекови, козметика и витамини. Бесплатна достава над 2000 денари." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://hedrafarm.mk/store" />
+        <meta property="og:url" content="https://hederafarmplus.mk/store" />
         <meta property="og:locale" content="mk_MK" />
-        <link rel="canonical" href="https://hedrafarm.mk/store" />
+        <link rel="canonical" href="https://hederafarmplus.mk/store" />
     </Head>
     <!-- preloader -->
         <div v-if="loading" class="preloader">

@@ -40,9 +40,9 @@ async function fetchBlogs(){
         <meta property="og:title" content="Блог - Аптека Струмица | Хедра Фарм" />
         <meta property="og:description" content="Блог на Аптека Струмица - Здравствени совети и корисни информации." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://hedrafarm.mk/blogs" />
+        <meta property="og:url" content="https://hederafarmplus.mk/blogs" />
         <meta property="og:locale" content="mk_MK" />
-        <link rel="canonical" href="https://hedrafarm.mk/blogs" />
+        <link rel="canonical" href="https://hederafarmplus.mk/blogs" />
     </Head>
     <!-- preloader -->
     <div v-if="loading" class="preloader">

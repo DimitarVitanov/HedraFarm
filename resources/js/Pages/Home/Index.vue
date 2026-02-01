@@ -64,13 +64,13 @@ async function fetchBlogs(){
         <meta property="og:title" content="Аптека Струмица | Хедра Фарм - Онлајн Аптека" />
         <meta property="og:description" content="Аптека Струмица - Вашата доверлива аптека во Струмица. Широк избор на лекови, козметика и витамини со бесплатна достава." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://hedrafarm.mk" />
+        <meta property="og:url" content="https://hederafarmplus.mk" />
         <meta property="og:image" content="/assets/img/logo/logo.png" />
         <meta property="og:locale" content="mk_MK" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Аптека Струмица | Хедра Фарм" />
         <meta name="twitter:description" content="Аптека Струмица - Вашата доверлива аптека во Струмица. Широк избор на лекови, козметика и витамини." />
-        <link rel="canonical" href="https://hedrafarm.mk" />
+        <link rel="canonical" href="https://hederafarmplus.mk" />
     </Head>
     <div>
 

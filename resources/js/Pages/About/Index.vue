@@ -39,10 +39,10 @@ async function fetchCompanyInfo(){
         <meta property="og:title" content="За Нас - Аптека Струмица | Хедра Фарм" />
         <meta property="og:description" content="Дознајте повеќе за Хедра Фарм - вашата доверлива аптека во Струмица со долгогодишно искуство." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://hedrafarm.mk/about" />
+        <meta property="og:url" content="https://hederafarmplus.mk/about" />
         <meta property="og:image" content="/assets/img/about/hedra_about_1.png" />
         <meta property="og:locale" content="mk_MK" />
-        <link rel="canonical" href="https://hedrafarm.mk/about" />
+        <link rel="canonical" href="https://hederafarmplus.mk/about" />
     </Head>
         <div>
 

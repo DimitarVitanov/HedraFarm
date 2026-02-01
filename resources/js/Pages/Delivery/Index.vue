@@ -37,9 +37,9 @@ async function fetchCompany(){
         <meta property="og:title" content="Политика на Достава - Аптека Струмица" />
         <meta property="og:description" content="Достава од Аптека Струмица. Бесплатна достава над 2000 денари." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://hedrafarm.mk/delivery" />
+        <meta property="og:url" content="https://hederafarmplus.mk/delivery" />
         <meta property="og:locale" content="mk_MK" />
-        <link rel="canonical" href="https://hedrafarm.mk/delivery" />
+        <link rel="canonical" href="https://hederafarmplus.mk/delivery" />
     </Head>
     <Header/>
     <div class="main">
