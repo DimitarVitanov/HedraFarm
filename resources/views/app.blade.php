@@ -7,6 +7,60 @@
         <title inertia>{{ config('app.name', 'Хедерафарм+') }}</title>
         <link rel="icon" href="/assets/img/logo/logo.png">
 
+        <!-- LocalBusiness Schema for SEO -->
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Pharmacy",
+            "name": "Хедра Фарм - Apteka Strumica",
+            "alternateName": ["Hedera Farm", "Аптека Струмица", "Apteki Strumica"],
+            "description": "Apteka Strumica - Аптека во Струмица. Онлајн аптека со широк избор на лекови, козметика и витамини.",
+            "url": "https://hederafarmplus.mk",
+            "logo": "https://hederafarmplus.mk/assets/img/logo/logo.png",
+            "image": "https://hederafarmplus.mk/assets/img/logo/logo.png",
+            "telephone": "+389 70 123 456",
+            "email": "info@hederafarmplus.mk",
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "ул. Маршал Тито",
+                "addressLocality": "Струмица",
+                "addressRegion": "Струмица",
+                "postalCode": "2400",
+                "addressCountry": "MK"
+            },
+            "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": "41.4378",
+                "longitude": "22.6427"
+            },
+            "openingHoursSpecification": [
+                {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+                    "opens": "08:00",
+                    "closes": "20:00"
+                },
+                {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": "Saturday",
+                    "opens": "09:00",
+                    "closes": "14:00"
+                }
+            ],
+            "priceRange": "$$",
+            "currenciesAccepted": "MKD",
+            "paymentAccepted": "Cash, Credit Card",
+            "areaServed": {
+                "@type": "City",
+                "name": "Струмица"
+            },
+            "sameAs": [
+                "https://www.facebook.com/hederafarmplus",
+                "https://www.instagram.com/hederafarmplus"
+            ]
+        }
+        </script>
+
         <!-- Preconnect to external domains -->
         <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
         <link rel="preconnect" href="https://fonts.googleapis.com">

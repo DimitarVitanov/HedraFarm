@@ -1,2 +1,7 @@
 User-agent: *
-Disallow:
+Disallow: /dashboard
+Disallow: /login
+Disallow: /register
+Disallow: /admin
+
+Sitemap: https://hederafarmplus.mk/sitemap.xml
