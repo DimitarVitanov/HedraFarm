@@ -10,6 +10,8 @@
         <!-- Preconnect to external domains -->
         <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
         <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         
         <!-- Font display swap override for FontAwesome -->
         <style>
@@ -41,11 +43,13 @@
             <link rel="stylesheet" href="/assets/css/animate.min.css">
             <link rel="stylesheet" href="/assets/css/magnific-popup.min.css">
             <link rel="stylesheet" href="/assets/css/jquery-ui.min.css">
+            <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
         </noscript>
         
         <!-- Fonts - loaded with display=swap for non-blocking -->
         <link href="https://fonts.bunny.net/css?family=inter:400,500,600,900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
         
         <!-- Scripts -->
         <script src="//cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
