@@ -91,7 +91,7 @@ const addProduct = (product) => {
      <div class="product-list pb-100">
         <div class="container wow fadeInUp" data-wow-delay=".25s">
             <div class="row g-4">
-                <div class="col-12 col-md-6 col-lg-6 col-xl-4">
+                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
                     <div class="product-list-box">
                         <h2 class="product-list-title">Со Поуст</h2>
                         <div v-for="(product,index) in on_sale" class="product-list-item">
@@ -116,7 +116,7 @@ const addProduct = (product) => {
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-6 col-lg-6 col-xl-4">
+                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
                     <div class="product-list-box">
                         <h2 class="product-list-title">Нај Продавани</h2>
                         <div v-for="(product,index) in best_seller" class="product-list-item">
@@ -141,7 +141,7 @@ const addProduct = (product) => {
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-6 col-lg-6 col-xl-4">
+                <div class="col-12 col-md-6 col-lg-6 col-xl-4 d-none">
                     <div class="product-list-box">
                         <h2 class="product-list-title">Препорачани</h2>
                         <div v-for="(product,index) in top_rated" class="product-list-item">
