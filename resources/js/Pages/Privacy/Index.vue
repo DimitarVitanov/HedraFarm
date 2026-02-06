@@ -61,6 +61,16 @@ async function fetchCompany(){
     <!-- breadcrumb end -->
 
     <div class="privacy-policy container py-5">
+        <!-- Company Info -->
+        <div class="company-info-box mb-4 p-4" style="background: #f8f9fa; border-radius: 8px; border-left: 4px solid #0cb8b6;">
+            <h5 style="color: #0cb8b6; margin-bottom: 15px;">ПЗУ - аптека ХЕДЕРА ФАРМ ДВА Струмица</h5>
+            <p class="mb-1"><strong>Адреса:</strong> Балканска бр.4 Струмица, Струмица</p>
+            <p class="mb-1"><strong>ЕМБС:</strong> 7766637</p>
+            <p class="mb-1"><strong>ЕДБ:</strong> 4027024539687</p>
+            <p class="mb-1"><strong>Телефон:</strong> 075 472 123</p>
+            <p class="mb-0"><strong>Email:</strong> pzuhederaplusfarm@yahoo.com</p>
+        </div>
+
         <h2 class="mb-4">Политика на приватност</h2>
 
         <p>
