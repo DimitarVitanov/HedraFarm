@@ -179,7 +179,7 @@ const checkPermission = ()=>{
 }
 
 .bg-invoice{
-    background-color: #6b8e23 !important;
+    background-color: rgb(30, 213, 30) !important;
     color: white !important;
     text-decoration: none;
     display: inline-flex;
