@@ -14,6 +14,35 @@ class ProductController extends Controller
 {
     public function getProducts()
     {
+        $products = Product::where('is_active', 1)->with('category')->get()->map(function($product){
+            return [
+                'id' => $product->id,
+                'name' => $product->name,
+                'short_description' => $product->short_description,
+                'description' => $product->description,
+                'clean_description' => Str::limit(strip_tags($product->description), 100),
+                'price' => $product->price,
+                'disscount' => $product->disscount ?? null,
+                'product_category_id' => $product->product_category_id,
+                'product_category_name' =>ClientHelper::tidyName($product->category->name),
+                'quantity' => $product->quantity,
+                'category' => $product->category->name,
+                'main_image' =>  $product->main_image,
+                'is_active' => (bool)$product->is_active,
+                'show_trending' => (bool) $product->show_trending,
+                'show_on_sale' => (bool)$product->show_on_sale,
+                'show_best_seller' => (bool)$product->show_best_seller,
+                'show_top_rated' => (bool)$product->show_top_rated,
+                'galleries'=> $product->galleries ?? [],
+                'subcategories' => $this->fetchSubcategories($product->id)
+            ];
+        });
+
+        return response()->json(['success' => true, 'data' => $products, 'message' => 'Products fetched successfully']);
+    }
+
+    public function getAllProducts()
+    {
         $products = Product::with('category')->get()->map(function($product){
             return [
                 'id' => $product->id,
@@ -44,8 +73,8 @@ class ProductController extends Controller
     public function viewProduct($id)
     {
         $product = Product::with('category')->find($id);
-        if (!$product) {
-            return response()->json(['success' => false, 'message' => 'Product not found']);
+        if (!$product || !$product->is_active) {
+            abort(404);
         }
         $product->galleries = $product->galleries ?? [];
         $product->subcategories = $this->fetchSubcategories($id);

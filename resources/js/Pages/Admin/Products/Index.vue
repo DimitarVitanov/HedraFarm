@@ -75,7 +75,7 @@ const checkPermission = ()=>{
 async function fetchProducts(){
     try{
         loading.value = true
-        const response = await fetch('/products/fetch')
+        const response = await fetch('/admin/products/fetch')
         if(!response.ok){
             throw new Error('An error occurred while fetching the data')
         }
