@@ -10,6 +10,7 @@ const { addToCart} = useCart()
 const { url, props } = usePage();
 const route = new URL(url, window.location.origin);
 const selectedCategoryParam = route.searchParams.get('category');
+const searchParam = route.searchParams.get('search');
 const loading = ref(false)
 const products = ref([])
 const categories = ref([])
@@ -40,6 +41,10 @@ onMounted(async()=>{
 
     if (selectedCategoryParam) {
     selectedCategories.value = [parseInt(selectedCategoryParam)]
+    }
+
+    if (searchParam) {
+        searchQuery.value = searchParam
     }
 
     loading.value = false

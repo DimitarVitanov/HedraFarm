@@ -184,7 +184,7 @@ const submitSearch = () => {
                                         <li class="social">
                                             <div class="header-top-social">
                                                 <span>Социјални мрежи: </span>
-                                                <a href="#"><i class="fab fa-facebook"></i></a>
+                                                <a href="https://www.facebook.com/hederafarmplus" target="_blank" rel="noopener"><i class="fab fa-facebook"></i></a>
                                                 <a href="https://www.instagram.com/hederafarmplus/"><i class="fab fa-instagram"></i></a>
                                                 <a href="#"><i class="fab fa-linkedin d-none"></i></a>
                                             </div>

@@ -57,7 +57,8 @@ async function fetchCategories(){
                                 <li><i class="fa fa-map-marker-alt"></i>{{company.address}}</li>
                                 <li><a :href="'mailto:' + company.email"><i
                                             class="far fa-envelope"></i>{{company.email}}</a></li>
-                                <li><i class="far fa-clock"></i>Пон-Саб (10:00 - 22:00)</li>
+                                <li><i class="far fa-clock"></i>Пон - Пет (07:30 - 22:00)</li>
+                                <li><i class="far fa-clock"></i>Сабота (07:30 - 21:00)</li>
                             </ul>
                         </div>
                     </div>
@@ -108,7 +109,7 @@ async function fetchCategories(){
                         <div class="col-12 col-lg-6 align-self-center">
                             <div class="footer-social">
                                 <span>Социјални Мрежи:</span>
-                                <a href="javascript:void(0)"><i class="fab fa-facebook-f"></i></a>
+                                <a href="https://www.facebook.com/hederafarmplus" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>
                                 <a href="https://www.instagram.com/hederafarmplus/" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
                                 <a class="d-none" href="javascript:void(0)"><i class="fab fa-linkedin-in"></i></a>
                             </div>

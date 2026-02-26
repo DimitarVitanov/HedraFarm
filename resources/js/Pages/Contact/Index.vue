@@ -182,8 +182,8 @@ async function fetchCompanyInfo(){
                                         </div>
                                         <div class="contact-info-content">
                                             <h5>Работно Време</h5>
-                                            <p>Пон - Пет (07:30 - 22:00)</p>
-                                            <p>Сабота (07:30 - 21:00)</p>
+                                        <p>Пон - Пет (07:30 - 22:00)</p>
+                                        <p>Сабота (07:30 - 21:00)</p>
                                             <p>Недела - <span class="text-danger">Затворено</span></p>
                                         </div>
                                     </div>
@@ -238,12 +238,20 @@ async function fetchCompanyInfo(){
     <!-- newsletter area end -->
 
 
-    <!-- map
-    <div class="contact-map">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d96708.34194156103!2d-74.03927096447748!3d40.759040329405195!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x4a01c8df6fb3cb8!2sSolomon%20R.%20Guggenheim%20Museum!5e0!3m2!1sen!2sbd!4v1619410634508!5m2!1sen!2s"
-            style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+    <!-- map -->
+    <div class="contact-map-section pb-100">
+        <div class="container">
+            <div class="map-heading text-center mb-4">
+                <h2>Нашата Локација</h2>
+                <p>Посетете не на нашата адреса или контактирајте не онлајн</p>
+            </div>
+            <div class="contact-map-wrapper">
+                <iframe src="https://maps.google.com/maps?q=%D0%A5%D0%B5%D0%B4%D0%B5%D1%80%D0%B0+%D0%A4%D0%B0%D1%80%D0%BC+%D0%9F%D0%BB%D1%83%D1%81+%D0%91%D0%B0%D0%BB%D0%BA%D0%B0%D0%BD%D1%81%D0%BA%D0%B0+%D0%B1%D1%804+%D0%A1%D1%82%D1%80%D1%83%D0%BC%D0%B8%D1%86%D0%B0&t=&z=17&ie=UTF8&iwloc=&output=embed"
+                    allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
     </div>
-     end map -->
+    <!-- end map -->
 
     <Footer/>
 
@@ -252,5 +260,33 @@ async function fetchCompanyInfo(){
 </template>
 
 <style scoped>
+.contact-map-section {
+    background-color: #f9f9f9;
+    padding-top: 60px;
+}
 
+.map-heading h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.map-heading p {
+    color: #777;
+    font-size: 15px;
+}
+
+.contact-map-wrapper {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.contact-map-wrapper iframe {
+    width: 100%;
+    height: 450px;
+    border: 0;
+    display: block;
+}
 </style>
