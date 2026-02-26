@@ -133,6 +133,7 @@ const checkPermission = ()=>{
                     <Column field="actions" header="Actions">
                         <template #body="{ data }">
                             <Button v-if="data.status === 'pending'" @click="approveOrder(data)" class="mr-2" title="Approve Order"><i class="fa fa-check"></i></Button>
+                            <a :href="'/admin/orders/' + data.id + '/invoice'" class="p-button p-component mr-2 bg-invoice" title="Download Invoice"><i class="fa fa-download"></i></a>
                             <Button v-if="data.status !== 'cancelled'" @click="cancelOrder(data)" class="bg-danger mr-2" title="Cancel Order"><i class="fa fa-times"></i></Button>
                         </template>
                     </Column>
@@ -175,5 +176,14 @@ const checkPermission = ()=>{
 
 .bg-danger{
     background-color: #dc3545 !important;
+}
+
+.bg-invoice{
+    background-color: #6b8e23 !important;
+    color: white !important;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 </style>

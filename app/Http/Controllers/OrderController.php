@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\CompanyInfo;
 use Illuminate\Support\Carbon;
 use App\Mail\OrderMail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class OrderController extends Controller
 {
@@ -161,5 +163,23 @@ class OrderController extends Controller
         } catch (\Exception $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }
+    }
+
+    public function downloadInvoice($id)
+    {
+        $order = Order::with('items')->findOrFail($id);
+
+        $logoPath = public_path('assets/img/logo/logo.png');
+        $logoBase64 = 'data:image/png;base64,' . base64_encode(file_get_contents($logoPath));
+
+        $company = CompanyInfo::first();
+
+        $pdf = Pdf::loadView('invoices.order', [
+            'order' => $order,
+            'logoBase64' => $logoBase64,
+            'company' => $company,
+        ])->setPaper('a4', 'portrait');
+
+        return $pdf->download('invoice-' . str_pad($order->id, 6, '0', STR_PAD_LEFT) . '.pdf');
     }
 }

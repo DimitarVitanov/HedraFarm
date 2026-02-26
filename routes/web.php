@@ -124,6 +124,7 @@ Route::middleware('auth')->prefix('admin')->group(function () {
         Route::post('update', [OrderController::class, 'update'])->name('admin.orders.update');
         Route::post('approve', [OrderController::class, 'approveOrder'])->name('admin.orders.approve');
         Route::post('cancel', [OrderController::class, 'cancelOrder'])->name('admin.orders.cancel');
+        Route::get('{id}/invoice', [OrderController::class, 'downloadInvoice'])->name('admin.orders.invoice');
     });
 });
 Route::get('/product-categories/fetch', [ProductCategoryController::class, 'getCategories'])->name('admin.categories.fetch');
