@@ -33,6 +33,7 @@ class ProductController extends Controller
                 'show_on_sale' => (bool)$product->show_on_sale,
                 'show_best_seller' => (bool)$product->show_best_seller,
                 'show_top_rated' => (bool)$product->show_top_rated,
+                'show_popular' => (bool)$product->show_popular,
                 'galleries'=> $product->galleries ?? [],
                 'subcategories' => $this->fetchSubcategories($product->id)
             ];
@@ -62,6 +63,7 @@ class ProductController extends Controller
                 'show_on_sale' => (bool)$product->show_on_sale,
                 'show_best_seller' => (bool)$product->show_best_seller,
                 'show_top_rated' => (bool)$product->show_top_rated,
+                'show_popular' => (bool)$product->show_popular,
                 'galleries'=> $product->galleries ?? [],
                 'subcategories' => $this->fetchSubcategories($product->id)
             ];
@@ -120,6 +122,7 @@ class ProductController extends Controller
                 'show_on_sale' => (bool)$product->show_on_sale,
                 'show_best_seller' => (bool)$product->show_best_seller,
                 'show_top_rated' => (bool)$product->show_top_rated,
+                'show_popular' => (bool)$product->show_popular,
             ];
         });
         return response()->json(['success' => true, 'data' => $products, 'message' => 'Products fetched successfully']);
@@ -146,6 +149,7 @@ class ProductController extends Controller
             'show_on_sale' => $request->show_on_sale == 'true' ? 1 : 0,
             'show_best_seller' => $request->show_best_seller == 'true' ? 1 : 0,
             'show_top_rated' => $request->show_top_rated == 'true' ? 1 : 0,
+            'show_popular' => $request->show_popular == 'true' ? 1 : 0,
             'is_active' => $request->is_active == 'true' ? 1 : 0,
             'product_category_id' => $request->product_category_id,
         ]);
@@ -211,6 +215,9 @@ class ProductController extends Controller
         }
         if($request->show_top_rated){
             $product->show_top_rated = $request->show_top_rated == 'true' || $request->show_top_rated == 1 ? 1 : 0;
+        }
+        if($request->show_popular){
+            $product->show_popular = $request->show_popular == 'true' || $request->show_popular == 1 ? 1 : 0;
         }
         if($request->is_active){
             $product->is_active = $request->is_active == 'true' || $request->is_active == 1 ? 1 : 0;
@@ -317,10 +324,13 @@ class ProductController extends Controller
                 $products = Product::where('show_top_rated', 1)->where('is_active', 1)->with('category')->get();
                 break;
             case 'popular':
-                $products = Product::where('is_active', 1)->with('category')
-                 ->orderByDesc('quantity')
-                 ->take(4)->get();
-                 break;
+                $products = Product::where('show_popular', 1)->where('is_active', 1)->with('category')->take(4)->get();
+                if ($products->isEmpty()) {
+                    $products = Product::where('is_active', 1)->with('category')
+                        ->orderByDesc('quantity')
+                        ->take(4)->get();
+                }
+                break;
             default:
                 $products = Product::where('is_active', 1)->with('category')->get();
                 break;

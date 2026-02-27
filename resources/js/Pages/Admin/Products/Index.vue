@@ -27,6 +27,7 @@ const product = ref({
     show_on_sale: false,
     show_best_seller:false,
     show_top_rated:false,
+    show_popular:false,
 });
 const products = ref([]);
 const loading = ref(false);
@@ -162,6 +163,7 @@ const clearForm = () =>{
         show_on_sale: false,
         show_best_seller:false,
         show_top_rated:false,
+        show_popular:false,
         show_trending:'',
         subcategories:[],
     }
@@ -231,6 +233,7 @@ const addProduct = async () => {
     formData.append("show_on_sale", product.value.show_on_sale);
     formData.append("show_best_seller", product.value.show_best_seller);
     formData.append("show_top_rated", product.value.show_top_rated);
+    formData.append("show_popular", product.value.show_popular);
     formData.append("main_image", product.value.main_image);
     if (product.value.subcategories.length > 0) {
             const uniqueSubIds = [...new Set(product.value.subcategories.map(sub => typeof sub === 'object' ? sub.id : sub))];
@@ -282,6 +285,7 @@ const updateProduct = async() =>{
         formData.append('show_on_sale', product.value.show_on_sale)
         formData.append('show_best_seller', product.value.show_best_seller)
         formData.append('show_top_rated', product.value.show_top_rated)
+        formData.append('show_popular', product.value.show_popular)
         formData.append('main_image', product.value.main_image)
         // Append multiple gallery images
         if(product.value.gallery && product.value.gallery.length > 0){
@@ -438,6 +442,12 @@ const deleteProduct = async(id, type,index) =>{
                                 </div>
                             </template>
                             </Column>
+                            <Column field="show_popular" header="Popular" sortable>
+                            <template #body="{data}">
+                                <div :class="data.show_popular ? 'bg-success dot' : 'bg-danger dot'">
+                                </div>
+                            </template>
+                            </Column>
                             <Column field="main_image" header="Main Image" sortable>
                             <template #body="{data}">
                                 <img v-if="data.main_image" :src="data.main_image" alt="Main Image" class="img-fluid" style="width: 50px; height: 50px;">
@@ -544,6 +554,10 @@ const deleteProduct = async(id, type,index) =>{
                 <div class="form-group col-12 col-md-2">
                     <label for="show_top_rated">Top Rated</label>
                     <input type="checkbox"  class="form-check-input ms-2" v-model="product.show_top_rated">
+                </div>
+                <div class="form-group col-12 col-md-2">
+                    <label for="show_popular">Popular</label>
+                    <input type="checkbox"  class="form-check-input ms-2" v-model="product.show_popular">
                 </div>
             </div>
 

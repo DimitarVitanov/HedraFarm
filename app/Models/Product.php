@@ -21,6 +21,7 @@ class Product extends Model
         'show_on_sale',
         'show_best_seller',
         'show_top_rated',
+        'show_popular',
         'product_category_id',
         'is_active',
     ];
