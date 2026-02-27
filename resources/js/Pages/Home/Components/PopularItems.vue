@@ -117,7 +117,7 @@ const addPorduct = (product) => {
             <div class="col-lg-3">
                 <div class="product-banner wow fadeInRight" data-wow-delay=".25s">
                     <a href="/store">
-                        <img src="/assets/img/banner/popular_product_banner.png" alt="">
+                        <img src="/assets/img/banner/super.png" alt="">
                     </a>
                 </div>
             </div>
