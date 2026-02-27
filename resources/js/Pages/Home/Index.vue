@@ -149,7 +149,7 @@ async function fetchBlogs(){
       <!-- big banner -->
       <div class="big-banner mb-100">
         <div class="container wow fadeInUp" data-wow-delay=".25s">
-            <div class="banner-wrap" style="background-image: url(/assets/img/banner/big_banner.png);">
+            <div class="banner-wrap" style="background-image: url(/assets/img/banner/modern.png);">
                 <div class="row">
                     <div class="col-lg-8 mx-auto">
                         <div class="banner-content">
