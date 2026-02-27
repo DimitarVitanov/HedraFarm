@@ -93,7 +93,7 @@ const addProduct = (product) => {
             <div class="row g-4">
                 <div class="col-12 col-md-6 col-lg-6 col-xl-6">
                     <div class="product-list-box">
-                        <h2 class="product-list-title">Со Поуст</h2>
+                        <h2 class="product-list-title">Со Попуст</h2>
                         <div v-for="(product,index) in on_sale" class="product-list-item">
                             <div class="product-list-img">
                                 <a :href="'/products/' + product.id + '/view' "><img :src="product.img" alt="On sale image"></a>
