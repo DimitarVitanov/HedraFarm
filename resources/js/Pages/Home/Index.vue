@@ -155,8 +155,7 @@ async function fetchBlogs(){
                         <div class="banner-content">
                             <div class="banner-info">
                                 <h6 class="text-uppercase">Огромен избор</h6>
-                                <h2>Големи попусти до <span>30%</span></h2>
-                                <p class="text-uppercase font-bol">во нашата апотека</p>
+                                <h2>1+1<span> 300денари</span></h2>
                             </div>
                             <a href="/store" class="theme-btn">Онлајн Продавница<i class="fas fa-arrow-right"></i></a>
                         </div>
