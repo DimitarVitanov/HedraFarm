@@ -359,62 +359,84 @@ const submitSearch = () => {
                                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
                                     aria-label="Close"></button>
                             </div>
-                            <div class="offcanvas-body mobile-body">
-                                <!-- Mobile Search -->
-                                <div class="mobile-search">
-                                    <form @submit.prevent="submitSearch">
-                                        <div class="mobile-search-wrap">
-                                            <input type="text" v-model="searchQuery" placeholder="Пребарај производи..." class="mobile-search-input" />
-                                            <button type="submit" class="mobile-search-btn">
-                                                <i class="fas fa-search"></i>
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-
-                                <!-- Navigation Links -->
-                                <ul class="mobile-nav-list">
-                                    <li>
-                                        <a href="/"><i class="fas fa-home"></i> Почетна</a>
+                            <div class="offcanvas-body">
+                                <!-- Desktop Navigation (visible lg+) -->
+                                <ul class="navbar-nav d-none d-lg-flex">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/">Почетна</a>
                                     </li>
-                                    <li>
-                                        <a href="/store"><i class="fas fa-store"></i> Онлајн Продавница</a>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/store">Онлајн Продавница</a>
                                     </li>
-                                    <li>
-                                        <a href="/about"><i class="fas fa-info-circle"></i> За Нас</a>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/about">За Нас</a>
                                     </li>
-                                    <li>
-                                        <a href="/blogs"><i class="fas fa-newspaper"></i> Блог</a>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/blogs">Блог</a>
                                     </li>
-                                    <li>
-                                        <a href="/contact"><i class="fas fa-envelope"></i> Контакт</a>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/contact">Контакт</a>
                                     </li>
                                 </ul>
 
-                                <!-- Categories -->
-                                <div class="mobile-categories">
-                                    <h6 class="mobile-section-title"><i class="fas fa-th-list"></i> Категории</h6>
-                                    <ul class="mobile-cat-list">
-                                        <li v-for="category in categories" :key="category.id">
-                                            <a :href="'/store?category=' + category.id">
-                                                <i :class="'fas ' + (category.icon || 'fa-cube')"></i>
-                                                {{ category.translated }}
-                                            </a>
+                                <!-- Mobile Content (hidden on lg+) -->
+                                <div class="d-lg-none mobile-body">
+                                    <!-- Mobile Search -->
+                                    <div class="mobile-search">
+                                        <form @submit.prevent="submitSearch">
+                                            <div class="mobile-search-wrap">
+                                                <input type="text" v-model="searchQuery" placeholder="Пребарај производи..." class="mobile-search-input" />
+                                                <button type="submit" class="mobile-search-btn">
+                                                    <i class="fas fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                    <!-- Navigation Links -->
+                                    <ul class="mobile-nav-list">
+                                        <li>
+                                            <a href="/"><i class="fas fa-home"></i> Почетна</a>
+                                        </li>
+                                        <li>
+                                            <a href="/store"><i class="fas fa-store"></i> Онлајн Продавница</a>
+                                        </li>
+                                        <li>
+                                            <a href="/about"><i class="fas fa-info-circle"></i> За Нас</a>
+                                        </li>
+                                        <li>
+                                            <a href="/blogs"><i class="fas fa-newspaper"></i> Блог</a>
+                                        </li>
+                                        <li>
+                                            <a href="/contact"><i class="fas fa-envelope"></i> Контакт</a>
                                         </li>
                                     </ul>
-                                </div>
 
-                                <!-- Contact & Social -->
-                                <div class="mobile-footer-info">
-                                    <div class="mobile-contact" v-if="company.phone">
-                                        <a :href="'tel:' + company.phone"><i class="fas fa-phone"></i> {{ company.phone }}</a>
+                                    <!-- Categories -->
+                                    <div class="mobile-categories">
+                                        <h6 class="mobile-section-title"><i class="fas fa-th-list"></i> Категории</h6>
+                                        <ul class="mobile-cat-list">
+                                            <li v-for="category in categories" :key="category.id">
+                                                <a :href="'/store?category=' + category.id">
+                                                    <i :class="'fas ' + (category.icon || 'fa-cube')"></i>
+                                                    {{ category.translated }}
+                                                </a>
+                                            </li>
+                                        </ul>
                                     </div>
-                                    <div class="mobile-contact" v-if="company.email">
-                                        <a :href="'mailto:' + company.email"><i class="fas fa-envelope"></i> {{ company.email }}</a>
-                                    </div>
-                                    <div class="mobile-social">
-                                        <a href="https://www.facebook.com/hederafarmplus" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>
-                                        <a href="https://www.instagram.com/hederafarmplus/" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
+
+                                    <!-- Contact & Social -->
+                                    <div class="mobile-footer-info">
+                                        <div class="mobile-contact" v-if="company.phone">
+                                            <a :href="'tel:' + company.phone"><i class="fas fa-phone"></i> {{ company.phone }}</a>
+                                        </div>
+                                        <div class="mobile-contact" v-if="company.email">
+                                            <a :href="'mailto:' + company.email"><i class="fas fa-envelope"></i> {{ company.email }}</a>
+                                        </div>
+                                        <div class="mobile-social">
+                                            <a href="https://www.facebook.com/hederafarmplus" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>
+                                            <a href="https://www.instagram.com/hederafarmplus/" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
