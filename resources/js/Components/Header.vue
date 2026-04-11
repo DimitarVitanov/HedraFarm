@@ -473,17 +473,13 @@ const submitSearch = () => {
 
 /* Mobile Menu Styles */
 .mobile-header {
-    background: linear-gradient(135deg, #0cb8b6 0%, #0a9e9c 100%);
+    background: white;
     padding: 16px 20px;
-}
-
-.mobile-header .offcanvas-brand img {
-    filter: brightness(0) invert(1);
+    border-bottom: 2px solid #0cb8b6;
 }
 
 .mobile-header .btn-close {
-    filter: invert(1);
-    opacity: 0.8;
+    opacity: 0.6;
 }
 
 .mobile-body {
