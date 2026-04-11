@@ -20,8 +20,8 @@ class SitemapController extends Controller
             ['loc' => 'https://hederafarmplus.mk/privacy', 'changefreq' => 'yearly', 'priority' => '0.3'],
         ];
 
-        $products = Product::where('is_active', 1)->select('id', 'updated_at')->get();
-        $blogs = Blog::select('id', 'updated_at')->get();
+        $products = Product::where('is_active', 1)->select('id', 'updated_at', 'created_at')->get();
+        $blogs = Blog::select('id', 'updated_at', 'created_at')->get();
 
         $xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
         $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
@@ -36,18 +36,20 @@ class SitemapController extends Controller
         }
 
         foreach ($products as $product) {
+            $lastmod = ($product->updated_at ?? $product->created_at ?? now())->format('Y-m-d');
             $xml .= '    <url>' . "\n";
             $xml .= '        <loc>https://hederafarmplus.mk/products/' . $product->id . '/view</loc>' . "\n";
-            $xml .= '        <lastmod>' . $product->updated_at->format('Y-m-d') . '</lastmod>' . "\n";
+            $xml .= '        <lastmod>' . $lastmod . '</lastmod>' . "\n";
             $xml .= '        <changefreq>weekly</changefreq>' . "\n";
             $xml .= '        <priority>0.8</priority>' . "\n";
             $xml .= '    </url>' . "\n";
         }
 
         foreach ($blogs as $blog) {
+            $lastmod = ($blog->updated_at ?? $blog->created_at ?? now())->format('Y-m-d');
             $xml .= '    <url>' . "\n";
             $xml .= '        <loc>https://hederafarmplus.mk/blogs/' . $blog->id . '/read</loc>' . "\n";
-            $xml .= '        <lastmod>' . $blog->updated_at->format('Y-m-d') . '</lastmod>' . "\n";
+            $xml .= '        <lastmod>' . $lastmod . '</lastmod>' . "\n";
             $xml .= '        <changefreq>monthly</changefreq>' . "\n";
             $xml .= '        <priority>0.6</priority>' . "\n";
             $xml .= '    </url>' . "\n";
