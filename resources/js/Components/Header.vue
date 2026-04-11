@@ -352,35 +352,71 @@ const submitSearch = () => {
                         </div>
                         <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar"
                             aria-labelledby="offcanvasNavbarLabel">
-                            <div class="offcanvas-header">
+                            <div class="offcanvas-header mobile-header">
                                 <a href="/" class="offcanvas-brand" id="offcanvasNavbarLabel">
                                     <img src="/assets/img/logo/logo.png" alt="logo" width="150" height="50">
                                 </a>
                                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
                                     aria-label="Close"></button>
                             </div>
-                            <div class="offcanvas-body">
-                                <ul class="navbar-nav justify-content-end flex-grow-1">
-                                    <li class="nav-item dropdown">
-                                        <a class="nav-link " href="/">Почетна</a>
-                                    </li>
-                                    <li class="nav-item ">
-                                        <a class="nav-link " href="/store">Онлајн Продавница</a>
-                                    </li>
-                                    <li class="nav-item"><a class="nav-link" href="/about">За Нас</a></li>
-
-                                    <li class="nav-item ">
-                                        <a class="nav-link " href="/blogs" >Блог</a>
-                                    </li>
-                                    <li class="nav-item"><a class="nav-link" href="/contact">Контакт</a></li>
-                                </ul>
-                                <!-- nav-right
-
-                                <div class="nav-right">
-                                    <a class="nav-right-link" href="#"><i class="fal fa-star"></i> Recently Viewed</a>
-                                    <a class="nav-right-link" href="track-order.html"><i class="fal fa-truck-fast"></i> Track My Order</a>
+                            <div class="offcanvas-body mobile-body">
+                                <!-- Mobile Search -->
+                                <div class="mobile-search">
+                                    <form @submit.prevent="submitSearch">
+                                        <div class="mobile-search-wrap">
+                                            <input type="text" v-model="searchQuery" placeholder="Пребарај производи..." class="mobile-search-input" />
+                                            <button type="submit" class="mobile-search-btn">
+                                                <i class="fas fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </form>
                                 </div>
-                                 -->
+
+                                <!-- Navigation Links -->
+                                <ul class="mobile-nav-list">
+                                    <li>
+                                        <a href="/"><i class="fas fa-home"></i> Почетна</a>
+                                    </li>
+                                    <li>
+                                        <a href="/store"><i class="fas fa-store"></i> Онлајн Продавница</a>
+                                    </li>
+                                    <li>
+                                        <a href="/about"><i class="fas fa-info-circle"></i> За Нас</a>
+                                    </li>
+                                    <li>
+                                        <a href="/blogs"><i class="fas fa-newspaper"></i> Блог</a>
+                                    </li>
+                                    <li>
+                                        <a href="/contact"><i class="fas fa-envelope"></i> Контакт</a>
+                                    </li>
+                                </ul>
+
+                                <!-- Categories -->
+                                <div class="mobile-categories">
+                                    <h6 class="mobile-section-title"><i class="fas fa-th-list"></i> Категории</h6>
+                                    <ul class="mobile-cat-list">
+                                        <li v-for="category in categories" :key="category.id">
+                                            <a :href="'/store?category=' + category.id">
+                                                <i :class="'fas ' + (category.icon || 'fa-cube')"></i>
+                                                {{ category.translated }}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <!-- Contact & Social -->
+                                <div class="mobile-footer-info">
+                                    <div class="mobile-contact" v-if="company.phone">
+                                        <a :href="'tel:' + company.phone"><i class="fas fa-phone"></i> {{ company.phone }}</a>
+                                    </div>
+                                    <div class="mobile-contact" v-if="company.email">
+                                        <a :href="'mailto:' + company.email"><i class="fas fa-envelope"></i> {{ company.email }}</a>
+                                    </div>
+                                    <div class="mobile-social">
+                                        <a href="https://www.facebook.com/hederafarmplus" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>
+                                        <a href="https://www.instagram.com/hederafarmplus/" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -434,4 +470,212 @@ const submitSearch = () => {
     padding: 10px;
     border-radius: 10px;
   }
+
+/* Mobile Menu Styles */
+.mobile-header {
+    background: linear-gradient(135deg, #0cb8b6 0%, #0a9e9c 100%);
+    padding: 16px 20px;
+}
+
+.mobile-header .offcanvas-brand img {
+    filter: brightness(0) invert(1);
+}
+
+.mobile-header .btn-close {
+    filter: invert(1);
+    opacity: 0.8;
+}
+
+.mobile-body {
+    padding: 0 !important;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.mobile-search {
+    padding: 16px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #eee;
+}
+
+.mobile-search-wrap {
+    display: flex;
+    align-items: center;
+    background: white;
+    border-radius: 25px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border: 1px solid #e8e8e8;
+}
+
+.mobile-search-input {
+    flex: 1;
+    border: none;
+    padding: 10px 16px;
+    font-size: 14px;
+    outline: none;
+    background: transparent;
+}
+
+.mobile-search-btn {
+    background: #0cb8b6;
+    border: none;
+    color: white;
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.mobile-search-btn:hover {
+    background: #0a9e9c;
+}
+
+.mobile-nav-list {
+    list-style: none;
+    padding: 8px 0;
+    margin: 0;
+    border-bottom: 1px solid #eee;
+}
+
+.mobile-nav-list li a {
+    display: flex;
+    align-items: center;
+    padding: 13px 20px;
+    color: #333;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.2s;
+    gap: 12px;
+}
+
+.mobile-nav-list li a i {
+    width: 20px;
+    text-align: center;
+    color: #0cb8b6;
+    font-size: 16px;
+}
+
+.mobile-nav-list li a:hover,
+.mobile-nav-list li a:active {
+    background: #f0fafa;
+    color: #0cb8b6;
+}
+
+.mobile-categories {
+    padding: 16px 20px 8px;
+    border-bottom: 1px solid #eee;
+}
+
+.mobile-section-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.mobile-section-title i {
+    color: #0cb8b6;
+    font-size: 14px;
+}
+
+.mobile-cat-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-bottom: 12px;
+}
+
+.mobile-cat-list li a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    background: #f0fafa;
+    color: #333;
+    text-decoration: none;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s;
+    border: 1px solid #e0f0f0;
+}
+
+.mobile-cat-list li a i {
+    color: #0cb8b6;
+    font-size: 12px;
+}
+
+.mobile-cat-list li a:hover,
+.mobile-cat-list li a:active {
+    background: #0cb8b6;
+    color: white;
+    border-color: #0cb8b6;
+}
+
+.mobile-cat-list li a:hover i,
+.mobile-cat-list li a:active i {
+    color: white;
+}
+
+.mobile-footer-info {
+    margin-top: auto;
+    padding: 16px 20px;
+    background: #f8f9fa;
+    border-top: 1px solid #eee;
+}
+
+.mobile-contact {
+    margin-bottom: 8px;
+}
+
+.mobile-contact a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #555;
+    text-decoration: none;
+    font-size: 13px;
+    padding: 4px 0;
+}
+
+.mobile-contact a i {
+    color: #0cb8b6;
+    width: 16px;
+    text-align: center;
+}
+
+.mobile-social {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.mobile-social a {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #0cb8b6;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.mobile-social a:hover {
+    background: #0a9e9c;
+    transform: translateY(-2px);
+}
 </style>
