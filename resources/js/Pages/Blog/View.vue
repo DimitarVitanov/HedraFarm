@@ -31,6 +31,7 @@ onMounted(async () => {
         <meta property="og:type" content="article" />
         <meta property="og:image" :content="'/assets' + blog.image" />
         <meta property="og:locale" content="mk_MK" />
+        <link rel="canonical" :href="'https://hederafarmplus.mk/blogs/' + blog.id + '/read'" />
     </Head>
     <!-- preloader -->
     <div v-if="loading" class="preloader">

@@ -85,6 +85,7 @@ const addProduct = (product) => {
         <meta property="og:locale" content="mk_MK" />
         <meta property="product:price:amount" :content="product.price" />
         <meta property="product:price:currency" content="MKD" />
+        <link rel="canonical" :href="'https://hederafarmplus.mk/products/' + product.id + '/view'" />
     </Head>
     <!-- preloader -->
     <div v-if="loading" class="preloader">

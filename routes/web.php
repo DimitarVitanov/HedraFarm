@@ -28,8 +28,12 @@ use App\Http\Controllers\NewsLetterController;
 use App\Http\Controllers\OrderController;
 #dashboard controller
 use App\Http\Controllers\DashboardController;
+#sitemap
+use App\Http\Controllers\SitemapController;
 
 #order
+
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 

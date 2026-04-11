@@ -6,6 +6,8 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <title inertia>{{ config('app.name', 'Хедерафарм+') }}</title>
         <link rel="icon" href="/assets/img/logo/logo.png">
+        <link rel="alternate" hreflang="mk" href="https://hederafarmplus.mk" />
+        <link rel="alternate" hreflang="x-default" href="https://hederafarmplus.mk" />
 
         <!-- LocalBusiness Schema for SEO -->
         <script type="application/ld+json">
@@ -18,11 +20,11 @@
             "url": "https://hederafarmplus.mk",
             "logo": "https://hederafarmplus.mk/assets/img/logo/logo.png",
             "image": "https://hederafarmplus.mk/assets/img/logo/logo.png",
-            "telephone": "+389 70 123 456",
-            "email": "info@hederafarmplus.mk",
+            "telephone": "+389 75 472 123",
+            "email": "pzuhederafarmplus@yahoo.com",
             "address": {
                 "@type": "PostalAddress",
-                "streetAddress": "ул. Маршал Тито",
+                "streetAddress": "Балканска бр4",
                 "addressLocality": "Струмица",
                 "addressRegion": "Струмица",
                 "postalCode": "2400",
@@ -30,21 +32,21 @@
             },
             "geo": {
                 "@type": "GeoCoordinates",
-                "latitude": "41.4378",
-                "longitude": "22.6427"
+                "latitude": "41.4375",
+                "longitude": "22.6425"
             },
             "openingHoursSpecification": [
                 {
                     "@type": "OpeningHoursSpecification",
                     "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-                    "opens": "08:00",
-                    "closes": "20:00"
+                    "opens": "07:30",
+                    "closes": "22:00"
                 },
                 {
                     "@type": "OpeningHoursSpecification",
                     "dayOfWeek": "Saturday",
-                    "opens": "09:00",
-                    "closes": "14:00"
+                    "opens": "07:30",
+                    "closes": "21:00"
                 }
             ],
             "priceRange": "$$",
