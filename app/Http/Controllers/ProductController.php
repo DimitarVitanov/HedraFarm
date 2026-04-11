@@ -14,28 +14,33 @@ class ProductController extends Controller
 {
     public function getProducts()
     {
-        $products = Product::where('is_active', 1)->with('category')->get()->map(function($product){
+        $products = Product::where('is_active', 1)
+            ->with(['category', 'subcategories'])
+            ->select('id', 'name', 'short_description', 'price', 'disscount', 'product_category_id', 'quantity', 'main_image', 'is_active', 'show_trending', 'show_on_sale', 'show_best_seller', 'show_top_rated', 'show_popular')
+            ->get()
+            ->map(function($product){
             return [
                 'id' => $product->id,
                 'name' => $product->name,
                 'short_description' => $product->short_description,
-                'description' => $product->description,
-                'clean_description' => Str::limit(strip_tags($product->description), 100),
                 'price' => $product->price,
                 'disscount' => $product->disscount ?? null,
                 'product_category_id' => $product->product_category_id,
-                'product_category_name' =>ClientHelper::tidyName($product->category->name),
+                'product_category_name' => ClientHelper::tidyName($product->category->name),
                 'quantity' => $product->quantity,
                 'category' => $product->category->name,
-                'main_image' =>  $product->main_image,
+                'main_image' => $product->main_image,
                 'is_active' => (bool)$product->is_active,
-                'show_trending' => (bool) $product->show_trending,
+                'show_trending' => (bool)$product->show_trending,
                 'show_on_sale' => (bool)$product->show_on_sale,
                 'show_best_seller' => (bool)$product->show_best_seller,
                 'show_top_rated' => (bool)$product->show_top_rated,
                 'show_popular' => (bool)$product->show_popular,
-                'galleries'=> $product->galleries ?? [],
-                'subcategories' => $this->fetchSubcategories($product->id)
+                'subcategories' => $product->subcategories->map(fn($sub) => [
+                    'id' => $sub->id,
+                    'translated' => $sub->translated,
+                    'name' => $sub->name,
+                ]),
             ];
         });
 
@@ -44,7 +49,7 @@ class ProductController extends Controller
 
     public function getAllProducts()
     {
-        $products = Product::with('category')->get()->map(function($product){
+        $products = Product::with(['category', 'subcategories', 'galleries'])->get()->map(function($product){
             return [
                 'id' => $product->id,
                 'name' => $product->name,
@@ -54,18 +59,22 @@ class ProductController extends Controller
                 'price' => $product->price,
                 'disscount' => $product->disscount ?? null,
                 'product_category_id' => $product->product_category_id,
-                'product_category_name' =>ClientHelper::tidyName($product->category->name),
+                'product_category_name' => ClientHelper::tidyName($product->category->name),
                 'quantity' => $product->quantity,
                 'category' => $product->category->name,
-                'main_image' =>  $product->main_image,
+                'main_image' => $product->main_image,
                 'is_active' => (bool)$product->is_active,
-                'show_trending' => (bool) $product->show_trending,
+                'show_trending' => (bool)$product->show_trending,
                 'show_on_sale' => (bool)$product->show_on_sale,
                 'show_best_seller' => (bool)$product->show_best_seller,
                 'show_top_rated' => (bool)$product->show_top_rated,
                 'show_popular' => (bool)$product->show_popular,
-                'galleries'=> $product->galleries ?? [],
-                'subcategories' => $this->fetchSubcategories($product->id)
+                'galleries' => $product->galleries ?? [],
+                'subcategories' => $product->subcategories->map(fn($sub) => [
+                    'id' => $sub->id,
+                    'translated' => $sub->translated,
+                    'name' => $sub->name,
+                ]),
             ];
         });
 

@@ -35,9 +35,7 @@ const fireMessage = (message, success = false, reload = false) => {
 };
 onMounted(async()=>{
     loading.value = true
-    await fetchProducts()
-    await fetchCategories()
-    await fetchSubcategories()
+    await Promise.all([fetchProducts(), fetchCategories(), fetchSubcategories()])
 
     if (selectedCategoryParam) {
     selectedCategories.value = [parseInt(selectedCategoryParam)]
