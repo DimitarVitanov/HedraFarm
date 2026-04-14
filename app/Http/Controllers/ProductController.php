@@ -151,7 +151,7 @@ class ProductController extends Controller
             'short_description' => $request->short_description,
             'description' => $request->description,
             'price' => $request->price,
-            'disscount' => $request->disscount,
+            'disscount' => $request->disscount ?: 0,
             'quantity' => $request->quantity,
             'main_image' => $imagePath,
             'show_trending' => $request->show_trending == 'true' ? 1 : 0,
@@ -208,7 +208,7 @@ class ProductController extends Controller
         }
         if($request->has('disscount')){
             // Handle discount: can be null, 0, or a positive number
-            $product->disscount = $request->disscount === 'null' || $request->disscount === '' ? null : $request->disscount;
+            $product->disscount = $request->disscount === 'null' || $request->disscount === '' || $request->disscount === null ? 0 : $request->disscount;
         }
         if($request->quantity){
             $product->quantity = $request->quantity;
