@@ -38,6 +38,7 @@
         "bootstrap": "^5.3.3",
         "chart.js": "^4.5.1",
         "floating-vue": "^5.2.2",
+        "lenis": "^1.3.21",
         "primeflex": "^4.0.0",
         "primeicons": "^7.0.0",
         "primevue": "^4.3.1",

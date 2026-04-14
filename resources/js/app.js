@@ -1,4 +1,6 @@
 import '../css/app.css';
+import Lenis from 'lenis';
+import 'lenis/dist/lenis.css';
 import '../../public/assets/css/bootstrap.min.css';
 import '../css/theme.min.css'
 import '../css/styles.css'
@@ -42,3 +44,16 @@ createInertiaApp({
         color: '#4B5563',
     },
 });
+
+// Smooth scroll with Lenis
+const lenis = new Lenis({
+    duration: 1.2,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    smooth: true,
+});
+
+function raf(time) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+}
+requestAnimationFrame(raf);
