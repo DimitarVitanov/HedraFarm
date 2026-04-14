@@ -151,7 +151,7 @@ class ProductController extends Controller
             'short_description' => $request->short_description,
             'description' => $request->description,
             'price' => $request->price,
-            'disscount' => $request->disscount ?: 0,
+            'disscount' => (!$request->disscount || $request->disscount === 'null') ? 0 : (int) $request->disscount,
             'quantity' => $request->quantity,
             'main_image' => $imagePath,
             'show_trending' => $request->show_trending == 'true' ? 1 : 0,
