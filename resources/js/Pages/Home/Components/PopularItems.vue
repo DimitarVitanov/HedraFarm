@@ -116,8 +116,8 @@ const addPorduct = (product) => {
             </div>
             <div class="col-lg-3">
                 <div class="product-banner wow fadeInRight" data-wow-delay=".25s">
-                    <a href="/store">
-                        <img src="/assets/img/banner/super.png" alt="">
+                    <a href="/products/706/view">
+                        <img src="/assets/img/banner/super-immunace.webp" alt="Immunace таблети x30 - 870 денари">
                     </a>
                 </div>
             </div>

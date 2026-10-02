@@ -149,13 +149,13 @@ async function fetchBlogs(){
       <!-- big banner -->
       <div class="big-banner mb-100">
         <div class="container wow fadeInUp" data-wow-delay=".25s">
-            <div class="banner-wrap" style="background-image: url(/assets/img/banner/modern.png);">
+            <div class="banner-wrap" style="background-image: url(/assets/img/banner/promo-magnevital.webp);">
                 <div class="row">
                     <div class="col-lg-8 mx-auto">
                         <div class="banner-content">
                             <div class="banner-info">
                                 <h6 class="text-uppercase">Огромен избор</h6>
-                                <h2>1+1<span> 300денари</span></h2>
+                                <h2>Magnevital Direct<span> 220 денари</span></h2>
                             </div>
                             <a href="/store" class="theme-btn">Онлајн Продавница<i class="fas fa-arrow-right"></i></a>
                         </div>
