@@ -1083,6 +1083,17 @@ a.hf-chip:hover { color: var(--hf-primary-600); background: #d5efea; }
   .hf-steps i { display: none; }
 }
 
+/* narrow phones / folded screens */
+@media (max-width: 420px) {
+  .hf-product__buy .hf-qty { width: 100%; justify-content: space-between; }
+  .hf-product__buy .hf-qty span { flex: 1; }
+  .hf-product__buy .hf-btn { flex: 0 0 100%; }
+  .hf-drawer__actions { grid-template-columns: 1fr; }
+  .hf-coupon form { flex-wrap: wrap; }
+  .hf-coupon form .hf-btn { flex: 1 0 100%; }
+  .hf-preview { left: 0.75rem; bottom: 0.75rem; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hf *, .hf *::before, .hf *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
