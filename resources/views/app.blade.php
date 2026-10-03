@@ -107,12 +107,12 @@
             <link rel="stylesheet" href="/assets/css/animate.min.css">
             <link rel="stylesheet" href="/assets/css/magnific-popup.min.css">
             <link rel="stylesheet" href="/assets/css/jquery-ui.min.css">
-            <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@600;700;800&family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
         </noscript>
         
         <!-- Fonts - loaded with display=swap for non-blocking -->
         <!-- Inter and Roboto are loaded from Google Fonts, Figtree removed (unused) -->
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@600;700;800&family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
         
         <!-- Scripts -->
         <script src="//cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>

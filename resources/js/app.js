@@ -4,6 +4,7 @@ import 'lenis/dist/lenis.css';
 import '../../public/assets/css/bootstrap.min.css';
 import '../css/theme.min.css'
 import '../css/styles.css'
+import '../css/storefront.css'
 import '@fortawesome/fontawesome-free/css/all.min.css'; // Includes solid, regular, and brands
 import Lara from '@primeuix/themes/lara'
 import { createInertiaApp } from '@inertiajs/vue3';
@@ -12,7 +13,11 @@ import { createApp, h } from 'vue';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 import PrimeVue from 'primevue/config';
 
+import { storefrontVersion } from './utils/preview';
+
 const appName = import.meta.env.VITE_APP_NAME || 'Хедерафарм+';
+const pages = import.meta.glob('./Pages/**/*.vue');
+const pagesV2 = import.meta.glob('./PagesV2/**/*.vue');
 
 // Force light theme - remove dark mode
 document.documentElement.removeAttribute('data-bs-theme');
@@ -21,11 +26,13 @@ document.documentElement.setAttribute('data-bs-theme', 'light');
 
 createInertiaApp({
     title: (title) => `Хедерафарм+`,
-    resolve: (name) =>
-        resolvePageComponent(
-            `./Pages/${name}.vue`,
-            import.meta.glob('./Pages/**/*.vue'),
-        ),
+    resolve: (name) => {
+        // Redesigned storefront pages live in PagesV2 (see utils/preview.js)
+        if (storefrontVersion() === 'v2' && pagesV2[`./PagesV2/${name}.vue`]) {
+            return resolvePageComponent(`./PagesV2/${name}.vue`, pagesV2);
+        }
+        return resolvePageComponent(`./Pages/${name}.vue`, pages);
+    },
     setup({ el, App, props, plugin }) {
         return createApp({ render: () => h(App, props) })
             .use(plugin)
