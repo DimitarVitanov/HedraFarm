@@ -6,7 +6,8 @@ import { ref, onMounted } from 'vue';
 import { useCart } from '@/utils/useCart';
 import { computed } from 'vue';
 
-const { cart, removeFromCart, updateQuantity, totalPrice, subtotal } = useCart()
+const { cart, removeFromCart, updateQuantity, totalPrice, subtotal, clearCart } = useCart()
+const submitting = ref(false)
 
 // Calculate the total discount amount (product discounts + coupon discount)
 const totalDiscount = computed(() => {
@@ -56,6 +57,8 @@ const order=ref({
 })
 
 const createOrder = async() =>{
+    if (submitting.value) return
+
     if(order.value.firstName === '' || order.value.lastName === '' || order.value.email === '' || order.value.phone === '' || order.value.address === '' || order.value.city === '' || order.value.postalCode === ''){
         fireMessage('Пополнете ги сите полиња', false ,false)
         return
@@ -82,21 +85,28 @@ const createOrder = async() =>{
     const _token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     formData.append('_token', _token);
 
-    const reponse = await fetch('/api/store/make-order', {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'X-CSRF-TOKEN': _token,
-            'Accept': 'application/json',
-        },
-    });
-    const data = await reponse.json();
-    if(data.status === 'success'){
-        window.location.href = '/checkout/' + data.data.id + '/complete';
-    }else{
-      fireMessage('Грешка при создавање на нарачката', false, false)
+    submitting.value = true
+    try {
+        const reponse = await fetch('/api/store/make-order', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRF-TOKEN': _token,
+                'Accept': 'application/json',
+            },
+        });
+        const data = await reponse.json();
+        if(data.status === 'success'){
+            clearCart()
+            window.location.href = '/checkout/' + data.data.id + '/complete';
+            return
+        }
+        fireMessage('Грешка при создавање на нарачката', false, false)
+    } catch (error) {
+        console.log(error)
+        fireMessage('Грешка при создавање на нарачката', false, false)
     }
-
+    submitting.value = false
 }
 </script>
 
@@ -225,8 +235,8 @@ const createOrder = async() =>{
                                     <li class="shop-cart-total"><strong>Финална цена:</strong> <span>{{(totalPrice + (totalPrice < 2000 ? 200 : 0)).toFixed(2)}} ден</span></li>
                                 </ul>
                                 <div class="text-end mt-40">
-                                    <a @click="createOrder" class="theme-btn">Наплати<i
-                                    class="fas fa-arrow-right"></i></a>
+                                    <a @click="createOrder" class="theme-btn" :style="submitting ? 'pointer-events: none; opacity: 0.7' : ''">{{ submitting ? 'Се испраќа...' : 'Наплати' }}<i
+                                    v-if="!submitting" class="fas fa-arrow-right"></i></a>
                                 </div>
                             </div>
                         </div>

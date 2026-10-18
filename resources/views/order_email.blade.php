@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="mk">
 <head>
     <meta charset="UTF-8">
     <title>{{ $data['subject'] }}</title>
@@ -18,14 +18,14 @@
                     <tr>
                         <td style="padding: 20px 30px; text-align: center;">
                             <p style="font-size: 16px; color: #666; line-height: 1.5; margin: 0;">
-                                {{ $data['message'] }}
+                                {!! nl2br(e($data['message'])) !!}
                             </p>
                         </td>
                     </tr>
 
                     <tr>
                         <td style="padding: 20px 30px;">
-                            <h2 style="font-size: 18px; color: #333; text-align: left; margin-bottom: 10px;">Преглед на нарачка</h2>
+                            <h2 style="font-size: 18px; color: #333; text-align: left; margin-bottom: 10px;">Преглед на нарачка #{{ str_pad($data['order']->id, 6, '0', STR_PAD_LEFT) }}</h2>
                             <table width="100%" cellpadding="10" cellspacing="0" border="1" style="border-collapse: collapse; font-size: 14px; color: #444;">
                                 <thead style="background-color: #f9f9f9;">
                                     <tr>
@@ -36,12 +36,8 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @php $grandTotal = 0; @endphp
                                     @foreach($data['order']->items as $item)
-                                        @php
-                                            $lineTotal = $item->price * $item->quantity;
-                                            $grandTotal += $lineTotal;
-                                        @endphp
+                                        @php $lineTotal = $item->price * $item->quantity; @endphp
                                         <tr>
                                             <td>{{ $item->title }}</td>
                                             <td align="center">{{ $item->quantity }}</td>
@@ -52,8 +48,22 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <td colspan="3" align="right"><strong>Вкупно:</strong></td>
-                                        <td align="right"><strong>{{ number_format($grandTotal, 2) }} ден</strong></td>
+                                        <td colspan="3" align="right">Подвкупно:</td>
+                                        <td align="right">{{ number_format($data['order']->subtotal, 2) }} ден</td>
+                                    </tr>
+                                    @if ($data['order']->discount > 0)
+                                    <tr>
+                                        <td colspan="3" align="right">Попуст:</td>
+                                        <td align="right">-{{ number_format($data['order']->discount, 2) }} ден</td>
+                                    </tr>
+                                    @endif
+                                    <tr>
+                                        <td colspan="3" align="right">Достава:</td>
+                                        <td align="right">{{ $data['order']->delivery_price > 0 ? number_format($data['order']->delivery_price, 2) . ' ден' : 'Бесплатна' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" align="right"><strong>{{ $data['total_label'] ?? 'Вкупно за плаќање' }}:</strong></td>
+                                        <td align="right"><strong>{{ number_format($data['order']->total_price, 2) }} ден</strong></td>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -72,7 +82,7 @@
 
                     <tr>
                         <td style="background-color: #f0f0f0; padding: 20px; text-align: center;">
-                            <p style="font-size: 12px; color: #999; margin: 0;">&copy; {{ date('Y') }} Hedera Farm Plus. All rights reserved.</p>
+                            <p style="font-size: 12px; color: #999; margin: 0;">&copy; {{ date('Y') }} Хедерафарм+. Сите права се задржани.</p>
                         </td>
                     </tr>
 

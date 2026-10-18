@@ -12,15 +12,6 @@ import Header from '@/Components/Header.vue';
         <meta name="robots" content="noindex, nofollow" />
     </Head>
 
-        <!-- preloader -->
-        <div class="preloader">
-            <div class="loader-ripple">
-                <div></div>
-                <div></div>
-            </div>
-        </div>
-        <!-- preloader end -->
-
         <Header/>
 
         <div class="main">
@@ -46,7 +37,7 @@ import Header from '@/Components/Header.vue';
                         <div class="checkout-complete-content">
                             <div class="checkout-complete-icon"><i class="fa fa-check"></i></div>
                             <h3>Ви благодариме за вашата нарачка!</h3>
-                            <p>На внесенио email ќе добиете повеќе информации за вашата нарачка.</p>
+                            <p>На внесениот email ќе добиете повеќе информации за вашата нарачка.</p>
                             <a href="/" class="theme-btn">Вратете се назад<i class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>

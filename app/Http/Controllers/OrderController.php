@@ -74,6 +74,23 @@ class OrderController extends Controller
             ]);
         }
 
+        // Send "order received" email after the response so a slow/failing mail server never blocks checkout
+        dispatch(function () use ($order) {
+            try {
+                $order->load('items');
+                Mail::to($order->email)->send(new OrderMail([
+                    'subject' => 'Ја примивме вашата нарачка #' . str_pad($order->id, 6, '0', STR_PAD_LEFT),
+                    'title' => 'Ви благодариме за вашата нарачка!',
+                    'message' => "Почитувани {$order->first_name},\nВашата нарачка е успешно примена. Наскоро ќе стапиме во контакт со вас за да ја потврдиме нарачката.\nПлаќањето се врши при достава.",
+                    'button_url' => 'https://hederafarmplus.mk',
+                    'button_text' => 'Посетете ја нашата веб страна',
+                    'order' => $order
+                ]));
+            } catch (\Throwable $e) {
+                report($e);
+            }
+        })->afterResponse();
+
         return response()->json(['status' => 'success', 'data' => $order, 'message' => 'Order created successfully.']);
     }
 
@@ -118,7 +135,7 @@ class OrderController extends Controller
             Mail::to($order->email)->send(new OrderMail([
                 'subject' => 'Ваша нарачка е одобрена!',
                 'title' => 'Вашата нарачка е одобрена!',
-                'message' => 'Ваша нарачка е одобрена и ќе биде испратена во најскоро време. <br> Ви благодариме!',
+                'message' => "Вашата нарачка е одобрена и ќе биде испратена во најскоро време.\nВи благодариме!",
                 'button_url' => 'https://hederafarmplus.mk',
                 'button_text' => 'Посетете ја нашата веб страна',
                 'order' => $order
@@ -157,6 +174,25 @@ class OrderController extends Controller
                 // Update order status to cancelled
                 $order->update(['status' => 'cancelled']);
             });
+
+            // Send cancellation email after the response so a mail failure doesn't report the cancel as failed
+            dispatch(function () use ($order) {
+                try {
+                    $phone = CompanyInfo::first()?->phone;
+                    Mail::to($order->email)->send(new OrderMail([
+                        'subject' => 'Вашата нарачка #' . str_pad($order->id, 6, '0', STR_PAD_LEFT) . ' е откажана',
+                        'title' => 'Вашата нарачка е откажана',
+                        'message' => "Почитувани {$order->first_name},\nВе известуваме дека вашата нарачка е откажана.\n"
+                            . ($phone ? "Доколку имате прашања, контактирајте нè на {$phone}." : 'Доколку имате прашања, слободно контактирајте нè.'),
+                        'button_url' => 'https://hederafarmplus.mk',
+                        'button_text' => 'Посетете ја нашата веб страна',
+                        'total_label' => 'Вкупно',
+                        'order' => $order
+                    ]));
+                } catch (\Throwable $e) {
+                    report($e);
+                }
+            })->afterResponse();
 
             return response()->json(['status' => 'success', 'message' => 'Order cancelled successfully. Product quantities have been restored if applicable.']);
 
