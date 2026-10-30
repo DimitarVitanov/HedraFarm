@@ -434,9 +434,12 @@ input[type='file'].ha-input:hover::file-selector-button { background: #d3eee8; }
 :is(.ha, .ha-modal) .ql-snow.ql-toolbar button.ql-active .ql-fill { fill: var(--ha-primary); }
 
 /* ---- modal ----------------------------------------------------------------- */
-.ha-modal-wrap { position: fixed; inset: 0; z-index: 1000; display: flex; justify-content: center; overflow-y: auto; padding: 5vh 1rem; }
+.ha-modal-wrap { position: fixed; inset: 0; z-index: 1000; display: flex; justify-content: center; overflow-y: auto; padding: 5vh 1rem; padding: 5dvh 1rem; }
 .ha-modal-backdrop { position: fixed; inset: 0; background: rgba(12, 42, 38, 0.45); backdrop-filter: blur(3px); }
-.ha-modal { position: relative; width: 100%; height: max-content; border-radius: 22px; background: #fff; box-shadow: var(--ha-shadow-lg); }
+/* header + footer stay put, only the body scrolls - Save is always reachable */
+.ha-modal { position: relative; display: flex; flex-direction: column; width: 100%; height: max-content; max-height: 90vh; max-height: 90dvh; margin: auto 0; border-radius: 22px; background: #fff; box-shadow: var(--ha-shadow-lg); }
+.ha-modal > :not(.ha-modal__head):not(.ha-modal__foot) { min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+.ha-modal__head, .ha-modal__foot { flex: none; }
 .ha-modal--sm { max-width: 400px; }
 .ha-modal--md { max-width: 500px; }
 .ha-modal--lg { max-width: 580px; }
@@ -698,6 +701,7 @@ input[type='file'].ha-input:hover::file-selector-button { background: #d3eee8; }
   .ha-card__body { padding: 1rem; }
   .ha-grid--2, .ha-grid--3, .ha-grid--5 { grid-template-columns: 1fr; }
   .ha-modal-wrap { padding: 0.75rem 0.5rem; }
+  .ha-modal { max-height: calc(100vh - 1.5rem); max-height: calc(100dvh - 1.5rem); }
   .ha-modal__head, .ha-modal__body, .ha-modal__foot { padding-left: 1rem; padding-right: 1rem; }
   .ha-modal__foot .ha-btn { flex: 1; }
   .ha-welcome { flex-direction: column; align-items: flex-start; padding: 1.5rem; }

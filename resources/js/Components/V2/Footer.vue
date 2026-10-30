@@ -89,6 +89,9 @@ onMounted(() => {
                     <li><a href="/delivery-policy">Достава</a></li>
                     <li><a href="/contact">Контакт</a></li>
                 </ul>
+                <p class="hf-footer__credit">
+                    Изработено од <a href="https://nyxeon.io" target="_blank" rel="noopener">nyxeon.io</a>
+                </p>
             </div>
         </div>
     </footer>
