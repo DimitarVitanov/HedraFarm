@@ -268,7 +268,7 @@ class OrderController extends Controller
         }
     }
 
-    public function downloadInvoice($id)
+    public function downloadInvoice(Request $request, $id)
     {
         $order = Order::with('items')->findOrFail($id);
 
@@ -283,6 +283,9 @@ class OrderController extends Controller
             'company' => $company,
         ])->setPaper('a4', 'portrait');
 
-        return $pdf->download('invoice-' . str_pad($order->id, 6, '0', STR_PAD_LEFT) . '.pdf');
+        $fileName = 'invoice-' . str_pad($order->id, 6, '0', STR_PAD_LEFT) . '.pdf';
+
+        // ?preview=1 opens the PDF in the browser instead of downloading it
+        return $request->boolean('preview') ? $pdf->stream($fileName) : $pdf->download($fileName);
     }
 }

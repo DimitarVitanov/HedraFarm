@@ -253,6 +253,7 @@ const checkPermission = ()=>{
                         <div class="ha-actions">
                             <button v-if="data.status === 'pending'" type="button" class="ha-icon-btn" title="Approve Order" @click="approveOrder(data)"><Icon name="check" /></button>
                             <button v-if="data.status !== 'cancelled'" type="button" class="ha-icon-btn" title="Edit Order" @click="openEditModal(data)"><Icon name="pencil" /></button>
+                            <a :href="'/admin/orders/' + data.id + '/invoice?preview=1'" target="_blank" rel="noopener" class="ha-icon-btn" title="Preview Invoice"><Icon name="eye" /></a>
                             <a :href="'/admin/orders/' + data.id + '/invoice'" class="ha-icon-btn" title="Download Invoice"><Icon name="download" /></a>
                             <button v-if="data.status !== 'cancelled'" type="button" class="ha-icon-btn ha-icon-btn--danger" title="Cancel Order" @click="cancelOrder(data)"><Icon name="x" /></button>
                         </div>
