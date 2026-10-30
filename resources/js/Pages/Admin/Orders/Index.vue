@@ -98,6 +98,7 @@ const showEditModal = ref(false)
 const editing = ref(null)
 const savingOrder = ref(false)
 
+const paymentLabels = { cash: 'Cash', card: 'Card' }
 const money = (value) => `${(Math.round((Number(value) || 0) * 100) / 100).toLocaleString('mk-MK', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ден`
 
 const openEditModal = (order) => {
@@ -212,28 +213,29 @@ const checkPermission = ()=>{
                 <template #empty>
                     <div class="ha-empty"><Icon name="receipt" />No orders yet</div>
                 </template>
-                <Column field="email" header="Email">
+                <Column field="email" header="Customer">
                     <template #body="{ data }">
-                        <span class="ha-cell-title">{{ data.email }}</span>
+                        <div class="ha-stacked">
+                            <span class="ha-cell-title">{{ data.first_name }} {{ data.last_name }}</span>
+                            <span>{{ data.email }}</span>
+                            <span class="ha-cell-muted">{{ data.phone }}</span>
+                        </div>
                     </template>
                 </Column>
-                <Column field="phone" header="Phone">
+                <Column field="address" header="Address">
                     <template #body="{ data }">
-                        <span class="ha-nowrap">{{ data.phone }}</span>
-                    </template>
-                </Column>
-                <Column field="address" header="Address"></Column>
-                <Column field="postal_code" header="Postal Code"></Column>
-                <Column field="city" header="City"></Column>
-                <Column field="payment_method" header="Payment Method"></Column>
-                <Column field="delivery_price" header="Delivery Price">
-                    <template #body="{ data }">
-                        <span class="ha-nowrap">{{ data.delivery_price }}</span>
+                        <div class="ha-stacked ha-stacked--address">
+                            <span>{{ data.address }}</span>
+                            <span class="ha-cell-muted">{{ data.postal_code }} {{ data.city }}</span>
+                        </div>
                     </template>
                 </Column>
                 <Column field="total_price" header="Total">
                     <template #body="{ data }">
-                        <span class="ha-money">{{ data.total_price }}</span>
+                        <div class="ha-stacked">
+                            <span class="ha-money">{{ money(data.total_price) }}</span>
+                            <span class="ha-cell-muted ha-nowrap">{{ paymentLabels[data.payment_method] || data.payment_method }} · Delivery {{ money(data.delivery_price) }}</span>
+                        </div>
                     </template>
                 </Column>
                 <Column field="status" header="Status">
@@ -245,10 +247,13 @@ const checkPermission = ()=>{
                 </Column>
                 <Column field="created_at" header="Created At">
                     <template #body="{ data }">
-                        <span class="ha-cell-muted ha-nowrap">{{ data.created_at }}</span>
+                        <div class="ha-stacked ha-nowrap">
+                            <span>{{ String(data.created_at).split(' ')[0] }}</span>
+                            <span class="ha-cell-muted">{{ String(data.created_at).split(' ')[1] }}</span>
+                        </div>
                     </template>
                 </Column>
-                <Column field="actions" header="Actions">
+                <Column field="actions" header="Actions" frozen alignFrozen="right" class="ha-col-actions" headerClass="ha-col-actions">
                     <template #body="{ data }">
                         <div class="ha-actions">
                             <button v-if="data.status === 'pending'" type="button" class="ha-icon-btn" title="Approve Order" @click="approveOrder(data)"><Icon name="check" /></button>

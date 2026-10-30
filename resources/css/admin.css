@@ -275,6 +275,12 @@
 .ha-money { color: var(--ha-ink); font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .ha-sale { color: var(--ha-danger-600); font-weight: 600; }
 .ha-mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; }
+.ha-stacked { display: grid; gap: 0.1rem; line-height: 1.4; }
+.ha-stacked--address { min-width: 180px; max-width: 260px; }
+
+/* sticky actions column on wide tables */
+.ha .p-datatable .ha-col-actions.p-datatable-frozen-column { z-index: 1; background: inherit; box-shadow: inset 1px 0 0 var(--ha-line); }
+.ha .p-datatable .p-datatable-thead > tr > th.ha-col-actions.p-datatable-frozen-column { background: var(--ha-soft); }
 
 /* ---- forms ----------------------------------------------------------------- */
 .ha-form { display: grid; gap: 1.1rem; }
