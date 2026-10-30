@@ -148,6 +148,73 @@ class OrderController extends Controller
         }
     }
 
+    // Adjust an order before/after fulfilment (item out of stock, smaller quantity...).
+    // items: JSON [{id, quantity}] for every order item; quantity 0 removes the item.
+    public function update(Request $request)
+    {
+        $order = Order::with('items.product')->whereId($request->order_id)->first();
+        if (!$order) {
+            return response()->json(['status' => 'error', 'message' => 'Order not found.']);
+        }
+
+        if ($order->status === 'cancelled') {
+            return response()->json(['status' => 'error', 'message' => 'Cancelled orders cannot be edited.']);
+        }
+
+        $quantities = collect(json_decode($request->items, true) ?? [])
+            ->mapWithKeys(fn($item) => [(int) ($item['id'] ?? 0) => (int) ($item['quantity'] ?? 0)]);
+
+        if ($quantities->contains(fn($quantity) => $quantity < 0)) {
+            return response()->json(['status' => 'error', 'message' => 'Quantities cannot be negative.']);
+        }
+
+        $remaining = $order->items->filter(fn($item) => $quantities->get($item->id, (int) $item->quantity) > 0);
+        if ($remaining->isEmpty()) {
+            return response()->json(['status' => 'error', 'message' => 'An order needs at least one item. Cancel the order instead.']);
+        }
+
+        try {
+            DB::transaction(function () use ($order, $quantities, $request) {
+                foreach ($order->items as $item) {
+                    $newQuantity = $quantities->get($item->id, (int) $item->quantity);
+                    $difference = $newQuantity - (int) $item->quantity;
+
+                    // Completed orders already took their stock - give back / take the difference
+                    if ($order->status === 'completed' && $difference !== 0 && $item->product) {
+                        $item->product->refresh();
+                        if ($difference > 0 && (int) $item->product->quantity < $difference) {
+                            throw new \Exception("Insufficient stock for product: {$item->title}. Available: {$item->product->quantity}, Required: {$difference}");
+                        }
+                        $difference > 0
+                            ? $item->product->decrement('quantity', $difference)
+                            : $item->product->increment('quantity', -$difference);
+                    }
+
+                    if ($newQuantity === 0) {
+                        $item->delete();
+                    } elseif ($difference !== 0) {
+                        $item->update(['quantity' => $newQuantity]);
+                    }
+                }
+
+                $subtotal = $order->items()->get()->sum(fn($item) => $item->price * $item->quantity);
+                $discount = min(max(0, (float) $request->discount), $subtotal);
+                $deliveryPrice = max(0, (float) $request->delivery_price);
+
+                $order->update([
+                    'subtotal' => $subtotal,
+                    'discount' => $discount,
+                    'delivery_price' => $deliveryPrice,
+                    'total_price' => $subtotal - $discount + $deliveryPrice,
+                ]);
+            });
+
+            return response()->json(['status' => 'success', 'message' => 'Order updated successfully.']);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+        }
+    }
+
     public function cancelOrder(Request $request)
     {
         $order = Order::with('items.product')->whereId($request->order_id)->first();

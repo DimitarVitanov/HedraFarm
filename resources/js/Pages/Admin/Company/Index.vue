@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue';
 import { usePage, Head } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Button } from 'primevue';
+import Icon from '@/Components/V2/Icon.vue';
 import Editor from '@/Components/Editor.vue'
 
 const page = usePage();
@@ -133,137 +133,103 @@ const saveCompanyInfo = async () =>{
 
     <Head title="Company" />
     <AuthenticatedLayout>
-        <div class="header pb-10">
-                    <!-- preloader -->
-            <div v-if="loading" class="preloader">
-                <div class="loader-ripple">
-                    <div></div>
-                    <div></div>
-                </div>
+        <template #header>
+            <div class="ha-head__title">
+                <h1>Company</h1>
             </div>
-
-            <div v-else>
-            <div class="col-8 mx-auto">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h2>Company</h2>
-                </div>
-                <hr class="w-100 text-gray-300">
+            <div class="ha-head__actions" v-if="!loading">
+                <button type="button" class="ha-btn" @click="saveCompanyInfo()"><Icon name="check" /> Save</button>
             </div>
+        </template>
 
-            <div class="company-form col-8 mx-auto">
-                <div class="row">
-                    <div class="col-12 mb-4">
-                        <div class="form-group">
-                            <label for="about">About</label>
-                            <Editor :modelValue="company.about" @update:modelValue="company.about = $event" />
+        <!-- preloader -->
+        <div v-if="loading" class="ha-card ha-loader">
+            <span class="ha-spinner" aria-label="Loading"></span>
+        </div>
+
+        <div v-else class="ha-stack company-form">
+            <section class="ha-card">
+                <div class="ha-card__head"><h2><Icon name="file" /> About</h2></div>
+                <div class="ha-card__body">
+                    <Editor :modelValue="company.about" @update:modelValue="company.about = $event" />
+                </div>
+            </section>
+
+            <section class="ha-card">
+                <div class="ha-card__head"><h2><Icon name="building" /> Details</h2></div>
+                <div class="ha-card__body">
+                    <div class="ha-grid ha-grid--3">
+                        <div class="ha-field">
+                            <label for="name" class="ha-label">Name</label>
+                            <input type="text" class="ha-input" id="name" v-model="company.name">
                         </div>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" class="form-control" id="name" v-model="company.name">
+                        <div class="ha-field">
+                            <label for="email" class="ha-label">Email</label>
+                            <input type="email" class="ha-input" id="email" v-model="company.email">
                         </div>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" class="form-control" id="email" v-model="company.email">
+                        <div class="ha-field">
+                            <label for="phone" class="ha-label">Phone</label>
+                            <input type="text" class="ha-input" id="phone" v-model="company.phone">
                         </div>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="form-group">
-                            <label for="phone">Phone</label>
-                            <input type="text" class="form-control" id="phone" v-model="company.phone">
+                        <div class="ha-field">
+                            <label for="address" class="ha-label">Address</label>
+                            <input type="text" class="ha-input" id="address" v-model="company.address">
+                        </div>
+                        <div class="ha-field">
+                            <label for="worktime" class="ha-label">Worktime</label>
+                            <input type="text" class="ha-input" id="worktime" v-model="company.worktime">
+                        </div>
+                        <div class="ha-field">
+                            <label for="quote" class="ha-label">Quote</label>
+                            <input type="text" class="ha-input" id="quote" v-model="company.quote">
                         </div>
                     </div>
                 </div>
+            </section>
 
-                <div class="row mt-3">
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="form-group">
-                            <label for="address">Address</label>
-                            <input type="text" class="form-control" id="address" v-model="company.address">
+            <section class="ha-card">
+                <div class="ha-card__head"><h2><Icon name="instagram" /> Social</h2></div>
+                <div class="ha-card__body">
+                    <div class="ha-grid ha-grid--3">
+                        <div class="ha-field">
+                            <label for="facebook" class="ha-label">Facebook</label>
+                            <input type="text" class="ha-input" id="facebook" v-model="company.facebook_acc_link">
                         </div>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="form-group">
-                            <label for="worktime">Worktime</label>
-                            <input type="text" class="form-control" id="worktime" v-model="company.worktime">
+                        <div class="ha-field">
+                            <label for="instagram" class="ha-label">Instagram</label>
+                            <input type="text" class="ha-input" id="instagram" v-model="company.instagram_acc_link">
                         </div>
-                    </div>
-
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="form-group">
-                            <label for="quote">Quote</label>
-                            <input type="text" class="form-control" id="quote" v-model="company.quote">
+                        <div class="ha-field">
+                            <label for="linkedin_acc_link" class="ha-label">LinkedIn</label>
+                            <input type="text" class="ha-input" id="linkedin_acc_link" v-model="company.linkedin_acc_link">
                         </div>
                     </div>
 
-                    </div>
+                    <hr class="ha-divider">
 
-                    <div class="row mt-3">
-                        <div class="col-12 col-md-6 col-lg-4">
-                            <div class="form-group">
-                                <label for="facebook">Facebook</label>
-                                <input type="text" class="form-control" id="facebook" v-model="company.facebook_acc_link">
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-md-6 col-lg-4">
-                            <div class="form-group">
-                                <label for="instagram">Instagram</label>
-                                <input type="text" class="form-control" id="instagram" v-model="company.instagram_acc_link">
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-md-6 col-lg-4">
-                            <div class="form-group">
-                                <label for="linkedin_acc_link">LinkedIn</label>
-                                <input type="text" class="form-control" id="linkedin_acc_link" v-model="company.linkedin_acc_link">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row mt-3">
-                        <div class="my-3">
-                            <h4> Permissions </h4>
-                            <hr class="w-100 text-gray-300">
-                        </div>
-                        <div class="col-12 col-md-6 col-lg-4">
-                            <div class="form-group ">
-                                <label for="show_instagram" class="text-danger">Show Instagram</label>
-                                <input type="checkbox" class="ms-2 form-check-input" id="show_instagram" v-model="company.show_instagram">
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-6 col-lg-4">
-                            <div class="form-group">
-                                <label for="show_facebook"  class="text-danger">Show Facebook</label>
-                                <input type="checkbox"  class="ms-2 form-check-input" id="show_facebook" v-model="company.show_facebook">
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-6 col-lg-4">
-                            <div class="form-group">
-                                <label for="show_linkedin" class="text-danger">Show LinkedIn</label>
-                                <input type="checkbox" class="ms-2 form-check-input" id="show_linkedin" v-model="company.show_linkedin">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="d-flex justify-content-end mt-3">
-                        <Button label="Save" @click="saveCompanyInfo()" severity="success" />
+                    <p class="ha-section-title"><Icon name="shield" /> Permissions</p>
+                    <div class="ha-toggles">
+                        <label for="show_instagram" class="ha-switch ha-toggle">
+                            Show Instagram
+                            <input type="checkbox" id="show_instagram" v-model="company.show_instagram">
+                        </label>
+                        <label for="show_facebook" class="ha-switch ha-toggle">
+                            Show Facebook
+                            <input type="checkbox" id="show_facebook" v-model="company.show_facebook">
+                        </label>
+                        <label for="show_linkedin" class="ha-switch ha-toggle">
+                            Show LinkedIn
+                            <input type="checkbox" id="show_linkedin" v-model="company.show_linkedin">
+                        </label>
                     </div>
                 </div>
+            </section>
+
+            <div class="ha-head__actions" style="justify-content: flex-end">
+                <button type="button" class="ha-btn" @click="saveCompanyInfo()"><Icon name="check" /> Save</button>
             </div>
         </div>
 
     </AuthenticatedLayout>
 
 </template>
-
-<style scoped>
-.header {
-    background-color: white;
-    min-height: 92vh;
-    padding-top: 5rem;
-}
-</style>

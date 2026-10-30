@@ -1,11 +1,7 @@
 <script setup>
-import { ref, computed } from 'vue';
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
-import Dropdown from '@/Components/Dropdown.vue';
-import DropdownLink from '@/Components/DropdownLink.vue';
-import NavLink from '@/Components/NavLink.vue';
-import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
-import { Link, usePage } from '@inertiajs/vue3';
+import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue';
+import Icon from '@/Components/V2/Icon.vue';
+import { Link, usePage, router } from '@inertiajs/vue3';
 
 const showingNavigationDropdown = ref(false);
 const page = usePage();
@@ -13,326 +9,149 @@ const page = usePage();
 const isAdmin = computed(() => {
     return page.props.auth.user?.team_id == '1' || page.props.auth.user?.team_id == 1;
 });
+
+const navGroups = computed(() => {
+    if (isAdmin.value) {
+        return [
+            { items: [{ label: 'Dashboard', route: 'dashboard', icon: 'dashboard' }] },
+            {
+                label: 'Shop',
+                items: [
+                    { label: 'Orders', route: 'admin.orders', icon: 'receipt' },
+                    { label: 'Products', route: 'admin.products', icon: 'box' },
+                    { label: 'Categories', route: 'admin.categories', icon: 'layers' },
+                ],
+            },
+            {
+                label: 'Content',
+                items: [
+                    { label: 'Slider', route: 'admin.slider', icon: 'image' },
+                    { label: 'Blog', route: 'admin.blog', icon: 'file' },
+                ],
+            },
+            {
+                label: 'Settings',
+                items: [
+                    { label: 'Company', route: 'admin.company', icon: 'building' },
+                    { label: 'Users', route: 'admin.users', icon: 'users' },
+                ],
+            },
+        ];
+    }
+    return [
+        {
+            items: [
+                { label: 'Dashboard', route: 'dashboard', icon: 'dashboard' },
+                { label: 'Home', route: 'home', icon: 'bag' },
+            ],
+        },
+        {
+            label: 'Shop',
+            items: [
+                { label: 'Orders', route: 'admin.orders', icon: 'receipt' },
+                { label: 'Products', route: 'admin.products', icon: 'box' },
+                { label: 'Categories', route: 'admin.categories', icon: 'layers' },
+            ],
+        },
+    ];
+});
+
+const initials = computed(() => {
+    const name = page.props.auth.user?.name || '';
+    return name.split(' ').filter(Boolean).slice(0, 2).map(part => part[0]).join('') || '?';
+});
+
+watch(showingNavigationDropdown, (open) => {
+    document.body.style.overflow = open ? 'hidden' : null;
+});
+
+let removeNavigateListener;
+const closeOnEscape = (e) => {
+    if (e.key === 'Escape') showingNavigationDropdown.value = false;
+};
+
+onMounted(() => {
+    removeNavigateListener = router.on('navigate', () => (showingNavigationDropdown.value = false));
+    document.addEventListener('keydown', closeOnEscape);
+});
+
+onBeforeUnmount(() => {
+    removeNavigateListener?.();
+    document.removeEventListener('keydown', closeOnEscape);
+    document.body.style.overflow = null;
+});
 </script>
 
 <template>
-    <div>
-        <div class="min-h-screen bg-gray-100">
-            <nav
-                class="border-b border-gray-100 bg-white"
-            >
-                <!-- Primary Navigation Menu -->
-                <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div class="flex h-16 justify-between">
-                        <div class="flex">
-                            <!-- Logo -->
-                            <div class="flex shrink-0 items-center">
-                                <Link :href="route('dashboard')">
-                                    <ApplicationLogo
-                                        class="block h-9 w-auto fill-current text-gray-800"
-                                    />
-                                </Link>
-                            </div>
+    <div class="ha">
+        <aside class="ha-side" :class="{ 'is-open': showingNavigationDropdown }" aria-label="Admin navigation">
+            <div class="ha-side__brand">
+                <Link :href="route('dashboard')">
+                    <img src="/assets/img/logo/logo-without-bg.webp" alt="Хедерафарм+" width="146" height="36" />
+                </Link>
+                <button type="button" class="ha-icon-btn ha-icon-btn--plain ha-side__close" aria-label="Close menu" @click="showingNavigationDropdown = false">
+                    <Icon name="x" />
+                </button>
+            </div>
 
-                            <!-- Navigation Links -->
-                            <div
-                                class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
-                            >
-                                <NavLink
-                                    :href="route('dashboard')"
-                                    :active="route().current('dashboard')"
-                                    class="relative"
-                                >
-                                    <span class="flex items-center">
-                                        Dashboard
-                                        <span v-if="isAdmin" class="ml-2 px-2 py-1 bg-blue-500 text-white text-xs rounded-full">
-                                            Admin
-                                        </span>
-                                    </span>
-                                </NavLink>
-                                <!-- Admin Navigation Links -->
-                                <template v-if="isAdmin">
-                                    <NavLink
-                                        :href="route('admin.company')"
-                                        :active="route().current('admin.company')"
-                                    >
-                                        Company
-                                    </NavLink>
-                                    <NavLink
-                                        :href="route('admin.users')"
-                                        :active="route().current('admin.users')"
-                                    >
-                                        Users
-                                    </NavLink>
-                                    <NavLink
-                                        :href="route('admin.blog')"
-                                        :active="route().current('admin.blog')"
-                                    >
-                                        Blog
-                                    </NavLink>
-                                    <NavLink
-                                        :href="route('admin.slider')"
-                                        :active="route().current('admin.slider')"
-                                    >
-                                        Slider
-                                    </NavLink>
-                                    <NavLink
-                                        :href="route('admin.categories')"
-                                        :active="route().current('admin.categories')"
-                                    >
-                                        Categories
-                                    </NavLink>
-                                    <NavLink
-                                        :href="route('admin.products')"
-                                        :active="route().current('admin.products')"
-                                    >
-                                        Products
-                                    </NavLink>
-                                    <NavLink
-                                        :href="route('admin.orders')"
-                                        :active="route().current('admin.orders')"
-                                    >
-                                        Orders
-                                    </NavLink>
-                                </template>
-                                <!-- Regular User Navigation -->
-                                <template v-else>
-                                    <NavLink
-                                        :href="route('home')"
-                                        :active="route().current('home')"
-                                    >
-                                        Home
-                                    </NavLink>
-                                       <NavLink
-                                        :href="route('admin.categories')"
-                                        :active="route().current('admin.categories')"
-                                    >
-                                        Categories
-                                    </NavLink>
-                                    <NavLink
-                                        :href="route('admin.products')"
-                                        :active="route().current('admin.products')"
-                                    >
-                                        Products
-                                    </NavLink>
-                                   
-                                    <NavLink
-                                        :href="route('admin.orders')"
-                                        :active="route().current('admin.orders')"
-                                    >
-                                        Orders
-                                    </NavLink>
-                                    
-                                </template>
-
-                            </div>
-                        </div>
-
-                        <div class="hidden sm:ms-6 sm:flex sm:items-center">
-                            <!-- Settings Dropdown -->
-                            <div class="relative ms-3">
-                                <Dropdown align="right" width="48">
-                                    <template #trigger>
-                                        <span class="inline-flex rounded-md">
-                                            <button
-                                                type="button"
-                                                class="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
-                                            >
-                                                {{ $page.props.auth.user.name }}
-
-                                                <svg
-                                                    class="-me-0.5 ms-2 h-4 w-4"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 20 20"
-                                                    fill="currentColor"
-                                                >
-                                                    <path
-                                                        fill-rule="evenodd"
-                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                        clip-rule="evenodd"
-                                                    />
-                                                </svg>
-                                            </button>
-                                        </span>
-                                    </template>
-
-                                    <template #content>
-                                        <DropdownLink
-                                            :href="route('profile.edit')"
-                                        >
-                                            Profile
-                                        </DropdownLink>
-                                        <DropdownLink
-                                            :href="route('logout')"
-                                            method="post"
-                                            as="button"
-                                        >
-                                            Log Out
-                                        </DropdownLink>
-                                    </template>
-                                </Dropdown>
-                            </div>
-                        </div>
-
-                        <!-- Hamburger -->
-                        <div class="-me-2 flex items-center sm:hidden">
-                            <button
-                                @click="
-                                    showingNavigationDropdown =
-                                        !showingNavigationDropdown
-                                "
-                                class="inline-flex items-center justify-center rounded-md p-2 text-gray-400 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-gray-500 focus:bg-gray-100 focus:text-gray-500 focus:outline-none"
-                            >
-                                <svg
-                                    class="h-6 w-6"
-                                    stroke="currentColor"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        :class="{
-                                            hidden: showingNavigationDropdown,
-                                            'inline-flex':
-                                                !showingNavigationDropdown,
-                                        }"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M4 6h16M4 12h16M4 18h16"
-                                    />
-                                    <path
-                                        :class="{
-                                            hidden: !showingNavigationDropdown,
-                                            'inline-flex':
-                                                showingNavigationDropdown,
-                                        }"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M6 18L18 6M6 6l12 12"
-                                    />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Responsive Navigation Menu -->
-                <div
-                    :class="{
-                        block: showingNavigationDropdown,
-                        hidden: !showingNavigationDropdown,
-                    }"
-                    class="sm:hidden"
-                >
-                    <div class="space-y-1 pb-3 pt-2">
-                        <ResponsiveNavLink
-                            :href="route('dashboard')"
-                            :active="route().current('dashboard')"
-                        >
-                            Dashboard
-                        </ResponsiveNavLink>
-                        
-                        <!-- Admin Navigation Links for Mobile -->
-                        <template v-if="isAdmin">
-                            <ResponsiveNavLink
-                                :href="route('admin.company')"
-                                :active="route().current('admin.company')"
-                            >
-                                Company
-                            </ResponsiveNavLink>
-                            <ResponsiveNavLink
-                                :href="route('admin.users')"
-                                :active="route().current('admin.users')"
-                            >
-                                Users
-                            </ResponsiveNavLink>
-                            <ResponsiveNavLink
-                                :href="route('admin.blog')"
-                                :active="route().current('admin.blog')"
-                            >
-                                Blog
-                            </ResponsiveNavLink>
-                            <ResponsiveNavLink
-                                :href="route('admin.slider')"
-                                :active="route().current('admin.slider')"
-                            >
-                                Slider
-                            </ResponsiveNavLink>
-                            <ResponsiveNavLink
-                                :href="route('admin.categories')"
-                                :active="route().current('admin.categories')"
-                            >
-                                Categories
-                            </ResponsiveNavLink>
-                            <ResponsiveNavLink
-                            :href="route('admin.products')"
-                            :active="route().current('admin.products')"
-                            >
-                                Products
-                            </ResponsiveNavLink>
-                            <ResponsiveNavLink
-                                :href="route('admin.orders')"
-                                :active="route().current('admin.orders')"
-                            >
-                                Orders
-                            </ResponsiveNavLink>
-                        </template>
-                        
-                        <!-- Regular User Navigation for Mobile -->
-                        <template v-else>
-                            <ResponsiveNavLink
-                                :href="route('home')"
-                                :active="route().current('home')"
-                            >
-                                Home
-                            </ResponsiveNavLink>
-                        </template>
-                    </div>
-
-                    <!-- Responsive Settings Options -->
-                    <div
-                        class="border-t border-gray-200 pb-1 pt-4"
+            <nav class="ha-side__nav">
+                <div v-for="(group, index) in navGroups" :key="index" class="ha-nav-group">
+                    <p v-if="group.label" class="ha-nav-label">{{ group.label }}</p>
+                    <Link
+                        v-for="item in group.items"
+                        :key="item.route"
+                        :href="route(item.route)"
+                        class="ha-nav-link"
+                        :class="{ 'is-active': route().current(item.route) }"
                     >
-                        <div class="px-4">
-                            <div
-                                class="text-base font-medium text-gray-800"
-                            >
-                                {{ $page.props.auth.user.name }}
-                            </div>
-                            <div class="text-sm font-medium text-gray-500">
-                                {{ $page.props.auth.user.email }}
-                            </div>
-                        </div>
-
-                        <div class="mt-3 space-y-1">
-                            <ResponsiveNavLink :href="route('profile.edit')">
-                                Profile
-                            </ResponsiveNavLink>
-                            <ResponsiveNavLink
-                                :href="route('logout')"
-                                method="post"
-                                as="button"
-                            >
-                                Log Out
-                            </ResponsiveNavLink>
-                        </div>
-                    </div>
+                        <Icon :name="item.icon" />
+                        {{ item.label }}
+                    </Link>
                 </div>
             </nav>
 
-            <!-- Page Heading -->
-            <header
-                class="bg-white shadow"
-                v-if="$slots.header"
-            >
-                <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-                    <slot name="header" />
+            <div class="ha-side__foot">
+                <div class="ha-user">
+                    <span class="ha-avatar">{{ initials }}</span>
+                    <div class="ha-user__meta">
+                        <span class="ha-user__name">
+                            <span>{{ $page.props.auth.user.name }}</span>
+                            <span v-if="isAdmin" class="ha-role">Admin</span>
+                        </span>
+                        <span class="ha-user__email">{{ $page.props.auth.user.email }}</span>
+                    </div>
                 </div>
+                <div class="ha-user__actions">
+                    <Link :href="route('profile.edit')" :class="{ 'is-active': route().current('profile.edit') }">
+                        <Icon name="user" /> Profile
+                    </Link>
+                    <Link :href="route('logout')" method="post" as="button" class="ha-logout">
+                        <Icon name="logout" /> Log Out
+                    </Link>
+                </div>
+            </div>
+        </aside>
+
+        <Transition name="ha-modal-fade">
+            <div v-if="showingNavigationDropdown" class="ha-scrim" @click="showingNavigationDropdown = false"></div>
+        </Transition>
+
+        <div class="ha-main">
+            <header class="ha-topbar">
+                <button type="button" class="ha-icon-btn" aria-label="Open menu" @click="showingNavigationDropdown = true">
+                    <Icon name="menu" />
+                </button>
+                <Link :href="route('dashboard')">
+                    <img src="/assets/img/logo/logo-without-bg.webp" alt="Хедерафарм+" width="122" height="30" />
+                </Link>
+                <Link :href="route('profile.edit')" class="ha-avatar" aria-label="Profile">{{ initials }}</Link>
             </header>
 
-            <!-- Page Content -->
-            <main>
+            <main class="ha-content">
+                <div v-if="$slots.header" class="ha-head">
+                    <slot name="header" />
+                </div>
+
                 <slot />
             </main>
         </div>

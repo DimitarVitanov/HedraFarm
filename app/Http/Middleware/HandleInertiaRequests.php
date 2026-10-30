@@ -35,6 +35,8 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
+            // Login/logout regenerate the token; app.js copies it into the csrf meta tag
+            'csrf_token' => fn () => csrf_token(),
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),

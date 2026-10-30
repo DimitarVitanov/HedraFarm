@@ -2,8 +2,7 @@
 import { ref, computed, onMounted } from 'vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, usePage } from '@inertiajs/vue3';
-import Button from 'primevue/button';
-import Card from 'primevue/card';
+import Icon from '@/Components/V2/Icon.vue';
 import Chart from 'primevue/chart';
 import Modal from '@/Components/Modal.vue';
 import {
@@ -66,10 +65,46 @@ const showAdminDashboard = computed(() => {
 });
 
 // Chart data
+const BRAND = '#0b8f7f';
 const ordersChartData = ref({});
+const revenueChartData = ref({});
 const productsChartData = ref({});
-const ordersChartOptions = ref({});
+const trendChartOptions = ref({});
 const productsChartOptions = ref({});
+
+const chartTooltip = {
+    backgroundColor: '#10231f',
+    titleColor: '#ffffff',
+    bodyColor: '#e4ebe7',
+    padding: 10,
+    cornerRadius: 10,
+    displayColors: false,
+    titleFont: { family: 'Inter', weight: '600' },
+    bodyFont: { family: 'Inter' },
+};
+const chartTicks = { color: '#7b8a84', font: { family: 'Inter', size: 11 } };
+
+const trendDataset = (label, data) => ({
+    label,
+    data,
+    borderColor: BRAND,
+    backgroundColor: 'rgba(11, 143, 127, 0.08)',
+    fill: true,
+    borderWidth: 2,
+    tension: 0.3,
+    cubicInterpolationMode: 'monotone',
+    pointRadius: data.length > 1 ? 0 : 4,
+    pointBackgroundColor: BRAND,
+    pointHoverRadius: 5,
+    pointHoverBackgroundColor: BRAND,
+    pointHoverBorderColor: '#ffffff',
+    pointHoverBorderWidth: 2,
+});
+
+const productsChartHeight = computed(() => {
+    const count = productsChartData.value.labels?.length || 1;
+    return `${Math.max(190, count * 34 + 40)}px`;
+});
 
 onMounted(() => {
     console.log('Dashboard mounted:', {
@@ -92,73 +127,80 @@ const setupCharts = () => {
         return;
     }
 
-    // Orders trend chart
+    // Orders & revenue trend - one chart per measure, sharing the date axis
     const ordersTrend = props.statistics.charts.orders_trend || [];
+    const trendLabels = ordersTrend.length > 0
+        ? ordersTrend.map(item => new Date(item.date).toLocaleDateString(undefined, { day: 'numeric', month: 'short' }))
+        : ['No Data'];
     ordersChartData.value = {
-        labels: ordersTrend.length > 0 ? ordersTrend.map(item => new Date(item.date).toLocaleDateString()) : ['No Data'],
-        datasets: [
-            {
-                label: 'Orders',
-                data: ordersTrend.length > 0 ? ordersTrend.map(item => item.count) : [0],
-                borderColor: '#3B82F6',
-                backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                fill: true
-            },
-            {
-                label: 'Revenue (Ден)',
-                data: ordersTrend.length > 0 ? ordersTrend.map(item => parseFloat(item.revenue || 0)) : [0],
-                borderColor: '#10B981',
-                backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                fill: true,
-                yAxisID: 'y1'
-            }
-        ]
+        labels: trendLabels,
+        datasets: [trendDataset('Orders', ordersTrend.length > 0 ? ordersTrend.map(item => item.count) : [0])],
+    };
+    revenueChartData.value = {
+        labels: trendLabels,
+        datasets: [trendDataset('Revenue (Ден)', ordersTrend.length > 0 ? ordersTrend.map(item => parseFloat(item.revenue || 0)) : [0])],
     };
 
-    // Products by category chart
-    const productsByCategory = props.statistics.charts.products_by_category || [];
+    // Products by category - largest first
+    const productsByCategory = [...(props.statistics.charts.products_by_category || [])]
+        .sort((a, b) => b.count - a.count);
     productsChartData.value = {
         labels: productsByCategory.length > 0 ? productsByCategory.map(item => item.name) : ['No Categories'],
         datasets: [{
+            label: 'Products',
             data: productsByCategory.length > 0 ? productsByCategory.map(item => item.count) : [0],
-            backgroundColor: [
-                '#3B82F6',
-                '#10B981',
-                '#F59E0B',
-                '#EF4444',
-                '#8B5CF6',
-                '#F97316'
-            ]
+            backgroundColor: BRAND,
+            hoverBackgroundColor: '#08766a',
+            borderRadius: 4,
+            maxBarThickness: 16,
         }]
     };
 
     // Chart options
-    ordersChartOptions.value = {
+    trendChartOptions.value = {
         responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+            legend: { display: false },
+            tooltip: chartTooltip,
+        },
         scales: {
-            y: {
-                type: 'linear',
-                display: true,
-                position: 'left',
+            x: {
+                grid: { display: false },
+                border: { display: false },
+                ticks: { ...chartTicks, maxRotation: 0, autoSkip: true, maxTicksLimit: 8 },
             },
-            y1: {
-                type: 'linear',
-                display: true,
-                position: 'right',
-                grid: {
-                    drawOnChartArea: false,
-                },
-            }
-        }
+            y: {
+                beginAtZero: true,
+                grid: { color: '#eef2f0' },
+                border: { display: false },
+                ticks: { ...chartTicks, maxTicksLimit: 5, precision: 0 },
+            },
+        },
     };
 
     productsChartOptions.value = {
+        indexAxis: 'y',
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
-            legend: {
-                position: 'bottom'
-            }
-        }
+            legend: { display: false },
+            tooltip: chartTooltip,
+        },
+        scales: {
+            x: {
+                beginAtZero: true,
+                grid: { color: '#eef2f0' },
+                border: { display: false },
+                ticks: { ...chartTicks, precision: 0 },
+            },
+            y: {
+                grid: { display: false },
+                border: { display: false },
+                ticks: { color: '#47564f', font: { family: 'Inter', size: 12 } },
+            },
+        },
     };
 };
 
@@ -219,274 +261,191 @@ const formatNumber = (value) => {
 
     <AuthenticatedLayout>
         <template #header>
-            <div class="flex justify-between items-center">
-                <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                    Dashboard
-                </h2>
-                <Button
-                    v-if="showAdminDashboard"
-                    label="Settings"
-                    icon="fa fa-cog"
-                    severity="secondary"
-                    @click="showSettingsModal = true"
-                />
+            <div class="ha-head__title">
+                <h1>Dashboard</h1>
+            </div>
+            <div class="ha-head__actions" v-if="showAdminDashboard">
+                <button type="button" class="ha-btn ha-btn--ghost" @click="showSettingsModal = true">
+                    <Icon name="settings" /> Settings
+                </button>
             </div>
         </template>
 
-        <div class="py-6" v-if="!showAdminDashboard">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900">
-                        <h3 class="text-lg font-semibold mb-4">Welcome to HedraFarm!</h3>
-                        <p>You're logged in as a regular user. Explore our products and place orders.</p>
-                    </div>
-                </div>
+        <div v-if="!showAdminDashboard" class="ha-welcome">
+            <span class="ha-welcome__icon"><Icon name="cross" /></span>
+            <div>
+                <h2>Welcome to HedraFarm!</h2>
+                <p>You're logged in as a regular user. Explore our products and place orders.</p>
             </div>
         </div>
 
         <!-- Admin Dashboard -->
-        <div v-if="showAdminDashboard" class="py-6">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+        <div v-if="showAdminDashboard" class="ha-stack">
 
-                <!-- Overview Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <!-- Total Orders -->
-                    <Card class="bg-blue-50 border-blue-200">
-                        <template #content>
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <p class="text-blue-600 text-sm font-medium">Total Orders</p>
-                                    <p class="text-2xl font-bold text-blue-900">
-                                        {{ formatNumber(statistics?.overview?.total_orders || 0) }}
-                                    </p>
-                                    <p class="text-xs text-blue-500 mt-1">
-                                        +{{ statistics?.overview?.recent_orders || 0 }} this week
-                                    </p>
-                                </div>
-                                <div class="bg-blue-100 p-3 rounded-full">
-                                    <i class="fa fa-shopping-cart text-blue-600 text-xl"></i>
-                                </div>
-                            </div>
-                        </template>
-                    </Card>
-
-                    <!-- Total Revenue -->
-                    <Card class="bg-green-50 border-green-200">
-                        <template #content>
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <p class="text-green-600 text-sm font-medium">Total Revenue</p>
-                                    <p class="text-2xl font-bold text-green-900">
-                                        {{ formatCurrency(statistics?.overview?.total_revenue || 0) }}
-                                    </p>
-                                    <p class="text-xs text-green-500 mt-1">
-                                        {{ (statistics?.overview?.revenue_growth || 0) > 0 ? '+' : '' }}{{ statistics?.overview?.revenue_growth || 0 }}% from last month
-                                    </p>
-                                </div>
-                                <div class="bg-green-100 p-3 rounded-full">
-                                    <i class="fa fa-dollar-sign text-green-600 text-xl"></i>
-                                </div>
-                            </div>
-                        </template>
-                    </Card>
-
-                    <!-- Total Products -->
-                    <Card class="bg-purple-50 border-purple-200">
-                        <template #content>
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <p class="text-purple-600 text-sm font-medium">Total Products</p>
-                                    <p class="text-2xl font-bold text-purple-900">
-                                        {{ formatNumber(statistics?.overview?.total_products || 0) }}
-                                    </p>
-                                    <p class="text-xs text-purple-500 mt-1">
-                                        {{ statistics?.overview?.total_categories || 0 }} categories
-                                    </p>
-                                </div>
-                                <div class="bg-purple-100 p-3 rounded-full">
-                                    <i class="fa fa-box text-purple-600 text-xl"></i>
-                                </div>
-                            </div>
-                        </template>
-                    </Card>
-
-                    <!-- Total Users -->
-                    <Card class="bg-orange-50 border-orange-200">
-                        <template #content>
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <p class="text-orange-600 text-sm font-medium">Total Users</p>
-                                    <p class="text-2xl font-bold text-orange-900">
-                                        {{ formatNumber(statistics?.overview?.total_users || 0) }}
-                                    </p>
-                                    <p class="text-xs text-orange-500 mt-1">
-                                        +{{ statistics?.overview?.recent_users || 0 }} this week
-                                    </p>
-                                </div>
-                                <div class="bg-orange-100 p-3 rounded-full">
-                                    <i class="fa fa-users text-orange-600 text-xl"></i>
-                                </div>
-                            </div>
-                        </template>
-                    </Card>
+            <!-- Overview Cards -->
+            <div class="ha-stats">
+                <div class="ha-stat">
+                    <div class="ha-stat__top">
+                        <span class="ha-stat__label">Total Orders</span>
+                        <span class="ha-stat__icon"><Icon name="receipt" /></span>
+                    </div>
+                    <div class="ha-stat__value">{{ formatNumber(statistics?.overview?.total_orders || 0) }}</div>
+                    <div class="ha-stat__note">+{{ statistics?.overview?.recent_orders || 0 }} this week</div>
                 </div>
 
-                <!-- Charts Row -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6" v-if="dashboardSettings.show_charts && statistics?.charts">
-                    <!-- Orders Trend Chart -->
-                    <Card>
-                        <template #title>
-                            <span class="text-lg font-semibold">Orders & Revenue Trend (Last 30 Days)</span>
-                        </template>
-                        <template #content>
-                            <Chart
-                                type="line"
-                                :data="ordersChartData"
-                                :options="ordersChartOptions"
-                                class="h-64"
-                            />
-                        </template>
-                    </Card>
-
-                    <!-- Products by Category Chart -->
-                    <Card>
-                        <template #title>
-                            <span class="text-lg font-semibold">Products by Category</span>
-                        </template>
-                        <template #content>
-                            <Chart
-                                type="pie"
-                                :data="productsChartData"
-                                :options="productsChartOptions"
-                                class="h-64"
-                            />
-                        </template>
-                    </Card>
+                <div class="ha-stat ha-stat--feature">
+                    <div class="ha-stat__top">
+                        <span class="ha-stat__label">Total Revenue</span>
+                        <span class="ha-stat__icon"><Icon name="wallet" /></span>
+                    </div>
+                    <div class="ha-stat__value">{{ formatCurrency(statistics?.overview?.total_revenue || 0) }}</div>
+                    <div class="ha-stat__note">
+                        {{ (statistics?.overview?.revenue_growth || 0) > 0 ? '+' : '' }}{{ statistics?.overview?.revenue_growth || 0 }}% from last month
+                    </div>
                 </div>
 
-                <!-- Alerts & Recent Activity -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <!-- Low Stock Alert -->
-                    <Card v-if="statistics?.alerts?.low_stock_products?.length > 0">
-                        <template #title>
-                            <span class="text-lg font-semibold text-red-600">
-                                <i class="fa fa-exclamation-triangle mr-2"></i>
-                                Low Stock Alert
-                            </span>
-                        </template>
-                        <template #content>
-                            <div class="space-y-2">
-                                <div
-                                    v-for="product in statistics.alerts.low_stock_products"
-                                    :key="product.name"
-                                    class="flex justify-between items-center p-2 bg-red-50 rounded"
-                                >
-                                    <span class="font-medium">{{ product.name }}</span>
-                                    <span class="text-red-600 font-bold">{{ product.quantity }} left</span>
-                                </div>
-                            </div>
-                        </template>
-                    </Card>
-
-                    <!-- Quick Stats -->
-                    <Card>
-                        <template #title>
-                            <span class="text-lg font-semibold">Quick Stats</span>
-                        </template>
-                        <template #content>
-                            <div class="space-y-4">
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600">Blog Posts:</span>
-                                    <span class="font-semibold">{{ formatNumber(statistics?.overview?.total_blogs || 0) }}</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600">This Month Revenue:</span>
-                                    <span class="font-semibold">{{ formatCurrency(statistics?.overview?.current_month_revenue || 0) }}</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600">Revenue Growth:</span>
-                                    <span :class="(statistics?.overview?.revenue_growth || 0) >= 0 ? 'text-green-600' : 'text-red-600'" class="font-semibold">
-                                        {{ (statistics?.overview?.revenue_growth || 0) >= 0 ? '+' : '' }}{{ statistics?.overview?.revenue_growth || 0 }}%
-                                    </span>
-                                </div>
-                            </div>
-                        </template>
-                    </Card>
+                <div class="ha-stat">
+                    <div class="ha-stat__top">
+                        <span class="ha-stat__label">Total Products</span>
+                        <span class="ha-stat__icon"><Icon name="box" /></span>
+                    </div>
+                    <div class="ha-stat__value">{{ formatNumber(statistics?.overview?.total_products || 0) }}</div>
+                    <div class="ha-stat__note">{{ statistics?.overview?.total_categories || 0 }} categories</div>
                 </div>
+
+                <div class="ha-stat">
+                    <div class="ha-stat__top">
+                        <span class="ha-stat__label">Total Users</span>
+                        <span class="ha-stat__icon"><Icon name="users" /></span>
+                    </div>
+                    <div class="ha-stat__value">{{ formatNumber(statistics?.overview?.total_users || 0) }}</div>
+                    <div class="ha-stat__note">+{{ statistics?.overview?.recent_users || 0 }} this week</div>
+                </div>
+            </div>
+
+            <!-- Charts Row -->
+            <div class="ha-dash-row" v-if="dashboardSettings.show_charts && statistics?.charts">
+                <!-- Orders Trend Chart -->
+                <section class="ha-card">
+                    <div class="ha-card__head"><h2>Orders & Revenue Trend (Last 30 Days)</h2></div>
+                    <div class="ha-card__body">
+                        <div class="ha-chart-block">
+                            <p class="ha-chart-label">Orders</p>
+                            <Chart type="line" :data="ordersChartData" :options="trendChartOptions" class="ha-chart" />
+                        </div>
+                        <div class="ha-chart-block">
+                            <p class="ha-chart-label">Revenue (Ден)</p>
+                            <Chart type="line" :data="revenueChartData" :options="trendChartOptions" class="ha-chart" />
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Products by Category Chart -->
+                <section class="ha-card">
+                    <div class="ha-card__head"><h2>Products by Category</h2></div>
+                    <div class="ha-card__body">
+                        <Chart
+                            type="bar"
+                            :data="productsChartData"
+                            :options="productsChartOptions"
+                            class="ha-chart"
+                            :style="{ height: productsChartHeight }"
+                        />
+                    </div>
+                </section>
+            </div>
+
+            <!-- Alerts & Recent Activity -->
+            <div class="ha-dash-row ha-dash-row--even">
+                <!-- Low Stock Alert -->
+                <section class="ha-card ha-card--danger" v-if="statistics?.alerts?.low_stock_products?.length > 0">
+                    <div class="ha-card__head"><h2><Icon name="alert" /> Low Stock Alert</h2></div>
+                    <div class="ha-card__body">
+                        <div class="ha-list">
+                            <div
+                                v-for="product in statistics.alerts.low_stock_products"
+                                :key="product.name"
+                                class="ha-list__row"
+                            >
+                                <span class="ha-list__key">{{ product.name }}</span>
+                                <span class="ha-badge ha-badge--danger">{{ product.quantity }} left</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Quick Stats -->
+                <section class="ha-card">
+                    <div class="ha-card__head"><h2>Quick Stats</h2></div>
+                    <div class="ha-card__body">
+                        <div class="ha-list">
+                            <div class="ha-list__row">
+                                <span class="ha-list__key">Blog Posts:</span>
+                                <span class="ha-list__val">{{ formatNumber(statistics?.overview?.total_blogs || 0) }}</span>
+                            </div>
+                            <div class="ha-list__row">
+                                <span class="ha-list__key">This Month Revenue:</span>
+                                <span class="ha-list__val">{{ formatCurrency(statistics?.overview?.current_month_revenue || 0) }}</span>
+                            </div>
+                            <div class="ha-list__row">
+                                <span class="ha-list__key">Revenue Growth:</span>
+                                <span :class="(statistics?.overview?.revenue_growth || 0) >= 0 ? 'ha-up' : 'ha-down'" class="ha-list__val">
+                                    {{ (statistics?.overview?.revenue_growth || 0) >= 0 ? '+' : '' }}{{ statistics?.overview?.revenue_growth || 0 }}%
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
         </div>
 
         <!-- Settings Modal -->
-        <Modal :show="showSettingsModal" @close="showSettingsModal = false">
-            <div class="p-6">
-                <h2 class="text-lg font-medium text-gray-900 mb-4">Dashboard Settings</h2>
+        <Modal :show="showSettingsModal" @close="showSettingsModal = false" maxWidth="md">
+            <div class="ha-modal__head">
+                <h3>Dashboard Settings</h3>
+                <button type="button" class="ha-icon-btn ha-icon-btn--plain" aria-label="Close" @click="showSettingsModal = false"><Icon name="x" /></button>
+            </div>
 
-                <div class="space-y-4">
-                    <div class="flex items-center">
-                        <input
-                            id="show_charts"
-                            type="checkbox"
-                            v-model="dashboardSettings.show_charts"
-                            class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                        >
-                        <label for="show_charts" class="ml-2 text-sm text-gray-600">Show Charts</label>
-                    </div>
+            <div class="ha-modal__body">
+                <label for="show_charts" class="ha-switch ha-toggle">
+                    Show Charts
+                    <input id="show_charts" type="checkbox" v-model="dashboardSettings.show_charts">
+                </label>
 
-                    <div class="flex items-center">
-                        <input
-                            id="show_revenue"
-                            type="checkbox"
-                            v-model="dashboardSettings.show_revenue"
-                            class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                        >
-                        <label for="show_revenue" class="ml-2 text-sm text-gray-600">Show Revenue</label>
-                    </div>
+                <label for="show_revenue" class="ha-switch ha-toggle">
+                    Show Revenue
+                    <input id="show_revenue" type="checkbox" v-model="dashboardSettings.show_revenue">
+                </label>
 
-                    <div class="flex items-center">
-                        <input
-                            id="show_recent_activity"
-                            type="checkbox"
-                            v-model="dashboardSettings.show_recent_activity"
-                            class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                        >
-                        <label for="show_recent_activity" class="ml-2 text-sm text-gray-600">Show Recent Activity</label>
-                    </div>
+                <label for="show_recent_activity" class="ha-switch ha-toggle">
+                    Show Recent Activity
+                    <input id="show_recent_activity" type="checkbox" v-model="dashboardSettings.show_recent_activity">
+                </label>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Auto-refresh interval (seconds)</label>
-                        <input
-                            type="number"
-                            v-model.number="dashboardSettings.refresh_interval"
-                            min="10"
-                            max="300"
-                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                        >
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Chart Type</label>
-                        <select
-                            v-model="dashboardSettings.chart_type"
-                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                        >
-                            <option value="line">Line Chart</option>
-                            <option value="bar">Bar Chart</option>
-                            <option value="pie">Pie Chart</option>
-                        </select>
-                    </div>
+                <div class="ha-field">
+                    <label class="ha-label">Auto-refresh interval (seconds)</label>
+                    <input
+                        type="number"
+                        v-model.number="dashboardSettings.refresh_interval"
+                        min="10"
+                        max="300"
+                        class="ha-input"
+                    >
                 </div>
 
-                <div class="mt-6 flex justify-end space-x-3">
-                    <Button
-                        label="Cancel"
-                        severity="secondary"
-                        @click="showSettingsModal = false"
-                    />
-                    <Button
-                        label="Save Settings"
-                        @click="saveDashboardSettings"
-                    />
+                <div class="ha-field">
+                    <label class="ha-label">Chart Type</label>
+                    <select v-model="dashboardSettings.chart_type" class="ha-input">
+                        <option value="line">Line Chart</option>
+                        <option value="bar">Bar Chart</option>
+                        <option value="pie">Pie Chart</option>
+                    </select>
                 </div>
+            </div>
+
+            <div class="ha-modal__foot">
+                <button type="button" class="ha-btn ha-btn--ghost" @click="showSettingsModal = false">Cancel</button>
+                <button type="button" class="ha-btn" @click="saveDashboardSettings">Save Settings</button>
             </div>
         </Modal>
     </AuthenticatedLayout>

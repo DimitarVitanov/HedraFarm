@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue';
 import { usePage, Head } from '@inertiajs/vue3';
 import  AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Button } from 'primevue';
+import Icon from '@/Components/V2/Icon.vue';
 import Modal from '@/Components/Modal.vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
@@ -146,8 +146,8 @@ const removeSlider = (id) => {
         text: "You won't be able to revert this!",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
+        confirmButtonColor: '#e5484d',
+        cancelButtonColor: '#7b8a84',
         confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
         if (result.isConfirmed) {
@@ -228,85 +228,88 @@ const handleImageUpload = (event) => {
 <template>
     <Head title="Admin Slider"/>
     <AuthenticatedLayout>
-    <div class="slider">
-        <div class="col-8 mx-auto">
-            <div class="d-flex justify-content-between align-items-center">
-                <h2>Slider</h2>
-                <Button label="Add Slide" severity="danger" @click="openSlideModal()" />
+        <template #header>
+            <div class="ha-head__title">
+                <h1>Slider</h1>
+                <span class="ha-count">{{ sliders.length }}</span>
             </div>
-            <hr class="w-100 text-gray-300">
+            <div class="ha-head__actions">
+                <button type="button" class="ha-btn" @click="openSlideModal()"><Icon name="plus" /> Add Slide</button>
+            </div>
+        </template>
 
         <!--start:: Sliders Table -->
-        <div class="table-responsive pt-5">
-        <DataTable stripedRows size="small" paginator :value="sliders" :rows="10" :loading="loading">
-            <Column field="title" header="Title" />
-            <Column field="subtitle" header="Subtitle" />
-            <Column field="description" header="Description" />
-            <Column field="price" header="Price" />
-            <Column field="image" header="Image">
-                <template #body="{data}">
-                    <img :src="data.image" alt="Slider Image" style="width: 100px; height: 100px" />
+        <section class="ha-card ha-table-wrap">
+            <DataTable stripedRows size="small" paginator :value="sliders" :rows="10" :loading="loading" scrollable>
+                <template #empty>
+                    <div class="ha-empty"><Icon name="image" />No slides yet</div>
                 </template>
-            </Column>
-            <Column header="Action">
-                <template #body="{data}">
-                    <Button severity="info" @click="openSlideModal(data)"><i class="fa fa-edit"></i></Button>
-                    <Button label="Delete" @click="removeSlider(data.id)" severity="danger" class="ms-2"><i class="fa fa-trash"></i></Button>
-                </template>
-            </Column>
-
-        </DataTable>
-        </div>
-    </div>
+                <Column field="image" header="Image">
+                    <template #body="{data}">
+                        <img :src="data.image" alt="Slider Image" class="ha-thumb ha-thumb--lg" style="object-fit: contain; background: #fff" />
+                    </template>
+                </Column>
+                <Column field="title" header="Title">
+                    <template #body="{data}">
+                        <span class="ha-cell-title">{{ data.title }}</span>
+                    </template>
+                </Column>
+                <Column field="subtitle" header="Subtitle" />
+                <Column field="description" header="Description">
+                    <template #body="{data}">
+                        <div class="ha-cell-clamp ha-cell-muted">{{ data.description }}</div>
+                    </template>
+                </Column>
+                <Column field="price" header="Price">
+                    <template #body="{data}">
+                        <span class="ha-money">{{ data.price }}</span>
+                    </template>
+                </Column>
+                <Column header="Action">
+                    <template #body="{data}">
+                        <div class="ha-actions">
+                            <button type="button" class="ha-icon-btn" title="Edit" @click="openSlideModal(data)"><Icon name="pencil" /></button>
+                            <button type="button" class="ha-icon-btn ha-icon-btn--danger" title="Delete" @click="removeSlider(data.id)"><Icon name="trash" /></button>
+                        </div>
+                    </template>
+                </Column>
+            </DataTable>
+        </section>
         <!--end:: Sliders Table-->
 
         <!--start:: Add Slide Modal-->
         <Modal :show="showAddSlideModal" @close="closeSlideModal()" :maxWidth="'md'">
-            <div class="p-4">
-                <h4 class="text-center pb-3"> {{ slide.id == '' ? 'Add Slide' : 'Edit Slide' }}</h4>
-                <div class="form-group">
-                    <label for="title">Title</label>
-                    <input type="text" class="form-control" id="title" v-model="slide.title">
+            <div class="ha-modal__head">
+                <h3>{{ slide.id == '' ? 'Add Slide' : 'Edit Slide' }}</h3>
+                <button type="button" class="ha-icon-btn ha-icon-btn--plain" aria-label="Close" @click="closeSlideModal()"><Icon name="x" /></button>
+            </div>
+            <div class="ha-modal__body">
+                <div class="ha-field">
+                    <label for="title" class="ha-label">Title</label>
+                    <input type="text" class="ha-input" id="title" v-model="slide.title">
                 </div>
-                <div class="form-group mt-3">
-                    <label for="subtitle">Subtitle</label>
-                    <input type="text" class="form-control" id="subtitle" v-model="slide.subtitle">
+                <div class="ha-field">
+                    <label for="subtitle" class="ha-label">Subtitle</label>
+                    <input type="text" class="ha-input" id="subtitle" v-model="slide.subtitle">
                 </div>
-                <div class="form-group mt-3">
-                    <label for="description">Description</label>
-                    <textarea class="form-control" id="description" v-model="slide.description"></textarea>
+                <div class="ha-field">
+                    <label for="description" class="ha-label">Description</label>
+                    <textarea class="ha-input" id="description" v-model="slide.description"></textarea>
                 </div>
-
-                <div class="form-group mt-3">
-                    <label for="price">Price</label>
-                    <input type="text" class="form-control w-30" id="price" v-model="slide.price">
+                <div class="ha-field">
+                    <label for="price" class="ha-label">Price</label>
+                    <input type="text" class="ha-input" id="price" v-model="slide.price" style="max-width: 200px">
                 </div>
-                <br/>
-
-                <div class="form-group">
-                    <label for="image">Image</label>
-                    <input type="file" class="form-control" id="image" @change="handleImageUpload">
+                <div class="ha-field">
+                    <label for="image" class="ha-label">Image</label>
+                    <input type="file" class="ha-input" id="image" @change="handleImageUpload">
                 </div>
-
-                <div class="d-flex justify-content-end align-items-center mt-3">
-                    <Button label="Save" severity="success" @click="saveSlide()" />
-                    <Button label="Cancel"  class="ms-2" severity="secondary" @click="closeSlideModal()" />
-                </div>
-                </div>
+            </div>
+            <div class="ha-modal__foot">
+                <button type="button" class="ha-btn ha-btn--ghost" @click="closeSlideModal()">Cancel</button>
+                <button type="button" class="ha-btn" @click="saveSlide()"><Icon name="check" /> Save</button>
+            </div>
         </Modal>
         <!--end: Add Slide Modal-->
-
-
-    </div>
     </AuthenticatedLayout>
-
-
 </template>
-
-<style scoped>
-.slider{
-    background-color: white;
-    min-height: 92vh;
-    padding-top: 5rem;
-}
-</style>

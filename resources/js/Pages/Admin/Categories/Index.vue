@@ -4,7 +4,7 @@ import { usePage,Head } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
-import Button from 'primevue/button';
+import Icon from '@/Components/V2/Icon.vue';
 import Modal from '@/Components/Modal.vue';
 import InputText from 'primevue/inputtext';
 import Checkbox from 'primevue/checkbox';
@@ -196,8 +196,8 @@ function confirmDeleteCategory(category){
         text: "You won't be able to revert this!",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
+        confirmButtonColor: '#e5484d',
+        cancelButtonColor: '#7b8a84',
         confirmButtonText: 'Yes, delete it!'
     }).then(async(result) => {
         if (result.isConfirmed) {
@@ -325,8 +325,8 @@ function confirmDeleteSubcategory(subcategory){
         text: "You won't be able to revert this!",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
+        confirmButtonColor: '#e5484d',
+        cancelButtonColor: '#7b8a84',
         confirmButtonText: 'Yes, delete it!'
     }).then(async(result) => {
         if (result.isConfirmed) {
@@ -372,97 +372,117 @@ function onCategoryDropdownChange(e){
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Categories & Subcategories
-            </h2>
+            <div class="ha-head__title">
+                <h1>Categories & Subcategories</h1>
+            </div>
         </template>
 
-        <div class="py-6">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-8">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-lg font-semibold">Categories</h3>
-                        <Button label="Add Category" icon="fa fa-plus" @click="openCategoryDialog()" />
-                    </div>
-
-                    <DataTable :value="categories" :loading="loadingCategories" dataKey="id" responsiveLayout="scroll">
-                        <Column field="id" header="ID" style="width: 80px" />
-                        <Column field="name" header="Name" />
-                        <Column field="translated" header="Translated" />
-                        <Column header="Actions" style="width: 150px">
-                            <template #body="slotProps">
-                                <div class="flex gap-2">
-                                    <Button icon="fa fa-pencil" class="p-button-sm p-button-rounded" @click="openCategoryDialog(slotProps.data)" />
-                                    <Button icon="fa fa-trash" class="p-button-sm p-button-rounded p-button-danger" @click="confirmDeleteCategory(slotProps.data)" />
-                                </div>
-                            </template>
-                        </Column>
-                    </DataTable>
+        <div class="ha-stack">
+            <section class="ha-card ha-table-wrap">
+                <div class="ha-card__head">
+                    <h2>Categories <span class="ha-count">{{ categories.length }}</span></h2>
+                    <button type="button" class="ha-btn ha-btn--sm" @click="openCategoryDialog()"><Icon name="plus" /> Add Category</button>
                 </div>
 
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-lg font-semibold">Subcategories</h3>
-                        <Button label="Add Subcategory" icon="fa fa-plus" @click="openSubcategoryDialog()" />
-                    </div>
+                <DataTable :value="categories" :loading="loadingCategories" dataKey="id" scrollable>
+                    <Column field="id" header="ID" style="width: 80px">
+                        <template #body="slotProps">
+                            <span class="ha-cell-muted">#{{ slotProps.data.id }}</span>
+                        </template>
+                    </Column>
+                    <Column field="name" header="Name">
+                        <template #body="slotProps">
+                            <span class="ha-cell-title">{{ slotProps.data.name }}</span>
+                        </template>
+                    </Column>
+                    <Column field="translated" header="Translated" />
+                    <Column header="Actions" style="width: 120px">
+                        <template #body="slotProps">
+                            <div class="ha-actions">
+                                <button type="button" class="ha-icon-btn" title="Edit" @click="openCategoryDialog(slotProps.data)"><Icon name="pencil" /></button>
+                                <button type="button" class="ha-icon-btn ha-icon-btn--danger" title="Delete" @click="confirmDeleteCategory(slotProps.data)"><Icon name="trash" /></button>
+                            </div>
+                        </template>
+                    </Column>
+                </DataTable>
+            </section>
 
-                    <DataTable :value="subcategories" :loading="loadingSubcategories" dataKey="id" responsiveLayout="scroll">
-                        <Column field="id" header="ID" style="width: 80px" />
-                        <Column field="name" header="Name" />
-                        <Column field="translated" header="Translated" />
-                        <Column field="product_category_name" header="Category" />
-                        <Column header="Actions" style="width: 150px">
-                            <template #body="slotProps">
-                                <div class="flex gap-2">
-                                    <Button icon="fa fa-pencil" class="p-button-sm p-button-rounded" @click="openSubcategoryDialog(slotProps.data)" />
-                                    <Button icon="fa fa-trash" class="p-button-sm p-button-rounded p-button-danger" @click="confirmDeleteSubcategory(slotProps.data)" />
-                                </div>
-                            </template>
-                        </Column>
-                    </DataTable>
+            <section class="ha-card ha-table-wrap">
+                <div class="ha-card__head">
+                    <h2>Subcategories <span class="ha-count">{{ subcategories.length }}</span></h2>
+                    <button type="button" class="ha-btn ha-btn--sm" @click="openSubcategoryDialog()"><Icon name="plus" /> Add Subcategory</button>
                 </div>
-            </div>
+
+                <DataTable :value="subcategories" :loading="loadingSubcategories" dataKey="id" scrollable>
+                    <Column field="id" header="ID" style="width: 80px">
+                        <template #body="slotProps">
+                            <span class="ha-cell-muted">#{{ slotProps.data.id }}</span>
+                        </template>
+                    </Column>
+                    <Column field="name" header="Name">
+                        <template #body="slotProps">
+                            <span class="ha-cell-title">{{ slotProps.data.name }}</span>
+                        </template>
+                    </Column>
+                    <Column field="translated" header="Translated" />
+                    <Column field="product_category_name" header="Category">
+                        <template #body="slotProps">
+                            <span v-if="slotProps.data.product_category_name" class="ha-badge ha-badge--success ha-badge--plain">{{ slotProps.data.product_category_name }}</span>
+                        </template>
+                    </Column>
+                    <Column header="Actions" style="width: 120px">
+                        <template #body="slotProps">
+                            <div class="ha-actions">
+                                <button type="button" class="ha-icon-btn" title="Edit" @click="openSubcategoryDialog(slotProps.data)"><Icon name="pencil" /></button>
+                                <button type="button" class="ha-icon-btn ha-icon-btn--danger" title="Delete" @click="confirmDeleteSubcategory(slotProps.data)"><Icon name="trash" /></button>
+                            </div>
+                        </template>
+                    </Column>
+                </DataTable>
+            </section>
         </div>
 
-        <Modal :show="categoryDialogVisible" @close="closeCategoryDialog">
-            <div class="p-6 space-y-4">
-                <h3 class="text-lg font-semibold mb-2">
-                    {{ categoryForm.id ? 'Edit Category' : 'Add Category' }}
-                </h3>
-                <div class="space-y-2">
-                    <label class="block text-sm font-medium text-gray-700">Name</label>
+        <Modal :show="categoryDialogVisible" @close="closeCategoryDialog" maxWidth="md">
+            <div class="ha-modal__head">
+                <h3>{{ categoryForm.id ? 'Edit Category' : 'Add Category' }}</h3>
+                <button type="button" class="ha-icon-btn ha-icon-btn--plain" aria-label="Close" @click="closeCategoryDialog"><Icon name="x" /></button>
+            </div>
+            <div class="ha-modal__body">
+                <div class="ha-field">
+                    <label class="ha-label">Name</label>
                     <InputText v-model="categoryForm.name" class="w-full" />
                 </div>
-                <div class="space-y-2">
-                    <label class="block text-sm font-medium text-gray-700">Translated</label>
+                <div class="ha-field">
+                    <label class="ha-label">Translated</label>
                     <InputText v-model="categoryForm.translated" class="w-full" />
                 </div>
-                <div class="flex justify-end gap-2 mt-4">
-                    <Button label="Cancel" class="p-button-text" @click="closeCategoryDialog" />
-                    <Button label="Save" @click="saveCategory" />
-                </div>
+            </div>
+            <div class="ha-modal__foot">
+                <button type="button" class="ha-btn ha-btn--ghost" @click="closeCategoryDialog">Cancel</button>
+                <button type="button" class="ha-btn" @click="saveCategory"><Icon name="check" /> Save</button>
             </div>
         </Modal>
 
-        <Modal :show="subcategoryDialogVisible" @close="closeSubcategoryDialog">
-            <div class="p-6 space-y-4">
-                <h3 class="text-lg font-semibold mb-2">
-                    {{ subcategoryForm.id ? 'Edit Subcategory' : 'Add Subcategory' }}
-                </h3>
-                <div class="space-y-2">
-                    <label class="block text-sm font-medium text-gray-700">Name</label>
+        <Modal :show="subcategoryDialogVisible" @close="closeSubcategoryDialog" maxWidth="md">
+            <div class="ha-modal__head">
+                <h3>{{ subcategoryForm.id ? 'Edit Subcategory' : 'Add Subcategory' }}</h3>
+                <button type="button" class="ha-icon-btn ha-icon-btn--plain" aria-label="Close" @click="closeSubcategoryDialog"><Icon name="x" /></button>
+            </div>
+            <div class="ha-modal__body">
+                <div class="ha-field">
+                    <label class="ha-label">Name</label>
                     <InputText v-model="subcategoryForm.name" class="w-full" />
                 </div>
-                <div class="space-y-2">
-                    <label class="block text-sm font-medium text-gray-700">Translated</label>
+                <div class="ha-field">
+                    <label class="ha-label">Translated</label>
                     <InputText v-model="subcategoryForm.translated" class="w-full" />
                 </div>
-                <div class="space-y-2">
-                    <label class="block text-sm font-medium text-gray-700">Description</label>
+                <div class="ha-field">
+                    <label class="ha-label">Description</label>
                     <InputText v-model="subcategoryForm.description" class="w-full" />
                 </div>
-                <div class="space-y-2">
-                    <label class="block text-sm font-medium text-gray-700">Category</label>
+                <div class="ha-field">
+                    <label class="ha-label">Category</label>
                     <Dropdown
                         v-model="subcategoryForm.product_category_id"
                         :options="categories"
@@ -472,10 +492,10 @@ function onCategoryDropdownChange(e){
                         class="w-full"
                     />
                 </div>
-                <div class="flex justify-end gap-2 mt-4">
-                    <Button label="Cancel" class="p-button-text" @click="closeSubcategoryDialog" />
-                    <Button label="Save" @click="saveSubcategory" />
-                </div>
+            </div>
+            <div class="ha-modal__foot">
+                <button type="button" class="ha-btn ha-btn--ghost" @click="closeSubcategoryDialog">Cancel</button>
+                <button type="button" class="ha-btn" @click="saveSubcategory"><Icon name="check" /> Save</button>
             </div>
         </Modal>
     </AuthenticatedLayout>

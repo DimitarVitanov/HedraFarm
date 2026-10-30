@@ -5,7 +5,7 @@ import { usePage, Head } from '@inertiajs/vue3';
 import  AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Datatable from 'primevue/datatable';
 import Column from 'primevue/column';
-import Button from 'primevue/button';
+import Icon from '@/Components/V2/Icon.vue';
 import Modal from '@/Components/Modal.vue';
 import Editor from '@/Components/Editor.vue'
 
@@ -168,8 +168,8 @@ const removeBlog = async(id)=>{
         text: "You won't be able to revert this!",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
+        confirmButtonColor: '#e5484d',
+        cancelButtonColor: '#7b8a84',
         confirmButtonText: 'Yes, delete it!'
       }).then((result) => {
         if (result.isConfirmed) {
@@ -221,71 +221,81 @@ const handleImageUpload = (event) => {
 <template>
     <Head title="Admin Blog"/>
     <AuthenticatedLayout>
-        <div class="blog">
-                        <div class="col-8 mx-auto">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <h2>Blog</h2>
-                                <Button label="Create Blog" severity="danger" @click="openBlogModal()"> </Button>
-                            </div>
+        <template #header>
+            <div class="ha-head__title">
+                <h1>Blog</h1>
+                <span class="ha-count">{{ blogs.length }}</span>
+            </div>
+            <div class="ha-head__actions">
+                <button type="button" class="ha-btn" @click="openBlogModal()"><Icon name="plus" /> Create Blog</button>
+            </div>
+        </template>
+
+        <section class="ha-card ha-table-wrap">
+            <Datatable stripedRows size="small" paginator :value="blogs" :rows="10" :loading="loading" scrollable>
+                <template #empty>
+                    <div class="ha-empty"><Icon name="file" /><strong>No Blogs Found</strong></div>
+                </template>
+
+                <Column field="id" header="ID" sortable>
+                    <template #body="{data}">
+                        <span class="ha-cell-muted">#{{ data.id }}</span>
+                    </template>
+                </Column>
+                <Column field="image" header="Image" sortable>
+                    <template #body="{data}">
+                        <img v-if="data.image" :src="'/assets' + data.image" :alt="data.title" class="ha-thumb ha-thumb--lg" :title="data.image">
+                        <span v-else class="ha-thumb ha-thumb--lg ha-thumb--empty"><Icon name="image" /></span>
+                    </template>
+                </Column>
+                <Column field="title" header="Title" sortable>
+                    <template #body="{data}">
+                        <span class="ha-cell-title">{{ data.title }}</span>
+                    </template>
+                </Column>
+                <Column field="short_description" header="Short Description" sortable>
+                    <template #body="{data}">
+                        <div class="ha-cell-clamp ha-cell-muted" style="max-width: 460px">{{ data.short_description }}</div>
+                    </template>
+                </Column>
+                <Column field="actions" header="Actions">
+                    <template #body="{data}">
+                        <div class="ha-actions">
+                            <button type="button" class="ha-icon-btn" title="Edit" @click="openBlogModal(data)"><Icon name="pencil" /></button>
+                            <button type="button" class="ha-icon-btn ha-icon-btn--danger" title="Delete" @click="removeBlog(data.id)"><Icon name="trash" /></button>
                         </div>
-                        <div class="col-8 mx-auto mt-3">
-                            <Datatable stripedRows size="small" paginator :value="blogs" :rows="10" :loading="loading">
-                                <template #empty>
-                                    <div class="text-center py-5">
-                                        <h5> <strong> No Blogs Found </strong> </h5>
-                                    </div>
-                                </template>
+                    </template>
+                </Column>
+            </Datatable>
+        </section>
 
-                                <Column field="id" header="ID" sortable></Column>
-                                <Column field="title" header="Title" sortable></Column>
-                                <Column field="short_description" header="Short Description" sortable></Column>
-                                <Column field="image" header="Image" sortable></Column>
-                                <Column field="actions" header="Actions">
-                                    <template #body="{data}">
-                                        <div class="d-flex align-items-center">
-                                            <Button severity="info" @click="openBlogModal(data)"><i class="fa fa-edit"></i> </Button>
-                                            <Button  severity="danger" class="ms-2" @click="removeBlog(data.id)"><i class="fa fa-trash"></i></Button>
-                                        </div>
-                                    </template>
-                                </Column>
-                            </Datatable>
-                        </div>
+        <!--start:: Blog Modal -->
+        <Modal :show="showBlogModal" @close="closeBlogModal" :maxWidth="'2xl'">
+            <div class="ha-modal__head">
+                <h3>{{ blog.id == '' ? 'Add Blog' : 'Edit Blog' }}</h3>
+                <button type="button" class="ha-icon-btn ha-icon-btn--plain" aria-label="Close" @click="closeBlogModal"><Icon name="x" /></button>
+            </div>
+            <div class="ha-modal__body">
+                <div class="ha-field">
+                    <label for="title" class="ha-label">Title</label>
+                    <input type="text" class="ha-input" id="title" v-model="blog.title">
+                </div>
 
-                        <!--start:: Blog Modal -->
-                        <Modal :show="showBlogModal" @close="closeBlogModal" :maxWidth="'2xl'">
-                            <div class="p-4">
-                                <h4> {{ blog.id == '' ? 'Add Blog' : 'Edit Blog' }}</h4>
+                <div class="ha-field">
+                    <label for="content" class="ha-label">Content</label>
+                    <Editor :modelValue="blog.content" @update:modelValue="blog.content = $event" />
+                </div>
 
-                                <div class="form-group mt-2">
-                                    <label for="title">Title</label>
-                                    <input type="text" class="form-control" id="title" v-model="blog.title">
-                                </div>
-
-                                <div class="form-group mt-3">
-                                    <label for="content">Content</label>
-                                    <Editor :modelValue="blog.content" @update:modelValue="blog.content = $event" />
-                                </div>
-
-                                <div class="form-group mt-3">
-                                    <label for="image">Image</label>
-                                    <input type="file" class="form-control" id="image" @change="handleImageUpload">
-                                </div>
-
-                                <div class="d-flex justify-content-end align-items-center  mt-3">
-                                    <Button label="Save" severity="success" @click="saveBlog()"></Button>
-                                    <Button label="Cancel" class="ms-2" severity="secondary" @click="closeBlogModal"></Button>
-                                </div>
-                            </div>
-
-                        </Modal>
-                        <!--end:: Blog Modal -->
-        </div>
+                <div class="ha-field">
+                    <label for="image" class="ha-label">Image</label>
+                    <input type="file" class="ha-input" id="image" @change="handleImageUpload">
+                </div>
+            </div>
+            <div class="ha-modal__foot">
+                <button type="button" class="ha-btn ha-btn--ghost" @click="closeBlogModal">Cancel</button>
+                <button type="button" class="ha-btn" @click="saveBlog()"><Icon name="check" /> Save</button>
+            </div>
+        </Modal>
+        <!--end:: Blog Modal -->
     </AuthenticatedLayout>
 </template>
-<style scoped>
-.blog{
-    background-color: white;
-    min-height: 92vh;
-    padding-top:5rem;
-}
-</style>

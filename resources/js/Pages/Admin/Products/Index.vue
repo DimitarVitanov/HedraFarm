@@ -1,14 +1,13 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import { usePage, Head } from '@inertiajs/vue3';
 import  AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
-import Button from 'primevue/button';
+import Icon from '@/Components/V2/Icon.vue';
 import Modal from '@/Components/Modal.vue';
 import Editor from '@/Components/Editor.vue'
 import Multiselect from 'primevue/multiselect';
-import InputText from 'primevue/inputtext';
 const page = usePage();
 const logged_user = ref(page.props.user);
 const product = ref({
@@ -35,11 +34,54 @@ const subcategories = ref([]);
 
 const categories = ref(false);
 
-const filters = ref({
-    name: { value: null, matchMode: 'contains' },
-    short_description: { value: null, matchMode: 'contains' },
-    clean_description: { value: null, matchMode: 'contains' }
+/* Table: search, category and status filters */
+const LOW_STOCK = 10;
+const placementFlags = [
+    { field: 'show_trending', label: 'Trending' },
+    { field: 'show_on_sale', label: 'On Sale' },
+    { field: 'show_best_seller', label: 'Best Seller' },
+    { field: 'show_top_rated', label: 'Top Rated' },
+    { field: 'show_popular', label: 'Popular' },
+];
+const search = ref('');
+const categoryFilter = ref('');
+const statusFilter = ref('all');
+const first = ref(0);
+
+const rows = computed(() => products.value.map(item => ({
+    ...item,
+    stock: Number(item.quantity) || 0,
+    final_price: item.disscount ? item.price - (item.price * item.disscount) / 100 : Number(item.price),
+})));
+
+const matchesStatus = (item, status) => ({
+    all: true,
+    active: !!item.is_active,
+    inactive: !item.is_active,
+    low: item.stock < LOW_STOCK,
+}[status]);
+
+const statusTabs = computed(() => [
+    { value: 'all', label: 'All' },
+    { value: 'active', label: 'Active' },
+    { value: 'inactive', label: 'Inactive' },
+    { value: 'low', label: 'Low stock' },
+].map(tab => ({ ...tab, count: rows.value.filter(item => matchesStatus(item, tab.value)).length })));
+
+const filteredProducts = computed(() => {
+    const term = search.value.trim().toLowerCase();
+    return rows.value.filter(item => {
+        if (categoryFilter.value !== '' && String(item.product_category_id) !== String(categoryFilter.value)) return false;
+        if (!matchesStatus(item, statusFilter.value)) return false;
+        if (!term) return true;
+        return [item.name, item.short_description, item.clean_description, item.product_category_name]
+            .some(value => String(value || '').toLowerCase().includes(term));
+    });
 });
+
+watch([search, categoryFilter, statusFilter], () => (first.value = 0));
+
+const formatMoney = (value) => `${(Math.round((Number(value) || 0) * 100) / 100).toLocaleString('mk-MK', { maximumFractionDigits: 2 })} ден`;
 
 const fireMessage = (message, success = false, reload = false) => {
   Swal.fire({
@@ -326,8 +368,8 @@ const removeProduct = (id, type = null, index=null) =>{
         text: "You won't be able to revert this!",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
+        confirmButtonColor: '#e5484d',
+        cancelButtonColor: '#7b8a84',
         confirmButtonText: 'Yes, delete it!'
     }).then(async(result) => {
         if (result.isConfirmed) {
@@ -367,243 +409,226 @@ const deleteProduct = async(id, type,index) =>{
 <template>
     <Head title="Admin Products"/>
     <AuthenticatedLayout>
-        <div class="products pb-3">
-            <div class="col-12 px-6">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h2>Products</h2>
-                     <Button label="Add Product" severity="danger" @click="openProductModal()"> </Button>
-                </div>
-                <hr class="w-100 text-gray-300">
+        <template #header>
+            <div class="ha-head__title">
+                <h1>Products</h1>
+                <span class="ha-count">{{ products.length }}</span>
+            </div>
+            <div class="ha-head__actions">
+                <button type="button" class="ha-btn" @click="openProductModal()"><Icon name="plus" /> Add Product</button>
+            </div>
+        </template>
 
-                <div class="table-responsive pt-4">
-                        <DataTable :value="products" :loading="loading" :paginator="true" :rows="10" :rowsPerPageOptions="[5,10,20]" v-model:filters="filters" filterDisplay="row">
-                            <Column field="id" header="ID" sortable></Column>
-                            <Column field="name" header="Name" sortable filterField="name" :showFilterMenu="false">
-                                <template #filter="{ filterModel, filterCallback }">
-                                    <InputText v-model="filterModel.value" @input="filterCallback()" type="text" class="p-column-filter" placeholder="Search by name" />
-                                </template>
-                            </Column>
-                            <Column field="short_description" header="Short Description" sortable filterField="short_description" :showFilterMenu="false">
-                                <template #filter="{ filterModel, filterCallback }">
-                                    <InputText v-model="filterModel.value" @input="filterCallback()" type="text" class="p-column-filter" placeholder="Search by short description" />
-                                </template>
-                            </Column>
-                            <Column field="description" header="Description" sortable filterField="clean_description" :showFilterMenu="false">
-                                <template #filter="{ filterModel, filterCallback }">
-                                    <InputText v-model="filterModel.value" @input="filterCallback()" type="text" class="p-column-filter" placeholder="Search by description" />
-                                </template>
-                            <template #body="{data}">
-                                <div>{{data.clean_description}}</div>
-                            </template>
-                            </Column>
-                            <Column field="quantity" header="Quantity" sortable></Column>
-                            <Column field="price" header="Price" sortable>
-                            <template #body="{data}">
-                                <span>{{ data.price }} ден</span>
-                            </template>
-                            </Column>
-                            <Column field="disscount" header="Disscount" sortable>
-                                <template #body="{data}">
-                                    <span v-if="data.disscount" class="text-danger">{{ data.disscount }}%</span>
-                                </template>
-                            </Column>
-                            <Column field="product_category_id" header="Category" sortable>
-                            <template #body="{data}">
-                                <div>{{ data.product_category_name }}</div>
-                            </template>
-                            </Column>
-                            <Column field="is_active" header="Active" sortable>
-                            <template #body="{data}">
-                                <div :class="data.is_active ? 'bg-success dot' : 'bg-danger dot'">
-                                </div>
-                            </template>
-                            </Column>
-                            <Column field="show_trending" header="Trending" sortable>
-                            <template #body="{data}">
-                                <div :class="data.show_trending ? 'bg-success dot' : 'bg-danger dot'">
-                                </div>
-                            </template>
-                            </Column>
-                            <Column field="show_on_sale" header="On Sale" sortable>
-                            <template #body="{data}">
-                                <div :class="data.show_on_sale ? 'bg-success dot' : 'bg-danger dot'">
-                                </div>
-                            </template>
-                            </Column>
-                            <Column field="show_best_seller" header="Best Seller" sortable>
-                            <template #body="{data}">
-                                <div :class="data.show_best_seller ? 'bg-success dot' : 'bg-danger dot'">
-                                </div>
-                            </template>
-                            </Column>
-                            <Column field="show_top_rated" header="Top Rated" sortable>
-                            <template #body="{data}">
-                                <div :class="data.show_top_rated ? 'bg-success dot' : 'bg-danger dot'">
-                                </div>
-                            </template>
-                            </Column>
-                            <Column field="show_popular" header="Popular" sortable>
-                            <template #body="{data}">
-                                <div :class="data.show_popular ? 'bg-success dot' : 'bg-danger dot'">
-                                </div>
-                            </template>
-                            </Column>
-                            <Column field="main_image" header="Main Image" sortable>
-                            <template #body="{data}">
-                                <img v-if="data.main_image" :src="data.main_image" alt="Main Image" class="img-fluid" style="width: 50px; height: 50px;">
-                                <div v-else>
-                                    No Image
-                                </div>
-                            </template>
-                            </Column>
-                            <Column field="action" header="Action" >
-                            <template #body="{data}">
-                                <div class="d-flex align-items-center">
-                                    <Button  @click="openProductModal(data)" severity="info"> <i class="fa fa-edit"> </i></Button>
-                                    <Button  @click="removeProduct(data.id)" severity="danger" class="ms-2"><i class="fa fa-trash"></i></Button>
-                                </div>
-                            </template>
-                            </Column>
-                        </DataTable>
+        <section class="ha-card ha-table-wrap">
+            <div class="ha-toolbar">
+                <label class="ha-search">
+                    <Icon name="search" />
+                    <input v-model="search" type="search" class="ha-input" placeholder="Search by name or description" aria-label="Search products">
+                </label>
+                <select v-model="categoryFilter" class="ha-input ha-toolbar__select" aria-label="Category">
+                    <option value="">All categories</option>
+                    <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.translated }}</option>
+                </select>
+                <div class="ha-segment" role="group" aria-label="Status">
+                    <button
+                        v-for="tab in statusTabs"
+                        :key="tab.value"
+                        type="button"
+                        :class="{ 'is-active': statusFilter === tab.value, 'is-warning': tab.value === 'low' && tab.count > 0 }"
+                        @click="statusFilter = tab.value"
+                    >
+                        {{ tab.label }} <span>{{ tab.count }}</span>
+                    </button>
                 </div>
             </div>
-        </div>
+
+            <DataTable
+                :value="filteredProducts"
+                :loading="loading"
+                :paginator="true"
+                :rows="10"
+                :rowsPerPageOptions="[10,20,50]"
+                v-model:first="first"
+                dataKey="id"
+                scrollable
+                class="ha-products-table"
+            >
+                <template #empty>
+                    <div class="ha-empty"><Icon name="box" />No products found</div>
+                </template>
+                <Column field="name" header="Product" sortable>
+                    <template #body="{data}">
+                        <div class="ha-product">
+                            <img v-if="data.main_image" :src="data.main_image" :alt="data.name" class="ha-thumb">
+                            <span v-else class="ha-thumb ha-thumb--empty" title="No Image"><Icon name="image" /></span>
+                            <div class="ha-product__meta">
+                                <span class="ha-cell-title">{{ data.name }}</span>
+                                <span class="ha-product__desc">{{ data.short_description || data.clean_description }}</span>
+                                <span class="ha-product__id">#{{ data.id }}</span>
+                            </div>
+                        </div>
+                    </template>
+                </Column>
+                <Column field="product_category_name" header="Category" sortable>
+                    <template #body="{data}">
+                        <span v-if="data.product_category_name" class="ha-chip">{{ data.product_category_name }}</span>
+                    </template>
+                </Column>
+                <Column field="final_price" header="Price" sortable>
+                    <template #body="{data}">
+                        <div class="ha-price">
+                            <span class="ha-money">{{ formatMoney(data.final_price) }}</span>
+                            <span v-if="data.disscount" class="ha-price__old">
+                                <s>{{ formatMoney(data.price) }}</s>
+                                <span class="ha-badge ha-badge--danger ha-badge--plain">-{{ data.disscount }}%</span>
+                            </span>
+                        </div>
+                    </template>
+                </Column>
+                <Column field="stock" header="Stock" sortable>
+                    <template #body="{data}">
+                        <span v-if="data.stock <= 0" class="ha-badge ha-badge--danger">Out of stock</span>
+                        <span v-else-if="data.stock < LOW_STOCK" class="ha-badge ha-badge--warning">{{ data.stock }} left</span>
+                        <span v-else class="ha-stock">{{ data.stock }}</span>
+                    </template>
+                </Column>
+                <Column field="is_active" header="Status" sortable>
+                    <template #body="{data}">
+                        <span class="ha-status-dot" :class="{ 'is-on': data.is_active }">{{ data.is_active ? 'Active' : 'Inactive' }}</span>
+                    </template>
+                </Column>
+                <Column header="Shown on">
+                    <template #body="{data}">
+                        <div class="ha-chips">
+                            <span v-for="flag in placementFlags.filter(flag => data[flag.field])" :key="flag.field" class="ha-chip ha-chip--brand">{{ flag.label }}</span>
+                            <span v-if="!placementFlags.some(flag => data[flag.field])" class="ha-cell-muted">-</span>
+                        </div>
+                    </template>
+                </Column>
+                <Column header="Actions">
+                    <template #body="{data}">
+                        <div class="ha-actions">
+                            <button type="button" class="ha-icon-btn" title="Edit" @click="openProductModal(data)"><Icon name="pencil" /></button>
+                            <button type="button" class="ha-icon-btn ha-icon-btn--danger" title="Delete" @click="removeProduct(data.id)"><Icon name="trash" /></button>
+                        </div>
+                    </template>
+                </Column>
+            </DataTable>
+        </section>
 
         <!-- start Add/Edit Product Modal -->
         <Modal :show="showProductModal" @close="closeProductModal" :maxWidth="'2xl'">
-            <div class="p-4">
-                <h4> {{ product.id == '' ? 'Add Product' : 'Edit Product' }}</h4>
-            <div class="form-group mt-2">
-                <label for="name">Name</label>
-                <input type="text" class="form-control" id="name" v-model="product.name">
+            <div class="ha-modal__head">
+                <h3>{{ product.id == '' ? 'Add Product' : 'Edit Product' }}</h3>
+                <button type="button" class="ha-icon-btn ha-icon-btn--plain" aria-label="Close" @click="closeProductModal()"><Icon name="x" /></button>
             </div>
 
-            <div class="form-group mt-2">
-                <label for="short_description">Short Description</label>
-                <input type="text" class="form-control" id="short_description" v-model="product.short_description">
-            </div>
+            <div class="ha-modal__body">
+                <div class="ha-grid ha-grid--2">
+                    <div class="ha-field">
+                        <label for="name" class="ha-label">Name</label>
+                        <input type="text" class="ha-input" id="name" v-model="product.name">
+                    </div>
+                    <div class="ha-field">
+                        <label for="short_description" class="ha-label">Short Description</label>
+                        <input type="text" class="ha-input" id="short_description" v-model="product.short_description">
+                    </div>
+                </div>
 
-            <div class="form-group mt-3">
-                <label for="description">Description</label>
-                <Editor :modelValue="product.description" @update:modelValue="product.description = $event" />
-            </div>
-            <div class="row mt-2">
-                <div class="col-12 col-md-2">
-                    <div class="form-group mt-2">
-                        <label for="quantity">Quantity</label>
-                        <input type="number" class="form-control" id="quantity" v-model="product.quantity">
-                    </div>
+                <div class="ha-field">
+                    <label for="description" class="ha-label">Description</label>
+                    <Editor :modelValue="product.description" @update:modelValue="product.description = $event" />
                 </div>
-                <div class="col-12 col-md-2">
-                    <div class="form-group mt-2">
-                        <label for="price">Price</label>
-                        <input type="number" class="form-control" id="price" v-model="product.price">
+
+                <div class="ha-grid ha-grid--5">
+                    <div class="ha-field">
+                        <label for="quantity" class="ha-label">Quantity</label>
+                        <input type="number" class="ha-input" id="quantity" v-model="product.quantity">
                     </div>
-                </div>
-                <div class="col-12 col-md-2">
-                    <div class="form-group mt-2">
-                        <label for="disscount">Disscount</label>
-                        <input type="number" class="form-control" id="disscount" v-model="product.disscount">
+                    <div class="ha-field">
+                        <label for="price" class="ha-label">Price</label>
+                        <input type="number" class="ha-input" id="price" v-model="product.price">
                     </div>
-                </div>
-                <div class="col-12 col-md-3">
-                    <div class="form-group mt-2">
-                        <label for="product_category_id">Category</label>
-                        <select class="form-control" id="product_category_id" v-model="product.product_category_id">
+                    <div class="ha-field">
+                        <label for="disscount" class="ha-label">Disscount</label>
+                        <input type="number" class="ha-input" id="disscount" v-model="product.disscount">
+                    </div>
+                    <div class="ha-field">
+                        <label for="product_category_id" class="ha-label">Category</label>
+                        <select class="ha-input" id="product_category_id" v-model="product.product_category_id">
                             <option value="">Select Category</option>
                             <option v-for="category in categories" :value="category.id" :key="category.id">{{ category.translated }}</option>
                         </select>
                     </div>
+                    <div class="ha-field">
+                        <label for="product_subcategory_id" class="ha-label">Subcategory</label>
+                        <Multiselect placeholder="Select Subcategories" :options="subcategories" optionLabel="translated" optionValue="id" v-model="product.subcategories" />
+                    </div>
                 </div>
-                <div class="col-12 col-md-3">
-                    <div class="form-group mt-2">
-                        <label for="product_subcategory_id">Subcategory</label>
-                        <br>
-                        <Multiselect class="col-md-12" placeholder="Select Subcategories" :options="subcategories" optionLabel="translated" optionValue="id" v-model="product.subcategories" />
+
+                <div class="ha-field">
+                    <label for="main_image" class="ha-label">Main Image</label>
+                    <input type="file" class="ha-input" id="main_image" @change="handleImageUpload">
+                    <div class="ha-gallery" v-if="product.id && product.main_image" style="margin-top: 0.4rem">
+                        <div class="ha-gallery__item">
+                            <img :src="product.main_image" alt="Main Image">
+                            <button type="button" class="ha-gallery__remove" title="Remove" @click="removeProduct(product.id, 'main_image')"><Icon name="x" /></button>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="ha-divider" style="margin: 0.4rem 0">
+
+                <div>
+                    <p class="ha-section-title">Show product on</p>
+                    <div class="ha-toggles">
+                        <label class="ha-switch ha-toggle" for="is_active">
+                            Active
+                            <input type="checkbox" id="is_active" v-model="product.is_active">
+                        </label>
+                        <label class="ha-switch ha-toggle">
+                            Trending
+                            <input type="checkbox" v-model="product.show_trending">
+                        </label>
+                        <label class="ha-switch ha-toggle">
+                            On Sale
+                            <input type="checkbox" v-model="product.show_on_sale">
+                        </label>
+                        <label class="ha-switch ha-toggle">
+                            Best Seller
+                            <input type="checkbox" v-model="product.show_best_seller">
+                        </label>
+                        <label class="ha-switch ha-toggle">
+                            Top Rated
+                            <input type="checkbox" v-model="product.show_top_rated">
+                        </label>
+                        <label class="ha-switch ha-toggle">
+                            Popular
+                            <input type="checkbox" v-model="product.show_popular">
+                        </label>
+                    </div>
+                </div>
+
+                <hr class="ha-divider" style="margin: 0.4rem 0">
+
+                <div class="ha-field">
+                    <p class="ha-section-title" style="margin-bottom: 0.4rem">Product Gallery</p>
+                    <label for="gallery" class="ha-label">Gallery</label>
+                    <input type="file" class="ha-input" id="gallery" multiple @change="handleGalleryUpload">
+                    <div v-if="product.galleries && product.id" class="ha-gallery" style="margin-top: 0.4rem">
+                        <div v-for="(image, index) in product.galleries" :key="index" class="ha-gallery__item">
+                            <img :src="image.image" alt="Gallery Image">
+                            <button type="button" class="ha-gallery__remove" title="Remove" @click="removeProduct(product.id, 'gallery', image.id)"><Icon name="x" /></button>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="form-group mt-3">
-                <label for="main_image">Main Image</label>
-                <input type="file" class="form-control" id="main_image" @change="handleImageUpload">
-                <div class="pt-2" v-if="product.id && product.main_image" @click="removeProduct(product.id, 'main_image')">
-                    <i class="fa fa-remove cursor-pointer text-danger"></i>
-                    <img :src="product.main_image" alt="Main Image" class="img-fluid" style="width: 100px; height: 100px;">
-                </div>
+
+            <div class="ha-modal__foot">
+                <button type="button" class="ha-btn ha-btn--ghost" @click="closeProductModal()">Cancel</button>
+                <button type="button" class="ha-btn" @click="saveProduct()"><Icon name="check" /> Save</button>
             </div>
-            <h5 class="mt-4">Show product on</h5>
-            <hr class="w-100 text-gray-300">
-            <div class="row">
-                <div class="form-group col-12 col-md-2">
-                    <label for="is_active">Active</label>
-                    <input type="checkbox" class="form-check-input ms-2" id="is_active" v-model="product.is_active">
-                </div>
-                <div class="form-group col-12 col-md-2">
-                    <label for="show_trending">Trending</label>
-
-                    <input type="checkbox"  class="form-check-input ms-2"  v-model="product.show_trending">
-                </div>
-                <div class="form-group col-12 col-md-2">
-                    <label for="show_on_sale">On Sale</label>
-                    <input type="checkbox"   class="form-check-input ms-2"  v-model="product.show_on_sale">
-                </div>
-                <div class="form-group col-12 col-md-2">
-                    <label for="show_best_seller">Best Seller</label>
-                    <input type="checkbox" class="form-check-input ms-2"  v-model="product.show_best_seller">
-                </div>
-                <div class="form-group col-12 col-md-2">
-                    <label for="show_top_rated">Top Rated</label>
-                    <input type="checkbox"  class="form-check-input ms-2" v-model="product.show_top_rated">
-                </div>
-                <div class="form-group col-12 col-md-2">
-                    <label for="show_popular">Popular</label>
-                    <input type="checkbox"  class="form-check-input ms-2" v-model="product.show_popular">
-                </div>
-            </div>
-
-            <div class="mt-5">
-                <h5>Product Gallery</h5>
-                <hr class="w-100 text-gray-300">
-            </div>
-
-            <div class="form-group mt-2">
-                <label for="gallery">Gallery</label>
-                <input type="file" class="form-control" id="gallery" multiple  @change="handleGalleryUpload">
-                <div v-if="product.galleries && product.id" class="mt-2 d-flex">
-                        <div  v-for="(image, index) in product.galleries" :key="index" class="me-2">
-                            <div @click="removeProduct(product.id, 'gallery', image.id)">
-                                <i class="fa fa-remove cursor-pointer text-danger"></i>
-                            </div>
-                            <img :src="image.image" alt="Gallery Image" class="img-fluid" style="width: 100px; height: 100px;">
-                        </div>
-                </div>
-            </div>
-
-            <div class="d-flex justify-content-end mt-4">
-                <Button label="Save" @click="saveProduct()" severity="success" />
-                <Button label="Cancel" severity="secondary" class="ms-2" @click="closeProductModal()" />
-            </div>
-
-        </div>
-
         </Modal>
-
         <!-- end Add/Edit Product Modal-->
     </AuthenticatedLayout>
-
-
 </template>
-
-<style setup>
-.products{
-    background-color: white;
-    min-height: 92vh;
-    padding-top:5rem;
-}
-.dot{
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    margin-left:1rem;
-}
-</style>

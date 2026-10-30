@@ -5,7 +5,7 @@ import { usePage, Head } from '@inertiajs/vue3';
 import  AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Datatable from 'primevue/datatable';
 import Column from 'primevue/column';
-import Button from 'primevue/button';
+import Icon from '@/Components/V2/Icon.vue';
 import Modal from '@/Components/Modal.vue';
 const page = usePage();
 const logged_user = ref(page.props.user);
@@ -175,8 +175,8 @@ const removeUser = async(id)=>{
         text: "You won't be able to revert this!",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
+        confirmButtonColor: '#e5484d',
+        cancelButtonColor: '#7b8a84',
         confirmButtonText: 'Yes, delete it!'
       }).then((result) => {
         if (result.isConfirmed) {
@@ -215,92 +215,81 @@ const deleteUser = async(id) => {
 <template>
     <Head title="Admin Users"/>
     <AuthenticatedLayout>
-        <div class="users">
-            <div class="col-8 mx-auto">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h2>Users</h2>
-                     <Button label="Add User" severity="danger" @click="openUserModal()"> </Button>
-                </div>
-
-                <div class="table-responsive pt-5">
-                <!--start:: Users Table -->
-                <Datatable stripedRows size="small" paginator :value="users" :rows="10" :loading="loading">
-                    <Column field="is_active" header="Active" sortable>
-                    <template #body="{data}">
-                        <div :class="data.is_active ? 'bg-success is-active' : 'bg-danger is-active'">
-                        </div>
-                    </template>
-                    </Column>
-                    <Column field="name" header="Name" sortable></Column>
-                    <Column field="email" header="Email" sortable></Column>
-                    <Column field="actions" header="Actions">
-                    <template #body="{data}">
-                        <div class="d-flex align-items-center">
-                            <Button label="Edit" @click="openUserModal(data)" severity="info"> <i class="fa fa-edit"></i></Button>
-                            <Button label="Delete" @click="removeUser(data.id)" severity="danger" class="ms-2"> <i class="fa fa-trash"></i></Button>
-                        </div>
-                    </template>
-                    </Column>
-
-                </Datatable>
-                <!--end:: Users Table-->
-                </div>
+        <template #header>
+            <div class="ha-head__title">
+                <h1>Users</h1>
+                <span class="ha-count">{{ users.length }}</span>
             </div>
-            <!--start:: User Modal -->
-            <Modal :show="showUserModal" @close="closeUserModal" :maxWidth="'md'">
-                <div class="p-4">
-                    <h4> {{ add_user == '' ? 'Add User' : 'Edit User' }}</h4>
-                    <div class="form-group mt-2">
-                    <label for="name">Name</label>
-                    <input type="text" class="form-control" id="name" v-model="user.name">
-                    </div>
-                    <div class="form-group  mt-2">
-                    <label for="email">Email</label>
-                    <input type="email" class="form-control" id="email" v-model="user.email">
-                    </div>
-                    <div class="form-group  mt-2">
-                    <label for="password">Password</label>
-                    <input type="password" class="form-control" id="password" v-model="user.password">
-                    </div>
-                    <div class="form-group  mt-2">
-                      <label for="team_id">Team</label>
-                    <select class="form-control" id="team_id" v-model="user.team_id">
+            <div class="ha-head__actions">
+                <button type="button" class="ha-btn" @click="openUserModal()"><Icon name="plus" /> Add User</button>
+            </div>
+        </template>
+
+        <!--start:: Users Table -->
+        <section class="ha-card ha-table-wrap">
+            <Datatable stripedRows size="small" paginator :value="users" :rows="10" :loading="loading" scrollable>
+                <Column field="name" header="Name" sortable>
+                    <template #body="{data}">
+                        <div class="ha-user" style="padding: 0">
+                            <span class="ha-avatar" style="width: 34px; height: 34px; font-size: 12.5px">{{ (data.name || '?').charAt(0) }}</span>
+                            <span class="ha-cell-title">{{ data.name }}</span>
+                        </div>
+                    </template>
+                </Column>
+                <Column field="email" header="Email" sortable></Column>
+                <Column field="is_active" header="Active" sortable>
+                    <template #body="{data}">
+                        <span class="ha-status-dot" :class="{ 'is-on': data.is_active }">{{ data.is_active ? 'Active' : 'Inactive' }}</span>
+                    </template>
+                </Column>
+                <Column field="actions" header="Actions">
+                    <template #body="{data}">
+                        <div class="ha-actions">
+                            <button type="button" class="ha-icon-btn" title="Edit" @click="openUserModal(data)"><Icon name="pencil" /></button>
+                            <button type="button" class="ha-icon-btn ha-icon-btn--danger" title="Delete" @click="removeUser(data.id)"><Icon name="trash" /></button>
+                        </div>
+                    </template>
+                </Column>
+            </Datatable>
+        </section>
+        <!--end:: Users Table-->
+
+        <!--start:: User Modal -->
+        <Modal :show="showUserModal" @close="closeUserModal" :maxWidth="'md'">
+            <div class="ha-modal__head">
+                <h3>{{ add_user == '' ? 'Add User' : 'Edit User' }}</h3>
+                <button type="button" class="ha-icon-btn ha-icon-btn--plain" aria-label="Close" @click="closeUserModal"><Icon name="x" /></button>
+            </div>
+            <div class="ha-modal__body">
+                <div class="ha-field">
+                    <label for="name" class="ha-label">Name</label>
+                    <input type="text" class="ha-input" id="name" v-model="user.name">
+                </div>
+                <div class="ha-field">
+                    <label for="email" class="ha-label">Email</label>
+                    <input type="email" class="ha-input" id="email" v-model="user.email">
+                </div>
+                <div class="ha-field">
+                    <label for="password" class="ha-label">Password</label>
+                    <input type="password" class="ha-input" id="password" v-model="user.password">
+                </div>
+                <div class="ha-field">
+                    <label for="team_id" class="ha-label">Team</label>
+                    <select class="ha-input" id="team_id" v-model="user.team_id">
                         <option value="1">Admin</option>
                         <option value="2">Moderator</option>
                     </select>
-                    </div>
-                    <div class="form-group  my-3 d-flex justify-content-end ">
-                    <label for="is_active">Is Active</label>
-                    <input type="checkbox" class="form-check-input ms-2 cursor-pointer " id="is_active" v-model="user.is_active">
-                    </div>
-                    <div class="d-flex justify-content-end align-items-center  mt-2">
-                        <Button label="Save" severity="success" @click="saveUser()"></Button>
-                        <Button label="Cancel" class="ms-2" severity="secondary" @click="closeUserModal"></Button>
-                    </div>
                 </div>
-
-            </Modal>
-
-            <!--end:: User Modal-->
-
-        </div>
+                <label class="ha-switch ha-toggle" for="is_active">
+                    Is Active
+                    <input type="checkbox" id="is_active" v-model="user.is_active">
+                </label>
+            </div>
+            <div class="ha-modal__foot">
+                <button type="button" class="ha-btn ha-btn--ghost" @click="closeUserModal">Cancel</button>
+                <button type="button" class="ha-btn" @click="saveUser()"><Icon name="check" /> Save</button>
+            </div>
+        </Modal>
+        <!--end:: User Modal-->
     </AuthenticatedLayout>
-
-
-
 </template>
-
-
-<style scoped>
-.users{
-    background-color: white;
-    min-height: 92vh;
-    padding-top:5rem;
-}
-.is-active{
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    margin-left:1rem;
-}
-</style>
