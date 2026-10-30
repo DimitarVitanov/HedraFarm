@@ -97,12 +97,6 @@ async function fetchSliders() {
                     <p>За сите нарачки над {{ formatPrice(FREE_SHIPPING_FROM) }}, низ цела Македонија.</p>
                     <span class="hf-link">Купи сега <Icon name="arrow-right" /></span>
                 </a>
-                <a href="/contact" class="hf-tile hf-tile--lime">
-                    <span class="hf-tile__icon"><Icon name="headset" /></span>
-                    <h3>Совет од фармацевт</h3>
-                    <p>Имате прашање за некој производ? Контактирајте нè.</p>
-                    <span class="hf-link">Контактирај нè <Icon name="arrow-right" /></span>
-                </a>
             </div>
         </div>
     </section>

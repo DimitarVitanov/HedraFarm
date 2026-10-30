@@ -1,8 +1,8 @@
-// preview.js - lets the redesigned storefront (PagesV2) be viewed without replacing the live one.
-//   ?preview=v2  -> switch this browser tab to the new design (sticks while browsing)
-//   ?preview=v1  -> switch back to the current design
-// To launch the new design for everyone, change DEFAULT_VERSION to 'v2'.
-export const DEFAULT_VERSION = 'v1'
+// preview.js - picks which storefront is rendered: PagesV2 (redesign, live) or Pages (old design).
+//   ?preview=v1  -> switch this browser tab back to the old design (sticks while browsing)
+//   ?preview=v2  -> switch back to the redesign
+// To roll back for everyone, change DEFAULT_VERSION to 'v1'.
+export const DEFAULT_VERSION = 'v2'
 
 const KEY = 'storefrontPreview'
 
@@ -17,5 +17,3 @@ export function storefrontVersion() {
     return DEFAULT_VERSION
   }
 }
-
-export const isPreviewing = () => storefrontVersion() !== DEFAULT_VERSION
