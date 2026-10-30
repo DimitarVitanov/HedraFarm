@@ -62,7 +62,7 @@ const maxWidthClass = computed(() => {
 <template>
     <teleport to="body">
         <transition name="ha-modal-fade">
-            <div v-show="show" class="ha-modal-wrap modal-component" scroll-region>
+            <div v-show="show" class="ha-modal-wrap modal-component" scroll-region data-lenis-prevent>
                 <transition name="ha-modal-fade">
                     <div v-show="show" class="ha-modal-backdrop" @click="close" />
                 </transition>

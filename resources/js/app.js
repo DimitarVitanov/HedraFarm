@@ -87,6 +87,8 @@ const lenis = new Lenis({
     duration: 1.2,
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     smooth: true,
+    // Admin pages, modals and dropdown panels scroll natively - Lenis would swallow their wheel events
+    prevent: (node) => !!node.closest?.('.ha, .ha-modal-wrap, .ha-scrim, .p-overlay, .p-select-overlay, .p-multiselect-overlay, .p-popover, .swal2-container'),
 });
 
 function raf(time) {
