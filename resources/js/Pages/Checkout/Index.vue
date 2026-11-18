@@ -76,9 +76,9 @@ const createOrder = async() =>{
     formData.append('country', order.value.country);
     formData.append('additionalDescription', order.value.additionalDescription);
     formData.append('cart', JSON.stringify(cart));
-    formData.append('deliveryPrice', totalPrice.value < 2000 ? 200 : 0);
+    formData.append('deliveryPrice', totalPrice.value < 2000 ? 150 : 0);
     formData.append('discount', totalDiscount.value);
-    formData.append('totalPrice', totalPrice.value + (totalPrice.value < 2000 ? 200 : 0));
+    formData.append('totalPrice', totalPrice.value + (totalPrice.value < 2000 ? 150 : 0));
     formData.append('paymentMethod', 'cash');
     formData.append('status', 'pending');
 
@@ -231,8 +231,8 @@ const createOrder = async() =>{
                                     <li><strong>Подвкупно</strong> <span>{{subtotalBeforeDiscounts.toFixed(2)}} ден</span></li>
                                     <li v-if="totalDiscount > 0"><strong>Попуст:</strong> <span>-{{totalDiscount.toFixed(2)}} ден</span></li>
                                     <li><strong>Вкупно</strong> <span>{{totalPrice.toFixed(2)}} ден</span></li>
-                                    <li v-if="totalPrice < 2000"><strong>Достава:</strong> <span>200 ден</span></li>
-                                    <li class="shop-cart-total"><strong>Финална цена:</strong> <span>{{(totalPrice + (totalPrice < 2000 ? 200 : 0)).toFixed(2)}} ден</span></li>
+                                    <li v-if="totalPrice < 2000"><strong>Достава:</strong> <span>150 ден</span></li>
+                                    <li class="shop-cart-total"><strong>Финална цена:</strong> <span>{{(totalPrice + (totalPrice < 2000 ? 150 : 0)).toFixed(2)}} ден</span></li>
                                 </ul>
                                 <div class="text-end mt-40">
                                     <a @click="createOrder" class="theme-btn" :style="submitting ? 'pointer-events: none; opacity: 0.7' : ''">{{ submitting ? 'Се испраќа...' : 'Наплати' }}<i

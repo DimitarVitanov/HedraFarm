@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 
 export const FREE_SHIPPING_FROM = 2000
-export const SHIPPING_PRICE = 200
+export const SHIPPING_PRICE = 150
 
 const company = ref({})
 const categories = ref([])

@@ -162,8 +162,8 @@ const subtotalBeforeDiscounts = computed(() => {
                                         <li><strong>Подвкупно</strong> <span>{{subtotalBeforeDiscounts.toFixed(2)}} ден</span></li>
                                         <li v-if="totalDiscount > 0"><strong>Попуст:</strong> <span>-{{totalDiscount.toFixed(2)}} ден</span></li>
                                         <li><strong>Вкупно</strong> <span>{{totalPrice.toFixed(2)}} ден</span></li>
-                                        <li v-if="totalPrice < 2000"><strong>Достава:</strong> <span>200 ден</span></li>
-                                        <li class="shop-cart-total"><strong>Финална цена:</strong> <span>{{(totalPrice + (totalPrice < 2000 ? 200 : 0)).toFixed(2)}} ден</span></li>
+                                        <li v-if="totalPrice < 2000"><strong>Достава:</strong> <span>150 ден</span></li>
+                                        <li class="shop-cart-total"><strong>Финална цена:</strong> <span>{{(totalPrice + (totalPrice < 2000 ? 150 : 0)).toFixed(2)}} ден</span></li>
                                     </ul>
                                     <div class="text-end mt-40">
                                         <a href="/checkout" class="theme-btn">Наплати<i
